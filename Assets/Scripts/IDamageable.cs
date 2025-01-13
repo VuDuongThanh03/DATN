@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void TakeDame();
+    public void TakeDame(float dame);
 }
