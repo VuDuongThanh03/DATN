@@ -3418,7 +3418,7 @@ GameObject:
   - component: {fileID: 8121704420605501779}
   - component: {fileID: 5050148262674214561}
   - component: {fileID: 9204082440808817209}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3529,14 +3529,12 @@ MonoBehaviour:
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   CinemachineCameraTarget: {fileID: 1821005134721445180}
   TopClamp: 70
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
-  aimCam: {fileID: 1660839033151046680}
-  aimPos: {fileID: 8689335792954357503}
 --- !u!114 &1681002745923077488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3698,7 +3696,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimCam: {fileID: 1660839033151046680}
-  _animator: {fileID: 0}
 --- !u!1 &5941881687714834513
 GameObject:
   m_ObjectHideFlags: 0

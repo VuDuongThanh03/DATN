@@ -57,11 +57,28 @@ public class AttackController : MonoBehaviour
         }
     }
     public void CheckAttack(){
-        RaycastHit hit;
-        Vector3 direction = gameObject.transform.forward;   // Hướng nhìn từ mắt
-        // Debug.DrawRay(gameObject.transform.position, direction * 5f, Color.red, 1f);
+        GameObject temp;
+        List<GameObject> listObjectTakeDame = new List<GameObject>();
+        
+        Vector3 forward = gameObject.transform.forward;
+        temp = CheckRayAttack(forward,Color.red);
+        if(temp!=null){
+            listObjectTakeDame.Add(temp);
+        }
+        Vector3 leftDirection = Quaternion.AngleAxis(-20, Vector3.up) * forward;  // Lệch trái
+        temp = CheckRayAttack(leftDirection,Color.green,listObjectTakeDame);
+        if(temp!=null){
+            listObjectTakeDame.Add(temp);
+        }
+        // Vector3 rightDirection = Quaternion.AngleAxis(20, Vector3.up) * forward; 
+        // CheckRayAttack(rightDirection,Color.yellow);
         // Bắn raycast từ mắt về phía trước
-        if (Physics.Raycast(gameObject.transform.position, direction, out hit, 0.6f))
+        
+    }
+    public GameObject CheckRayAttack(Vector3 direction, Color color,List<GameObject> checkObject = null){
+        RaycastHit hit;
+        Debug.DrawRay(gameObject.transform.position + new Vector3(0,0.8f,0), direction*0.6f, color, 10f);
+        if (Physics.Raycast(gameObject.transform.position + new Vector3(0,0.8f,0), direction , out hit, 0.6f))
         {
             Debug.Log("Đã trúng " + hit.collider.name);
 
@@ -69,12 +86,22 @@ public class AttackController : MonoBehaviour
             IDamageable damageable = hit.collider.GetComponent<IDamageable>();
             if (damageable != null)
             {
+                GameObject hitGameObject = hit.collider.gameObject;
+                if(checkObject!=null){
+                    foreach(var item in checkObject){
+                        if(item == hitGameObject){
+                            return null;
+                        }
+                    }
+                }
                 damageable.TakeDame(10);  // Gây 10 sát thương
+                return hit.collider.gameObject;
             }
         }
         else
         {
             Debug.Log("Không trúng mục tiêu nào.");
         }
+        return null;
     }
 }
