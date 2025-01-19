@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: CharacterStats
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatsConfig
+  CharacterStats:
+    health: 100
+    armor: 10
+    stamina: 100

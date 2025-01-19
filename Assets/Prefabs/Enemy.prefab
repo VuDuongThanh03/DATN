@@ -2106,7 +2106,7 @@ Animator:
   m_GameObject: {fileID: 8004131807507740291}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 80f19cc7da58bfc4c8809468d9b97fdf, type: 3}
-  m_Controller: {fileID: 9100000, guid: b09c65ec2c12bb145bb1a0cbb30ab482, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9cd4fdd903ebeec4382668c699468ea2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2131,6 +2131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseStats: {fileID: 11400000, guid: 33ca452c298720242bcacd37c57b3ab8, type: 2}
   _navMeshAgent: {fileID: 5571160808130330433}
+  enemyAnimator: {fileID: 6628991987623645061}
+  _currentState: 0
 --- !u!65 &6657045723149751194
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2162,7 +2164,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

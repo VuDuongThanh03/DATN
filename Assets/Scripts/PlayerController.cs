@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour,IDamageable
     void Start()
     {
         _currentStats = _baseStats.CharacterStats;
+        GameManager.Player = this;
     }
 
     // Update is called once per frame
@@ -19,6 +20,11 @@ public class PlayerController : MonoBehaviour,IDamageable
         
     }
     public void TakeDame(float dame){
-        
+        _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.CharacterStats.health);
+        Debug.Log("Player take dame: "+ dame+" Current Health: "+_currentStats.health);
+        if(_currentStats.health==0){
+            Debug.Log("Player Die");
+            // gameObject.SetActive(false);
+        }
     }
 }

@@ -12,7 +12,7 @@ public class CharacterStatsConfig : ScriptableObject
 public class CharacterStats
 {
     // Start is called before the first frame update
-    public int health;
-    public int armor;
-    public int stamina;
+    public float health;
+    public float armor;
+    public float stamina;
 }
