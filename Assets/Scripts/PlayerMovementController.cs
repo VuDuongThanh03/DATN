@@ -78,7 +78,7 @@ namespace DATN
 
         //Write to test
         // public CinemachineVirtualCamera aimCam;
-        // public GameObject aimPos;
+        public GameObject aimPos;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -221,6 +221,7 @@ namespace DATN
             //     aimPos.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
             //     return;
             // }
+            aimPos.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
             CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
             
         }
