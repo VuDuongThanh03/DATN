@@ -9,6 +9,10 @@ public class AttackController : MonoBehaviour
     private MyControllInputs _input;
     private float duationClick = 0 ; 
     public CinemachineVirtualCamera aimCam;
+    public GameObject LeftWeaponShield;
+    public GameObject RightWeaponSword;
+    public GameObject LeftWeaponBow;
+    public GameObject RightWeaponArrow;
     private Animator _animator;
     // Start is called before the first frame update
     void Start()
@@ -20,6 +24,8 @@ public class AttackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _animator.SetFloat("X",_input.move.x);
+        _animator.SetFloat("Y",_input.move.y);
         Attack();
     }
     private void Attack()
@@ -31,6 +37,11 @@ public class AttackController : MonoBehaviour
                 if (duationClick < 0.2 && duationClick + Time.deltaTime >= 0.2)
                 {
                     aimCam.enabled = true;
+                    LeftWeaponShield.SetActive(false);
+                    RightWeaponSword.SetActive(false);
+                    LeftWeaponBow.SetActive(true);
+                    RightWeaponArrow.SetActive(true);
+                    _animator.SetTrigger("StartAttackBow");
                 }
                 duationClick += Time.deltaTime;
             }
@@ -48,6 +59,11 @@ public class AttackController : MonoBehaviour
                 else
                 {
                     Debug.Log("Long hold trigger attack: " + duationClick);
+                    _animator.SetTrigger("EndAttackBow");
+                    LeftWeaponShield.SetActive(true);
+                    RightWeaponSword.SetActive(true);
+                    LeftWeaponBow.SetActive(false);
+                    RightWeaponArrow.SetActive(false);
                     _input.startAttack = false;
                     _input.confirmAttack = false;
                     duationClick = 0;
