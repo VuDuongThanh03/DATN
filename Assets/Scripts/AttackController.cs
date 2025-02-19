@@ -14,6 +14,7 @@ public class AttackController : MonoBehaviour
     public GameObject LeftWeaponBow;
     public GameObject RightWeaponArrow;
     private Animator _animator;
+    Vector2 currentBlendValue;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +25,12 @@ public class AttackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _animator.SetFloat("X",_input.move.x);
-        _animator.SetFloat("Y",_input.move.y);
+        // sử dụng nội suy để chuyển anim mượt mà thông qua nội suy giá trị x,y khi chuyển hướng
+        currentBlendValue = Vector2.Lerp(currentBlendValue, _input.move, Time.deltaTime * 8f);
+        _animator.SetFloat("X",currentBlendValue.x);
+        _animator.SetFloat("Y",currentBlendValue.y);
+        // _animator.SetFloat("X",_input.move.x);
+        // _animator.SetFloat("Y",_input.move.y);
         Attack();
     }
     private void Attack()
