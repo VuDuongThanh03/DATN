@@ -79,6 +79,8 @@ namespace DATN
         //Write to test
         // public CinemachineVirtualCamera aimCam;
         public GameObject aimPos;
+        public GameObject targetAimPoint;
+        public GameObject cameraAim;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -223,8 +225,17 @@ namespace DATN
             // }
             aimPos.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
             CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
-            
+            targetAimPoint.transform.position = GetSymmetricPoint(cameraAim.transform.position,aimPos.transform.position);
+            targetAimPoint.transform.position-=new Vector3(0,0.5f,0);
         }
+        Vector3 GetSymmetricPoint(Vector3 A, Vector3 O)
+    {
+        return new Vector3(
+            2 * O.x - A.x,
+            2 * O.y - A.y,
+            2 * O.z - A.z
+        );
+    }
 
         private void Move()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using DATN;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class AttackController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class AttackController : MonoBehaviour
     public GameObject LeftWeaponBow;
     public GameObject RightWeaponArrow;
     private Animator _animator;
+    public MultiAimConstraint BowAim;
     Vector2 currentBlendValue;
     // Start is called before the first frame update
     void Start()
@@ -47,6 +49,7 @@ public class AttackController : MonoBehaviour
                     LeftWeaponBow.SetActive(true);
                     RightWeaponArrow.SetActive(true);
                     _animator.SetTrigger("StartAttackBow");
+                    BowAim.weight=1;
                 }
                 duationClick += Time.deltaTime;
             }
@@ -65,6 +68,7 @@ public class AttackController : MonoBehaviour
                 {
                     Debug.Log("Long hold trigger attack: " + duationClick);
                     _animator.SetTrigger("EndAttackBow");
+                    BowAim.weight=0;
                     LeftWeaponShield.SetActive(true);
                     RightWeaponSword.SetActive(true);
                     LeftWeaponBow.SetActive(false);
