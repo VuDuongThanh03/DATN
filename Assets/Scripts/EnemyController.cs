@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions.Comparers;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour,IDamageable
 {
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour,IDamageable
     public NavMeshAgent _navMeshAgent;
     private EnemyStats _currentStats;
     public Animator enemyAnimator;
+    public Slider enemyHealthBar;
     Vector3 _targetPos;
     Vector3 _posSpawn;
     float _idleTime;
@@ -37,6 +39,8 @@ public class EnemyController : MonoBehaviour,IDamageable
         _currentStats = new EnemyStats();
         _currentStats.health = _baseStats.EnemyStats.health;
         _currentStats.armor = _baseStats.EnemyStats.armor;
+        enemyHealthBar.maxValue = _baseStats.EnemyStats.health;
+        enemyHealthBar.value = _baseStats.EnemyStats.health;
     }
 
     // Update is called once per frame
@@ -114,6 +118,7 @@ public class EnemyController : MonoBehaviour,IDamageable
     public void TakeDame(float dame)
     {
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
+        enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);
         if(_currentStats.health==0){
             Debug.Log("Enemy Die");
