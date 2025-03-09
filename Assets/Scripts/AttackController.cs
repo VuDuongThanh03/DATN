@@ -102,8 +102,8 @@ public class AttackController : MonoBehaviour
     }
     public GameObject CheckRayAttack(Vector3 direction, Color color,List<GameObject> checkObject = null){
         RaycastHit hit;
-        Debug.DrawRay(gameObject.transform.position + new Vector3(0,0.8f,0), direction*0.6f, color, 10f);
-        if (Physics.Raycast(gameObject.transform.position + new Vector3(0,0.8f,0), direction , out hit, 0.6f))
+        Debug.DrawRay(gameObject.transform.position + new Vector3(0,0.8f,0), direction*1f, color, 10f);
+        if (Physics.Raycast(gameObject.transform.position + new Vector3(0,0.8f,0), direction , out hit, 0.8f))
         {
             Debug.Log("Đã trúng " + hit.collider.name);
 

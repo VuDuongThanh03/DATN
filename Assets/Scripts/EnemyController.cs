@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour,IDamageable
         IdleState,
         PatrolState,
         TagetState,
+        Die,
 
     }
     enum TriggerAnim{
@@ -18,6 +19,8 @@ public class EnemyController : MonoBehaviour,IDamageable
         Walk,
         Run,
         Attack,
+        TakeDame,
+        Die,
     }
     public EnemyStatsConfig _baseStats;
     public NavMeshAgent _navMeshAgent;
@@ -28,6 +31,8 @@ public class EnemyController : MonoBehaviour,IDamageable
     Vector3 _posSpawn;
     float _idleTime;
     float _attackCountDown = 0;
+    float _countDownTakeTime = 0;
+    float _countDownDespawn = 0;
     TriggerAnim LastTriggerAnim;
     
     [SerializeField]private State _currentState;
@@ -57,6 +62,20 @@ public class EnemyController : MonoBehaviour,IDamageable
         // }else{
         //     return;
         // }
+        if(_currentState==State.Die){
+            _countDownDespawn-=Time.deltaTime;
+            if(_countDownDespawn<=0){
+                gameObject.SetActive(false);
+            }
+            return;
+        }
+        if(LastTriggerAnim==TriggerAnim.TakeDame){
+            _countDownTakeTime-=Time.deltaTime;
+            if(_countDownTakeTime>0){
+                return;
+            }
+            ContinueToPatrol();
+        }
         CheckPlayerTaget();
         if(_currentState == State.IdleState){
             _idleTime-=Time.deltaTime;
@@ -90,7 +109,7 @@ public class EnemyController : MonoBehaviour,IDamageable
                     GoToStatePatrol();
                 }else{
                     if(distance<1.5f){
-                        StopToAttack();
+                        StopMove();
                         if(_attackCountDown<=0){
                             enemyAnimator.SetTrigger("Attack");
                             LastTriggerAnim = TriggerAnim.Attack;
@@ -120,9 +139,20 @@ public class EnemyController : MonoBehaviour,IDamageable
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);
+        if(_currentStats.health>0&&dame>0){
+            StopMove();
+            _countDownTakeTime = 1f;
+            enemyAnimator.ResetTrigger("Run");
+            enemyAnimator.ResetTrigger("Idle");
+            enemyAnimator.SetTrigger("TakeDame");
+            LastTriggerAnim = TriggerAnim.TakeDame;
+        }
         if(_currentStats.health==0){
             Debug.Log("Enemy Die");
-            gameObject.SetActive(false);
+            _currentState = State.Die;
+            enemyAnimator.SetTrigger("Die");
+            _countDownDespawn = 5;
+            enemyHealthBar.gameObject.SetActive(false);
         }
     }
     public void GoToStatePatrol(){
@@ -133,7 +163,7 @@ public class EnemyController : MonoBehaviour,IDamageable
         _currentState = State.PatrolState;
         enemyAnimator.SetTrigger("Walk");
     }
-    public void StopToAttack(){
+    public void StopMove(){
         _navMeshAgent.isStopped = true;
     }
     public void ContinueToPatrol(){
