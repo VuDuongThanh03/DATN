@@ -115,6 +115,7 @@ namespace DATN
         private CharacterController _controller;
         private MyControllInputs _input;
         private GameObject _mainCamera;
+        private PlayerController playerController;
 
         private const float _threshold = 0.01f;
 
@@ -144,6 +145,7 @@ namespace DATN
 
         private void Start()
         {
+            playerController = gameObject.GetComponent<PlayerController>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
             _hasAnimator = TryGetComponent(out _animator);
@@ -164,6 +166,9 @@ namespace DATN
 
         private void Update()
         {
+            if(playerController.PlayerIsDie){
+                return;
+            }
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();

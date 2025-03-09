@@ -16,10 +16,12 @@ public class AttackController : MonoBehaviour
     public GameObject RightWeaponArrow;
     private Animator _animator;
     public MultiAimConstraint BowAim;
+    private PlayerController playerController;
     Vector2 currentBlendValue;
     // Start is called before the first frame update
     void Start()
     {
+        playerController = gameObject.GetComponent<PlayerController>();
         _input = gameObject.GetComponent<MyControllInputs>();
         _animator = gameObject.GetComponent<Animator>();
     }
@@ -28,6 +30,11 @@ public class AttackController : MonoBehaviour
     void Update()
     {
         // sử dụng nội suy để chuyển anim mượt mà thông qua nội suy giá trị x,y khi chuyển hướng
+        if(playerController.PlayerIsDie){
+            BowAim.weight=0;
+            aimCam.enabled = false;
+            return;
+        }
         currentBlendValue = Vector2.Lerp(currentBlendValue, _input.move, Time.deltaTime * 8f);
         _animator.SetFloat("X",currentBlendValue.x);
         _animator.SetFloat("Y",currentBlendValue.y);

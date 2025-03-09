@@ -46,6 +46,9 @@ public class EnemyController : MonoBehaviour,IDamageable
         _currentStats.armor = _baseStats.EnemyStats.armor;
         enemyHealthBar.maxValue = _baseStats.EnemyStats.health;
         enemyHealthBar.value = _baseStats.EnemyStats.health;
+        if(GameManager.Player!=null){
+            GameManager.Player.OnPlayerDie+=GoToStatePatrol;
+        }
     }
 
     // Update is called once per frame
@@ -113,7 +116,7 @@ public class EnemyController : MonoBehaviour,IDamageable
                         if(_attackCountDown<=0){
                             enemyAnimator.SetTrigger("Attack");
                             LastTriggerAnim = TriggerAnim.Attack;
-                            GameManager.Player.TakeDame(10);
+                            StartCoroutine(WaitForAnimation(50,0.5f));
                             _attackCountDown = 5;
                             ContinueToPatrol();
                             enemyAnimator.SetTrigger("Idle");
@@ -169,8 +172,15 @@ public class EnemyController : MonoBehaviour,IDamageable
     public void ContinueToPatrol(){
         _navMeshAgent.isStopped = false;
     }
+    IEnumerator WaitForAnimation(float dame,float time)
+    {
+        yield return new WaitForSeconds(time);
+        GameManager.Player.TakeDame(dame);
+        ContinueToPatrol();
+    }
+ 
     public void CheckPlayerTaget(){
-        if(GameManager.Player!=null){
+        if(GameManager.Player!=null&&!GameManager.Player.PlayerIsDie){
             float distance = Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(GameManager.Player.gameObject.transform.position.x,GameManager.Player.gameObject.transform.position.z));
             if(distance<=5&&_currentState!=State.TagetState){
                 _currentState = State.TagetState;
