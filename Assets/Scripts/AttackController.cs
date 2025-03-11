@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using DATN;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -18,6 +19,8 @@ public class AttackController : MonoBehaviour
     public MultiAimConstraint BowAim;
     private PlayerController playerController;
     Vector2 currentBlendValue;
+    public GameObject ArrowPrefab;
+    public Transform ArrowSpawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +83,30 @@ public class AttackController : MonoBehaviour
                     RightWeaponSword.SetActive(true);
                     LeftWeaponBow.SetActive(false);
                     RightWeaponArrow.SetActive(false);
+                    GameObject arrow =Instantiate(ArrowPrefab);
+                    arrow.transform.position = ArrowSpawn.position;
+                    arrow.transform.rotation = ArrowSpawn.rotation;
+
+                    RaycastHit hit;
+                    Camera cam = Camera.main;
+                    Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
+
+                    // Vector3 targetPoint = new Vector3();
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        Debug.Log("HitPos: " + hit.point);
+                        Debug.DrawLine(ray.origin, hit.point, Color.green, 100f);
+                    }
+
+                    // Thêm lực đẩy
+                    Rigidbody rb = arrow.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.velocity = (hit.point - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
+                        arrow.transform.forward = (hit.point-cam.gameObject.transform.position).normalized;
+                        Debug.DrawLine(arrow.transform.position, hit.point, Color.red, 100f);
+                    }
+
                     _input.startAttack = false;
                     _input.confirmAttack = false;
                     duationClick = 0;
