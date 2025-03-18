@@ -18,6 +18,7 @@ public class FirebaseManager : MonoBehaviour
     [SerializeField] private bool FirebaseMessage;
     bool _isInitInProcess = true;
     public bool IsInitProcessFinished => !_isInitInProcess;
+    public bool IsFirebaseRemoteconfigEnable => FirebaseRemoteconfig;
     DependencyStatus _status = DependencyStatus.UnavailableDisabled;
     public bool IsInitSuccess()
     {

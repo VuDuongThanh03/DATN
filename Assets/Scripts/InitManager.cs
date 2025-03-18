@@ -19,13 +19,12 @@ public class InitManager : Singleton<InitManager>
         try
         {
             // UpdateLoadingUI(0.1f, "Initializing...");
-            // await InitFirebase();
-            // await UniTask.WaitUntil(() =>
-            //     !FirebaseManager.Instance.IsFirebaseRemoteconfigEnable ||
-            //     FirebaseManager.Instance.IsFetchRemoteConfigFinish);
+            await InitFirebase();
+            await UniTask.WaitUntil(() =>
+                !FirebaseManager.Instance.IsFirebaseRemoteconfigEnable ||
+                FirebaseManager.Instance.IsFetchRemoteConfigFinish);
 
-            // YLogger.Log("Fetch Remote Config Finished", Color.cyan);
-            // FirebaseManager.LoadingRemoteConfigEvent();
+            Debug.Log("Fetch Remote Config Finished");
             // UpdateLoadingUI(0.2f, "Initializing...");
             // await UniTask.DelayFrame(1);
 
