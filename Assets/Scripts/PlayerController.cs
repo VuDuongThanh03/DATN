@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Weapon{
+    SWORD,
+    BOW
+}
 public class PlayerController : MonoBehaviour,IDamageable
 {
     // Start is called before the first frame update

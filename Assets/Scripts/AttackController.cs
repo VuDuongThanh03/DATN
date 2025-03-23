@@ -53,6 +53,8 @@ public class AttackController : MonoBehaviour
             {
                 if (duationClick < 0.2 && duationClick + Time.deltaTime >= 0.2)
                 {
+                    MainHud.Instance.Crosshair.SetActive(true);
+                    GameManager.Instance.SetRotateSpeedBowAttack(true);
                     aimCam.enabled = true;
                     LeftWeaponShield.SetActive(false);
                     RightWeaponSword.SetActive(false);
@@ -77,6 +79,8 @@ public class AttackController : MonoBehaviour
                 else
                 {
                     Debug.Log("Long hold trigger attack: " + duationClick);
+                    MainHud.Instance.Crosshair.SetActive(false);
+                    GameManager.Instance.SetRotateSpeedBowAttack(false);
                     _animator.SetTrigger("EndAttackBow");
                     BowAim.weight=0;
                     LeftWeaponShield.SetActive(true);

@@ -188,12 +188,12 @@ namespace DATN
 
         private void LateUpdate()
         {
-#if UNITY_EDITOR
-            CameraRotation();
-#else
-			CameraRotationWithTouch();
-#endif
-        // CameraRotationWithTouch();
+// #if UNITY_EDITOR
+//             CameraRotation();
+// #else
+// 			CameraRotationWithTouch();
+// #endif
+        CameraRotationWithTouch();
         }
 
         private void AssignAnimationIDs()
@@ -312,11 +312,11 @@ namespace DATN
                                 // Debug.Log($"GameManager.Instance.ratioRotateSpeed {GameManager.Instance.RatioRotateSpeed}");
 
                                 //Temp setup to test
-                                _cinemachineTargetYaw += defaultPos.x * RotationSpeed * Time.deltaTime * 2f;
-                                _cinemachineTargetPitch += -defaultPos.y * RotationSpeed * Time.deltaTime * 2f;
+                                // _cinemachineTargetYaw += defaultPos.x * RotationSpeed * Time.deltaTime * 2f;
+                                // _cinemachineTargetPitch += -defaultPos.y * RotationSpeed * Time.deltaTime * 2f;
                                 //Temp setup to test
-                                // aimPos.transform.Rotate(Vector3.up * defaultPos.x * RotationSpeed * Time.deltaTime * GameManager.Instance.RatioRotateSpeed);
-                                // _cinemachineTargetPitch += -defaultPos.y * RotationSpeed * Time.deltaTime * GameManager.Instance.RatioRotateSpeed;
+                                _cinemachineTargetYaw += defaultPos.x * RotationSpeed * Time.deltaTime * GameManager.Instance.RatioRotateSpeed;
+                                _cinemachineTargetPitch += -defaultPos.y * RotationSpeed * Time.deltaTime * GameManager.Instance.RatioRotateSpeed;
                                 _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
                                 //CinemachineCameraTarget.transform.Rotate(Vector3.right * * Time.deltaTime);
 
@@ -350,6 +350,39 @@ namespace DATN
             //     Debug.Log($"-------------TOUCH UI: index = {index++} => {item.gameObject.name}");
             // }
             int count = 0;
+            for (int i = 0; i < results.Count; i++)
+            {
+                if(results[i].gameObject.tag == "ButtonAttack")
+                {
+                    return false;
+                }
+            }
+
+
+            count = results.Count - count;
+
+            return count > 0;
+        }
+        private static bool IsPointerOverUIObject(Vector2 PosTouch, int leyerUIImmersiveAds)
+        {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(PosTouch.x, PosTouch.y);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+            //int index = 0;
+            // foreach (var item in results)
+            // {
+            //     Debug.Log($"-------------TOUCH UI: index = {index++} => {item.gameObject.name}");
+            // }
+            int count = 0;
+            for (int i = 0; i < results.Count; i++)
+            {
+                if(results[i].gameObject.layer == leyerUIImmersiveAds)
+                {
+                    count++;
+                }
+            }
 
             count = results.Count - count;
 
