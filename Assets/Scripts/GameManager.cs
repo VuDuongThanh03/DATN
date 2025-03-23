@@ -6,6 +6,8 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public static PlayerController Player;
+    private float _ratioRotateSpeed = 0.3f;
+    public float RatioRotateSpeed => _ratioRotateSpeed;
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Tab)){

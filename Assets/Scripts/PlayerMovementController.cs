@@ -1,6 +1,9 @@
-﻿using Cinemachine;
+﻿using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
+using UnityEngine.EventSystems;
+
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -21,6 +24,12 @@ namespace DATN
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
+
+        [Tooltip("Rotation speed of the character")]
+        public float RotationSpeed = 1.0f;
+
+        [Tooltip("Acceleration and deceleration")]
+        public float RotationSpeedY = 4f;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -179,7 +188,12 @@ namespace DATN
 
         private void LateUpdate()
         {
+#if UNITY_EDITOR
             CameraRotation();
+#else
+			CameraRotationWithTouch();
+#endif
+        // CameraRotationWithTouch();
         }
 
         private void AssignAnimationIDs()
@@ -241,6 +255,108 @@ namespace DATN
             2 * O.z - A.z
         );
     }
+        #region RotateWithTouch
+
+        TouchItem touchTarget;
+        Touch touchTemp;
+        Vector2 StartPosTouch;
+        private bool _isForceRotate;
+
+        private void CameraRotationWithTouch()
+        {
+            int i = 0;
+            if (Input.touchCount > 0 && touchTarget == null)
+            {
+                while (i < Input.touchCount)
+                {
+                    touchTemp = Input.touches[i++];
+                    //Debug.Log($"-------------TOUCH INFO---------------: {touchTemp.phase}");
+
+                    if (touchTemp.phase == UnityEngine.TouchPhase.Began)
+                    {
+                        if (IsPointerOverUIObject(touchTemp.position))
+                        {
+                            continue;
+                        }
+
+                        touchTarget = new TouchItem(touchTemp.fingerId, touchTemp);
+                        StartPosTouch = touchTemp.position;
+                        //Debug.Log($"-------------TOUCH Began---------------: {StartPosTouch}");
+                        break;
+                    }
+                }
+            }
+
+            if (touchTarget != null)
+            {
+                i = 0;
+
+                while (i < Input.touchCount)
+                {
+                    Touch touch = Input.touches[i];
+                    if (touch.fingerId == touchTarget.TouchId)
+                    {
+                        if (touch.phase == UnityEngine.TouchPhase.Ended)
+                        {
+                            touchTarget = null;
+                            //Debug.Log($"-------------TOUCH Ended---------------: {StartPosTouch}");
+                        }
+
+                        if (touch.phase == UnityEngine.TouchPhase.Moved)
+                        {
+                            Vector2 defaultPos = (touch.position - StartPosTouch);
+                            if (defaultPos.magnitude > 0.01f)
+                            {
+                                //Debug.Log($"-------------TOUCH Moved---------------: {defaultPos}");
+
+                                // Debug.Log($"GameManager.Instance.ratioRotateSpeed {GameManager.Instance.RatioRotateSpeed}");
+
+                                //Temp setup to test
+                                _cinemachineTargetYaw += defaultPos.x * RotationSpeed * Time.deltaTime * 2f;
+                                _cinemachineTargetPitch += -defaultPos.y * RotationSpeed * Time.deltaTime * 2f;
+                                //Temp setup to test
+                                // aimPos.transform.Rotate(Vector3.up * defaultPos.x * RotationSpeed * Time.deltaTime * GameManager.Instance.RatioRotateSpeed);
+                                // _cinemachineTargetPitch += -defaultPos.y * RotationSpeed * Time.deltaTime * GameManager.Instance.RatioRotateSpeed;
+                                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+                                //CinemachineCameraTarget.transform.Rotate(Vector3.right * * Time.deltaTime);
+
+                                // CinemachineCameraTarget.transform.localRotation =
+                                //     Quaternion.Euler(_cinemachineTargetPitch, 0, 0);
+                                aimPos.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+                                CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+                            }
+                        }
+
+                        StartPosTouch = touch.position;
+                        return;
+                    }
+
+                    i++;
+                }
+            }
+        }
+
+
+        private static bool IsPointerOverUIObject(Vector2 PosTouch)
+        {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(PosTouch.x, PosTouch.y);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+            //int index = 0;
+            // foreach (var item in results)
+            // {
+            //     Debug.Log($"-------------TOUCH UI: index = {index++} => {item.gameObject.name}");
+            // }
+            int count = 0;
+
+            count = results.Count - count;
+
+            return count > 0;
+        }
+
+        #endregion
 
         private void Move()
         {
@@ -421,6 +537,22 @@ namespace DATN
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
+        }
+    }
+    [SerializeField]
+    public class TouchItem
+    {
+        public int TouchId;
+        public Touch Touch;
+
+        public TouchItem()
+        {
+        }
+
+        public TouchItem(int touchId, Touch touch)
+        {
+            TouchId = touchId;
+            Touch = touch;
         }
     }
 }

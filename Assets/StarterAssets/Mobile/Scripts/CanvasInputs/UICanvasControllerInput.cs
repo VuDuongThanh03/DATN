@@ -1,3 +1,4 @@
+using DATN;
 using UnityEngine;
 
 namespace StarterAssets
@@ -6,7 +7,8 @@ namespace StarterAssets
     {
 
         [Header("Output")]
-        public StarterAssetsInputs starterAssetsInputs;
+        // public StarterAssetsInputs starterAssetsInputs;
+        public MyControllInputs starterAssetsInputs;
 
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
         {
