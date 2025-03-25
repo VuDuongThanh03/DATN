@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public static PlayerController Player;
+    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private AttackController _attackController;
     private float _ratioRotateSpeed = 2f;
+    public PlayerController PlayerController => _playerController;
+    public AttackController AttackController => _attackController;
     public float RatioRotateSpeed => _ratioRotateSpeed;
     void Update()
     {
@@ -20,5 +23,11 @@ public class GameManager : Singleton<GameManager>
         }else{
             _ratioRotateSpeed = 2f;
         }
+    }
+    public void SetPlayerControler(PlayerController playerController){
+        _playerController = playerController;
+    }
+    public void SetAttackControler(AttackController attackController){
+        _attackController = attackController;
     }
 }

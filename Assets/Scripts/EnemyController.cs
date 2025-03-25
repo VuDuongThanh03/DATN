@@ -46,9 +46,6 @@ public class EnemyController : MonoBehaviour,IDamageable
         _currentStats.armor = _baseStats.EnemyStats.armor;
         enemyHealthBar.maxValue = _baseStats.EnemyStats.health;
         enemyHealthBar.value = _baseStats.EnemyStats.health;
-        if(GameManager.Player!=null){
-            GameManager.Player.OnPlayerDie+=GoToStatePatrol;
-        }
     }
 
     // Update is called once per frame
@@ -106,8 +103,8 @@ public class EnemyController : MonoBehaviour,IDamageable
         }
         if(_currentState == State.TagetState){
             _attackCountDown-=Time.deltaTime;
-            if(GameManager.Player!=null){
-                float distance = Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(GameManager.Player.gameObject.transform.position.x,GameManager.Player.gameObject.transform.position.z));
+            if(GameManager.Instance.PlayerController!=null){
+                float distance = Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(GameManager.Instance.PlayerController.gameObject.transform.position.x,GameManager.Instance.PlayerController.gameObject.transform.position.z));
                 if(distance>6){
                     GoToStatePatrol();
                 }else{
@@ -121,7 +118,7 @@ public class EnemyController : MonoBehaviour,IDamageable
                             ContinueToPatrol();
                             enemyAnimator.SetTrigger("Idle");
                             LastTriggerAnim = TriggerAnim.Idle;
-                            // _navMeshAgent.SetDestination(new Vector3(GameManager.Player.gameObject.transform.position.x,0,GameManager.Player.gameObject.transform.position.z));
+                            // _navMeshAgent.SetDestination(new Vector3(GameManager.Instance.PlayerController.gameObject.transform.position.x,0,GameManager.Instance.PlayerController.gameObject.transform.position.z));
                         }else{
                             if(LastTriggerAnim!=TriggerAnim.Idle){
                                 enemyAnimator.SetTrigger("Idle");
@@ -131,7 +128,7 @@ public class EnemyController : MonoBehaviour,IDamageable
                         ContinueToPatrol();
                         enemyAnimator.SetTrigger("Run");
                         LastTriggerAnim = TriggerAnim.Run;
-                        _navMeshAgent.SetDestination(new Vector3(GameManager.Player.gameObject.transform.position.x,0,GameManager.Player.gameObject.transform.position.z));
+                        _navMeshAgent.SetDestination(new Vector3(GameManager.Instance.PlayerController.gameObject.transform.position.x,0,GameManager.Instance.PlayerController.gameObject.transform.position.z));
                     }
                 }
             }
@@ -175,14 +172,18 @@ public class EnemyController : MonoBehaviour,IDamageable
     IEnumerator WaitForAnimation(float dame,float time)
     {
         yield return new WaitForSeconds(time);
-        GameManager.Player.TakeDame(dame);
+        GameManager.Instance.PlayerController.TakeDame(dame);
         ContinueToPatrol();
     }
  
     public void CheckPlayerTaget(){
-        if(GameManager.Player!=null&&!GameManager.Player.PlayerIsDie){
-            float distance = Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(GameManager.Player.gameObject.transform.position.x,GameManager.Player.gameObject.transform.position.z));
+        if(GameManager.Instance.PlayerController!=null&&!GameManager.Instance.PlayerController.PlayerIsDie){
+            float distance = Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(GameManager.Instance.PlayerController.gameObject.transform.position.x,GameManager.Instance.PlayerController.gameObject.transform.position.z));
             if(distance<=5&&_currentState!=State.TagetState){
+                if(GameManager.Instance.PlayerController!=null){
+                    GameManager.Instance.PlayerController.OnPlayerDie-=GoToStatePatrol;
+                    GameManager.Instance.PlayerController.OnPlayerDie+=GoToStatePatrol;
+                }
                 _currentState = State.TagetState;
                 _navMeshAgent.speed = 3;
                 enemyAnimator.SetTrigger("Run");

@@ -5,25 +5,36 @@ using DATN;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.UI;
 
+public enum Weapon{
+    SWORD,
+    BOW
+}
 public class AttackController : MonoBehaviour
 {
     private MyControllInputs _input;
     private float duationClick = 0 ; 
-    public CinemachineVirtualCamera aimCam;
-    public GameObject LeftWeaponShield;
-    public GameObject RightWeaponSword;
-    public GameObject LeftWeaponBow;
-    public GameObject RightWeaponArrow;
-    private Animator _animator;
-    public MultiAimConstraint BowAim;
+    [SerializeField] private CinemachineVirtualCamera aimCam;
+    [SerializeField] private GameObject LeftWeaponShield;
+    [SerializeField] private GameObject RightWeaponSword;
+    [SerializeField] private GameObject LeftWeaponBow;
+    [SerializeField] private GameObject RightWeaponArrow;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private MultiAimConstraint BowAim;
     private PlayerController playerController;
     Vector2 currentBlendValue;
-    public GameObject ArrowPrefab;
-    public Transform ArrowSpawn;
+    [SerializeField] private GameObject ArrowPrefab;
+    [SerializeField] private Transform ArrowSpawn;
+    private Weapon _currentWeapon = Weapon.SWORD;
+    public Weapon CurrentWeapon => _currentWeapon;
     // Start is called before the first frame update
+    void Awake()
+    {
+    }
     void Start()
     {
+        GameManager.Instance.SetAttackControler(this);
         playerController = gameObject.GetComponent<PlayerController>();
         _input = gameObject.GetComponent<MyControllInputs>();
         _animator = gameObject.GetComponent<Animator>();
@@ -53,15 +64,20 @@ public class AttackController : MonoBehaviour
             {
                 if (duationClick < 0.2 && duationClick + Time.deltaTime >= 0.2)
                 {
-                    MainHud.Instance.Crosshair.SetActive(true);
-                    GameManager.Instance.SetRotateSpeedBowAttack(true);
-                    aimCam.enabled = true;
-                    LeftWeaponShield.SetActive(false);
-                    RightWeaponSword.SetActive(false);
-                    LeftWeaponBow.SetActive(true);
-                    RightWeaponArrow.SetActive(true);
-                    _animator.SetTrigger("StartAttackBow");
-                    BowAim.weight=1;
+                    if(_currentWeapon==Weapon.SWORD){
+
+                    }
+                    if(_currentWeapon == Weapon.BOW){
+                        MainHud.Instance.SetActiveCrosshair(true);
+                        GameManager.Instance.SetRotateSpeedBowAttack(true);
+                        aimCam.enabled = true;
+                        // LeftWeaponShield.SetActive(false);
+                        // RightWeaponSword.SetActive(false);
+                        // LeftWeaponBow.SetActive(true);
+                        RightWeaponArrow.SetActive(true);
+                        _animator.SetTrigger("StartAttackBow");
+                        BowAim.weight = 1;
+                    }
                 }
                 duationClick += Time.deltaTime;
             }
@@ -70,51 +86,79 @@ public class AttackController : MonoBehaviour
                 if (duationClick <= 0.2)
                 {
                     Debug.Log("Short click attack");
-                    _animator.SetTrigger("Attack");
-                    _input.startAttack = false;
-                    _input.confirmAttack = false;
-                    duationClick = 0;
-                    CheckAttack();
+                    if (_currentWeapon == Weapon.SWORD)
+                    {
+                        _animator.SetTrigger("Attack");
+                        _input.startAttack = false;
+                        _input.confirmAttack = false;
+                        duationClick = 0;
+                        CheckAttack();
+                    }
+                    if (_currentWeapon == Weapon.BOW)
+                    {
+                        _input.startAttack = false;
+                        _input.confirmAttack = false;
+                        duationClick = 0;
+                    }
+
                 }
                 else
                 {
                     Debug.Log("Long hold trigger attack: " + duationClick);
-                    MainHud.Instance.Crosshair.SetActive(false);
-                    GameManager.Instance.SetRotateSpeedBowAttack(false);
-                    _animator.SetTrigger("EndAttackBow");
-                    BowAim.weight=0;
-                    LeftWeaponShield.SetActive(true);
-                    RightWeaponSword.SetActive(true);
-                    LeftWeaponBow.SetActive(false);
-                    RightWeaponArrow.SetActive(false);
-                    GameObject arrow =Instantiate(ArrowPrefab);
-                    arrow.transform.position = ArrowSpawn.position;
-                    arrow.transform.rotation = ArrowSpawn.rotation;
-
-                    RaycastHit hit;
-                    Camera cam = Camera.main;
-                    Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
-
-                    // Vector3 targetPoint = new Vector3();
-                    if (Physics.Raycast(ray, out hit))
-                    {
-                        Debug.Log("HitPos: " + hit.point);
-                        Debug.DrawLine(ray.origin, hit.point, Color.green, 100f);
+                    if(_currentWeapon==Weapon.SWORD){
+                        _input.startAttack = false;
+                        _input.confirmAttack = false;
+                        duationClick = 0;
                     }
-
-                    // Thêm lực đẩy
-                    Rigidbody rb = arrow.GetComponent<Rigidbody>();
-                    if (rb != null)
+                    if (_currentWeapon == Weapon.BOW)
                     {
-                        rb.velocity = (hit.point - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
-                        arrow.transform.forward = (hit.point-cam.gameObject.transform.position).normalized;
-                        Debug.DrawLine(arrow.transform.position, hit.point, Color.red, 100f);
-                    }
+                        MainHud.Instance.SetActiveCrosshair(false);
+                        GameManager.Instance.SetRotateSpeedBowAttack(false);
+                        _animator.SetTrigger("EndAttackBow");
+                        BowAim.weight = 0;
+                        // LeftWeaponShield.SetActive(true);
+                        // RightWeaponSword.SetActive(true);
+                        // LeftWeaponBow.SetActive(false);
+                        RightWeaponArrow.SetActive(false);
+                        GameObject arrow = Instantiate(ArrowPrefab);
+                        arrow.transform.position = ArrowSpawn.position;
+                        arrow.transform.rotation = ArrowSpawn.rotation;
 
-                    _input.startAttack = false;
-                    _input.confirmAttack = false;
-                    duationClick = 0;
-                    aimCam.enabled = false;
+                        RaycastHit hit;
+                        Camera cam = Camera.main;
+                        Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
+
+                        // Vector3 targetPoint = new Vector3();
+                        bool isHit = false;
+                        if (Physics.Raycast(ray, out hit))
+                        {
+                            Debug.Log("HitPos: " + hit.point);
+                            isHit = true;
+                            Debug.DrawLine(ray.origin, hit.point, Color.green, 100f);
+                        }
+
+                        // Thêm lực đẩy
+                        Rigidbody rb = arrow.GetComponent<Rigidbody>();
+                        if (rb != null)
+                        {
+                            if(isHit){
+                                rb.velocity = (hit.point - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
+                                arrow.transform.forward = (hit.point - cam.gameObject.transform.position).normalized;
+                                Debug.DrawLine(arrow.transform.position, hit.point, Color.red, 100f);
+                            }else{
+                                Vector3 fakeHit = ray.origin+ray.direction.normalized*100;
+                                rb.velocity = (fakeHit - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
+                                arrow.transform.forward = (fakeHit - cam.gameObject.transform.position).normalized;
+                                Debug.DrawLine(arrow.transform.position, fakeHit, Color.red, 100f);
+                            }
+                            
+                        }
+
+                        _input.startAttack = false;
+                        _input.confirmAttack = false;
+                        duationClick = 0;
+                        aimCam.enabled = false;
+                    }
                 }
             }
         }
@@ -166,5 +210,20 @@ public class AttackController : MonoBehaviour
             Debug.Log("Không trúng mục tiêu nào.");
         }
         return null;
+    }
+    public void SwapWeapon(){
+        if(_currentWeapon==Weapon.SWORD){
+            LeftWeaponShield.SetActive(false);
+            RightWeaponSword.SetActive(false);
+            LeftWeaponBow.SetActive(true);
+            // RightWeaponArrow.SetActive(true);
+            _currentWeapon = Weapon.BOW;
+        }else{
+            LeftWeaponShield.SetActive(true);
+            RightWeaponSword.SetActive(true);
+            LeftWeaponBow.SetActive(false);
+            RightWeaponArrow.SetActive(false);
+            _currentWeapon = Weapon.SWORD;
+        }
     }
 }

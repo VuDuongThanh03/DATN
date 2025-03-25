@@ -3,10 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Weapon{
-    SWORD,
-    BOW
-}
 public class PlayerController : MonoBehaviour,IDamageable
 {
     // Start is called before the first frame update
@@ -18,10 +14,10 @@ public class PlayerController : MonoBehaviour,IDamageable
     public Action OnPlayerDie;
     void Awake()
     {
-        GameManager.Player = this;
     }
     void Start()
     {
+        GameManager.Instance.SetPlayerControler(this);
         _animator = gameObject.GetComponent<Animator>();
         _currentStats = new CharacterStats();
         _currentStats.health = _baseStats.CharacterStats.health;

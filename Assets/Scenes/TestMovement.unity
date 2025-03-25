@@ -3867,6 +3867,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPersistence: 0
+  _playerController: {fileID: 0}
+  _attackController: {fileID: 0}
 --- !u!4 &1737486966
 Transform:
   m_ObjectHideFlags: 0
