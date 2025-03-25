@@ -161,6 +161,7 @@ public class EnemyController : MonoBehaviour,IDamageable
         _targetPos = _posSpawn + new Vector3(x, 0, z);
         _navMeshAgent.SetDestination(_targetPos);
         _currentState = State.PatrolState;
+        enemyAnimator.ResetTrigger("Idle");
         enemyAnimator.SetTrigger("Walk");
     }
     public void StopMove(){

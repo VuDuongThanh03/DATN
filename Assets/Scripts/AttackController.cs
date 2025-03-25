@@ -123,6 +123,8 @@ public class AttackController : MonoBehaviour
                         GameObject arrow = Instantiate(ArrowPrefab);
                         arrow.transform.position = ArrowSpawn.position;
                         arrow.transform.rotation = ArrowSpawn.rotation;
+                        //Set dame cho mui ten
+                        arrow.GetComponent<ArrowController>()?.SetDameValue(20f);
 
                         RaycastHit hit;
                         Camera cam = Camera.main;
