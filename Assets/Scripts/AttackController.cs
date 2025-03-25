@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cinemachine;
 using DATN;
 using Unity.VisualScripting;
@@ -28,6 +29,9 @@ public class AttackController : MonoBehaviour
     [SerializeField] private Transform ArrowSpawn;
     private Weapon _currentWeapon = Weapon.SWORD;
     public Weapon CurrentWeapon => _currentWeapon;
+    private bool _isSpinAttackNow;
+    public bool IsSpinAttackNow => _isSpinAttackNow;
+    private bool _isHoldToSpinAttack;
     // Start is called before the first frame update
     void Awake()
     {
@@ -50,22 +54,28 @@ public class AttackController : MonoBehaviour
             return;
         }
         currentBlendValue = Vector2.Lerp(currentBlendValue, _input.move, Time.deltaTime * 8f);
-        _animator.SetFloat("X",currentBlendValue.x);
-        _animator.SetFloat("Y",currentBlendValue.y);
+        if(_isHoldToSpinAttack){
+            _animator.SetFloat("X",0);
+            _animator.SetFloat("Y",0);
+        }else{
+            _animator.SetFloat("X",currentBlendValue.x);
+            _animator.SetFloat("Y",currentBlendValue.y);
+        }
         // _animator.SetFloat("X",_input.move.x);
         // _animator.SetFloat("Y",_input.move.y);
         Attack();
     }
     private void Attack()
     {
-        if (_input.startAttack == true)
+        if (_input.startAttack == true&&!_isSpinAttackNow)
         {
             if (_input.confirmAttack == false)
             {
                 if (duationClick < 0.2 && duationClick + Time.deltaTime >= 0.2)
                 {
                     if(_currentWeapon==Weapon.SWORD){
-
+                        _isHoldToSpinAttack = true;
+                        GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
                     }
                     if(_currentWeapon == Weapon.BOW){
                         MainHud.Instance.SetActiveCrosshair(true);
@@ -106,9 +116,12 @@ public class AttackController : MonoBehaviour
                 {
                     Debug.Log("Long hold trigger attack: " + duationClick);
                     if(_currentWeapon==Weapon.SWORD){
+                        SpinAttack((int)(duationClick*1000));
                         _input.startAttack = false;
                         _input.confirmAttack = false;
                         duationClick = 0;
+                        _isHoldToSpinAttack = false;
+                        GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(false);
                     }
                     if (_currentWeapon == Weapon.BOW)
                     {
@@ -227,5 +240,12 @@ public class AttackController : MonoBehaviour
             RightWeaponArrow.SetActive(false);
             _currentWeapon = Weapon.SWORD;
         }
+    }
+    public async void SpinAttack(int time){
+        _animator.SetBool("SpinAttack",true);
+        _isSpinAttackNow = true;
+        await Task.Delay(time);
+        _animator.SetBool("SpinAttack",false);
+        _isSpinAttackNow = false;
     }
 }

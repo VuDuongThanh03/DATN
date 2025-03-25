@@ -129,6 +129,7 @@ namespace DATN
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
+        private bool _isHoldToSpinAttack;
 
         private bool IsCurrentDeviceMouse
         {
@@ -154,6 +155,7 @@ namespace DATN
 
         private void Start()
         {
+            GameManager.Instance.SetPlayerMovementController(this);
             playerController = gameObject.GetComponent<PlayerController>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
@@ -183,6 +185,9 @@ namespace DATN
             JumpAndGravity();
             GroundedCheck();
             // Attack();
+            if(_isHoldToSpinAttack){
+                return;
+            }
             Move();
         }
 
@@ -570,6 +575,9 @@ namespace DATN
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
+        }
+        public void SetIsHoldToSpinAttack(bool isHoldToSpinAttack){
+            _isHoldToSpinAttack = isHoldToSpinAttack;
         }
     }
     [SerializeField]
