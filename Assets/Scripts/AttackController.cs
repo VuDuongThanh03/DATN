@@ -75,6 +75,7 @@ public class AttackController : MonoBehaviour
                 {
                     if(_currentWeapon==Weapon.SWORD){
                         _isHoldToSpinAttack = true;
+                        _animator.SetTrigger("StartPower");
                         GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
                     }
                     if(_currentWeapon == Weapon.BOW){
