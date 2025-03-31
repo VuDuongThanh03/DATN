@@ -32,6 +32,8 @@ public class AttackController : MonoBehaviour
     private bool _isSpinAttackNow;
     public bool IsSpinAttackNow => _isSpinAttackNow;
     private bool _isHoldToSpinAttack;
+    private float timeBetweenSpinDameTurn = 0.5f;
+    private float countDownDameTurnSpine = 0;
     // Start is called before the first frame update
     void Awake()
     {
@@ -64,6 +66,7 @@ public class AttackController : MonoBehaviour
         // _animator.SetFloat("X",_input.move.x);
         // _animator.SetFloat("Y",_input.move.y);
         Attack();
+        CheckSpinAttack();
     }
     private void Attack()
     {
@@ -248,5 +251,22 @@ public class AttackController : MonoBehaviour
         await Task.Delay(time);
         _animator.SetBool("SpinAttack",false);
         _isSpinAttackNow = false;
+        countDownDameTurnSpine = timeBetweenSpinDameTurn;
     }
+    public void CheckSpinAttack(){
+        if(IsSpinAttackNow){
+            countDownDameTurnSpine-=Time.deltaTime;
+            if(countDownDameTurnSpine<=0){
+                Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position,1);
+                foreach (var item in hitColliders)
+                {
+                    if(item.tag=="Enemy"){
+                        item.gameObject.GetComponent<IDamageable>().TakeDame(10);
+                    }
+                }
+                countDownDameTurnSpine = timeBetweenSpinDameTurn;
+            }
+        }
+    }
+
 }
