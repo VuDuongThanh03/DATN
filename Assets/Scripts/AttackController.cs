@@ -183,24 +183,38 @@ public class AttackController : MonoBehaviour
         }
     }
     public void CheckAttack(){
-        GameObject temp;
-        List<GameObject> listObjectTakeDame = new List<GameObject>();
+        // List<GameObject> listObjectTakeDame = new List<GameObject>();
         
-        Vector3 forward = gameObject.transform.forward;
-        temp = CheckRayAttack(forward,Color.red);
-        if(temp!=null){
-            listObjectTakeDame.Add(temp);
-        }
-        Vector3 leftDirection = Quaternion.AngleAxis(-20, Vector3.up) * forward;  // Lệch trái
-        temp = CheckRayAttack(leftDirection,Color.green,listObjectTakeDame);
-        if(temp!=null){
-            listObjectTakeDame.Add(temp);
+        // Vector3 forward = gameObject.transform.forward;
+        // temp = CheckRayAttack(forward,Color.red);
+        // if(temp!=null){
+        //     listObjectTakeDame.Add(temp);
+        // }
+        // Vector3 leftDirection = Quaternion.AngleAxis(-20, Vector3.up) * forward;  // Lệch trái
+        // temp = CheckRayAttack(leftDirection,Color.green,listObjectTakeDame);
+        // if(temp!=null){
+        //     listObjectTakeDame.Add(temp);
+        // }
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position+gameObject.transform.forward.normalized*0.8f,0.8f);
+        foreach(var item in hitColliders){
+            if(item.tag=="Enemy"){
+                IDamageable damageObject = item.gameObject.GetComponent<IDamageable>();
+                if(damageObject!=null){
+                    damageObject.TakeDame(10);
+                }
+            }
         }
         // Vector3 rightDirection = Quaternion.AngleAxis(20, Vector3.up) * forward; 
         // CheckRayAttack(rightDirection,Color.yellow);
         // Bắn raycast từ mắt về phía trước
         
     }
+    private void OnDrawGizmos()
+{
+    Gizmos.color = Color.red;
+    Gizmos.DrawWireSphere(gameObject.transform.position+gameObject.transform.forward.normalized*0.6f,0.8f);
+    }
+
     public GameObject CheckRayAttack(Vector3 direction, Color color,List<GameObject> checkObject = null){
         RaycastHit hit;
         Debug.DrawRay(gameObject.transform.position + new Vector3(0,0.8f,0), direction*1f, color, 10f);

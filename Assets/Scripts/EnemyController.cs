@@ -113,7 +113,7 @@ public class EnemyController : MonoBehaviour,IDamageable
                         if(_attackCountDown<=0){
                             enemyAnimator.SetTrigger("Attack");
                             LastTriggerAnim = TriggerAnim.Attack;
-                            StartCoroutine(WaitForAnimation(50,0.5f));
+                            StartCoroutine(WaitForAnimation(1,0.5f));
                             _attackCountDown = 5;
                             ContinueToPatrol();
                             enemyAnimator.SetTrigger("Idle");
