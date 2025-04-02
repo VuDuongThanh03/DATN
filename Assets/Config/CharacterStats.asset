@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: d837d288930cc034e830fdb258e23422, type: 3}
   m_Name: CharacterStats
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterStatsConfig
+  m_EditorClassIdentifier: 
   CharacterStats:
     health: 100
     armor: 10
     stamina: 100
+    countDownNormalAttack: 0.8
+    countDownSpinAttack: 0.2
+    countDownBowAttack: 1

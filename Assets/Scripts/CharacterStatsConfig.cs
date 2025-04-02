@@ -15,4 +15,7 @@ public class CharacterStats
     public float health;
     public float armor;
     public float stamina;
+    public float countDownNormalAttack;
+    public float countDownSpinAttack;
+    public float countDownBowAttack;
 }

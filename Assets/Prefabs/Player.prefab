@@ -2387,6 +2387,7 @@ GameObject:
   - component: {fileID: 3931773017431219467}
   - component: {fileID: 5357094189829077579}
   - component: {fileID: 8703591302592487716}
+  - component: {fileID: 1453437325618428529}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -2483,6 +2484,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 2
   SprintSpeed: 5.335
+  RotationSpeed: 1
+  RotationSpeedY: 4
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
@@ -2681,6 +2684,7 @@ MonoBehaviour:
   RightWeaponSword: {fileID: 5208057689697232672}
   LeftWeaponBow: {fileID: 8305529900948677428}
   RightWeaponArrow: {fileID: 8646340034719479902}
+  _animator: {fileID: 0}
   BowAim: {fileID: 4239671960915333290}
   ArrowPrefab: {fileID: 3648812103786214545, guid: 1e49dbb81086e644b90db9d2bbdf92e4, type: 3}
   ArrowSpawn: {fileID: 8986415045009285860}
@@ -2696,7 +2700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de27768a6f0767f40995ec71372073a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseStats: {fileID: 11400000, guid: 92c28ded8f05489459f7b4187e9d897a, type: 2}
+  _baseStats: {fileID: 11400000, guid: 43cef00d019ef36448092ba50b4f40df, type: 2}
 --- !u!114 &5357094189829077579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2887,6 +2891,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 4342025570553330023}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1453437325618428529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867494457438282422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d1a92f1e8a2e7a468d2c8a5cf580234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5941881687714834513
 GameObject:
   m_ObjectHideFlags: 0
