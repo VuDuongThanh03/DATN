@@ -7,7 +7,13 @@ public class MainHud : Singleton<MainHud>
 {
     // Start is called before the first frame update
     [SerializeField] private GameObject Crosshair;
-    [SerializeField] private Button swapWeaponBtn; 
+    [SerializeField] private Button swapWeaponBtn;
+    [SerializeField] private Image iconWeaponButton;
+    [SerializeField] private Image iconWeaponAvatar;
+    [SerializeField] private Sprite iconSword;
+    [SerializeField] private Sprite iconBow;
+
+
     void Start()
     {
         Crosshair.SetActive(false);
@@ -24,5 +30,14 @@ public class MainHud : Singleton<MainHud>
     }
     public void OnClickButtonSwapWeaponBtn(){
         GameManager.Instance.AttackController.SwapWeapon();
+    }
+    public void ChangeAvatarWeapon(Weapon weapon){
+        if(weapon == Weapon.SWORD){
+            iconWeaponButton.sprite = iconSword;
+            iconWeaponAvatar.sprite = iconSword;
+        }else{
+            iconWeaponButton.sprite = iconBow;
+            iconWeaponAvatar.sprite = iconBow;
+        }
     }
 }

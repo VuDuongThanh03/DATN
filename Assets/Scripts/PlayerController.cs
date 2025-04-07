@@ -6,8 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour,IDamageable
 {
     // Start is called before the first frame update
-    public CharacterStatsConfig _baseStats;
-    private CharacterStats _currentStats;
+    // public CharacterStatsConfig _baseStats;
+    // private CharacterStats _currentStats;
+    private GameConfig _gameConfig;
     private bool _playerIsDie;
     private Animator _animator;
     public bool PlayerIsDie => _playerIsDie;
@@ -17,12 +18,10 @@ public class PlayerController : MonoBehaviour,IDamageable
     }
     void Start()
     {
+        _gameConfig = GameConfig.Load();
         GameManager.Instance.SetPlayerControler(this);
         _animator = gameObject.GetComponent<Animator>();
-        _currentStats = new CharacterStats();
-        _currentStats.health = _baseStats.CharacterStats.health;
-        _currentStats.armor = _baseStats.CharacterStats.armor;
-        _currentStats.health = _baseStats.CharacterStats.health;
+        PlayerHealthBar.Instance.SetupHealthBar(GameManager.Instance.CurrentHealth,_gameConfig.HealthDefault);
     }
 
     // Update is called once per frame
@@ -31,12 +30,13 @@ public class PlayerController : MonoBehaviour,IDamageable
         
     }
     public void TakeDame(float dame){
-        _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.CharacterStats.health);
-        Debug.Log("Player take dame: "+ dame+" Current Health: "+_currentStats.health);
-        if(_currentStats.health>0&&dame>0){
+        GameManager.Instance.GameModel.SetHealth(Mathf.Clamp(GameManager.Instance.CurrentHealth-(dame-(dame*(GameManager.Instance.CurrentArmor/100))),0f,_gameConfig.HealthDefault));
+        PlayerHealthBar.Instance.OnHealthChange(GameManager.Instance.CurrentHealth);
+        Debug.Log("Player take dame: "+ dame+" Current Health: "+GameManager.Instance.CurrentHealth);
+        if(GameManager.Instance.CurrentHealth>0&&dame>0){
             _animator.SetTrigger("TakeDame");
         }
-        if(_currentStats.health==0){
+        if(GameManager.Instance.CurrentHealth==0){
             Debug.Log("Player Die");
             _playerIsDie = true;
             _animator.SetTrigger("Die");

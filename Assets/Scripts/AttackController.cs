@@ -120,7 +120,7 @@ public class AttackController : MonoBehaviour
                         _input.confirmAttack = false;
                         duationClick = 0;
                         CheckAttack();
-                        countDownNormalAttack = playerController._baseStats.CharacterStats.countDownNormalAttack;
+                        countDownNormalAttack = GameConfig.Load().countDownNormalAttack;
                     }
                     if (_currentWeapon == Weapon.BOW)
                     {
@@ -146,7 +146,7 @@ public class AttackController : MonoBehaviour
                         MainHud.Instance.SetActiveCrosshair(false);
                         GameManager.Instance.SetRotateSpeedBowAttack(false);
                         _animator.SetTrigger("EndAttackBow");
-                        countDownBowAttack = playerController._baseStats.CharacterStats.countDownBowAttack;
+                        countDownBowAttack = GameConfig.Load().countDownBowAttack;
                         BowAim.weight = 0;
                         // LeftWeaponShield.SetActive(true);
                         // RightWeaponSword.SetActive(true);
@@ -262,12 +262,15 @@ public class AttackController : MonoBehaviour
             LeftWeaponBow.SetActive(true);
             // RightWeaponArrow.SetActive(true);
             _currentWeapon = Weapon.BOW;
+            MainHud.Instance.ChangeAvatarWeapon(Weapon.BOW);
         }else{
             LeftWeaponShield.SetActive(true);
             RightWeaponSword.SetActive(true);
             LeftWeaponBow.SetActive(false);
             RightWeaponArrow.SetActive(false);
             _currentWeapon = Weapon.SWORD;
+            MainHud.Instance.ChangeAvatarWeapon(Weapon.SWORD);
+
         }
     }
     public async void SpinAttack(int time){
@@ -276,7 +279,7 @@ public class AttackController : MonoBehaviour
         await Task.Delay(time);
         _animator.SetBool("SpinAttack",false);
         _isSpinAttackNow = false;
-        countDownDameTurnSpine = playerController._baseStats.CharacterStats.countDownSpinAttack;
+        countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
     }
     public void CheckSpinAttack(){
         if(IsSpinAttackNow){
@@ -290,7 +293,7 @@ public class AttackController : MonoBehaviour
                         item.gameObject.GetComponent<IDamageable>().TakeDame(2);
                     }
                 }
-                countDownDameTurnSpine = playerController._baseStats.CharacterStats.countDownSpinAttack;
+                countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
             }
         }
     }
