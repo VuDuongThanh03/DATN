@@ -12,6 +12,7 @@ public class MainHud : Singleton<MainHud>
     [SerializeField] private Image iconWeaponAvatar;
     [SerializeField] private Sprite iconSword;
     [SerializeField] private Sprite iconBow;
+    [SerializeField] private Image imageAngryEnergy;
 
 
     void Start()
@@ -39,5 +40,8 @@ public class MainHud : Singleton<MainHud>
             iconWeaponButton.sprite = iconBow;
             iconWeaponAvatar.sprite = iconBow;
         }
+    }
+    public void OnAngryEnergyChange(){
+        imageAngryEnergy.fillAmount = GameManager.Instance.CurrentAngryEnergy/GameConfig.Load().MaxAngryEnergy;
     }
 }

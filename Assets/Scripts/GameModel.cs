@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class GameModel
@@ -84,6 +85,8 @@ public class GameModel
                 _gameData.Coin = gameConfig.CoinDefault;
                 _gameData.Arrow = gameConfig.ArrowDefault;
                 _gameData.Health = gameConfig.HealthDefault;
+                _gameData.Stamina = gameConfig.HealthDefault;
+                _gameData.AngryEnergy = gameConfig.AngryEnergyDefault;
             }
         }
 
@@ -99,7 +102,43 @@ public class GameModel
     public void SetHealth(float value){
         _gameData.Health = value;
         SaveGame();
+        PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
     }
     public float CurrentArmor => _gameData.Armor;
     public float CurrentStamina => _gameData.Stamina;
+    public void SetStamina(float value){
+        _gameData.Stamina = value;
+        SaveGame();
+        PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+    }
+    public void IncreaseStamina(float value){
+        _gameData.Stamina+=value;
+        if(_gameData.Stamina>GameConfig.Load().StatminaDefault){
+            _gameData.Stamina = GameConfig.Load().StatminaDefault;
+        }
+        SaveGame();
+        PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+    }
+    public void DecreaseStamina(float value){
+        _gameData.Stamina-=value;
+        if(_gameData.Stamina<0){
+            _gameData.Stamina = 0;
+        }
+        SaveGame();
+        PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+    }
+    public float CurrentAngryEnergy => _gameData.AngryEnergy;
+    public void IncreaseAngryEnergy(float value){
+        _gameData.AngryEnergy+=value;
+        if(_gameData.AngryEnergy>GameConfig.Load().MaxAngryEnergy){
+            _gameData.AngryEnergy = GameConfig.Load().MaxAngryEnergy;
+        }
+        SaveGame();
+        MainHud.Instance.OnAngryEnergyChange();
+    }
+    public void SetAngryEnergy(float value){
+        _gameData.AngryEnergy = value;
+        SaveGame();
+        MainHud.Instance.OnAngryEnergyChange();
+    }
 }

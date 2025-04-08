@@ -12,6 +12,7 @@ public class GameData
     public float Health;
     public float Armor;
     public float Stamina;
+    public float AngryEnergy;
     public float PlayedTime;
     public int CurrentWeapon;
     
@@ -23,6 +24,7 @@ public class GameData
         Health = 0;
         Armor = 0;
         Stamina = 0;
+        AngryEnergy = 0;
         PlayedTime = 0;
         CurrentWeapon = 0;
     }

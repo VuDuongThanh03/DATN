@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
     public float CurrentHealth => GameModel.CurrentHealth;
     public float CurrentArmor => GameModel.CurrentArmor;
     public float CurrentStamina => GameModel.CurrentStamina;
+    public float CurrentAngryEnergy => GameModel.CurrentAngryEnergy;
     void LoadConfigs()
     {
         _gameConfig = GameConfig.Load();

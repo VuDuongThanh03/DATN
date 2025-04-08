@@ -120,6 +120,7 @@ public class AttackController : MonoBehaviour
                         _input.confirmAttack = false;
                         duationClick = 0;
                         CheckAttack();
+                        GameManager.Instance.GameModel.DecreaseStamina(5);
                         countDownNormalAttack = GameConfig.Load().countDownNormalAttack;
                     }
                     if (_currentWeapon == Weapon.BOW)
@@ -146,6 +147,7 @@ public class AttackController : MonoBehaviour
                         MainHud.Instance.SetActiveCrosshair(false);
                         GameManager.Instance.SetRotateSpeedBowAttack(false);
                         _animator.SetTrigger("EndAttackBow");
+                        GameManager.Instance.GameModel.DecreaseStamina(10);
                         countDownBowAttack = GameConfig.Load().countDownBowAttack;
                         BowAim.weight = 0;
                         // LeftWeaponShield.SetActive(true);

@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour,IDamageable
         GameManager.Instance.SetPlayerControler(this);
         _animator = gameObject.GetComponent<Animator>();
         PlayerHealthBar.Instance.SetupHealthBar(GameManager.Instance.CurrentHealth,_gameConfig.HealthDefault);
+        PlayerStaminaBar.Instance.SetupStaminaBar(GameManager.Instance.CurrentStamina,_gameConfig.StatminaDefault);
+        MainHud.Instance.OnAngryEnergyChange();
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour,IDamageable
     }
     public void TakeDame(float dame){
         GameManager.Instance.GameModel.SetHealth(Mathf.Clamp(GameManager.Instance.CurrentHealth-(dame-(dame*(GameManager.Instance.CurrentArmor/100))),0f,_gameConfig.HealthDefault));
-        PlayerHealthBar.Instance.OnHealthChange(GameManager.Instance.CurrentHealth);
+        GameManager.Instance.GameModel.IncreaseAngryEnergy(dame*2);
         Debug.Log("Player take dame: "+ dame+" Current Health: "+GameManager.Instance.CurrentHealth);
         if(GameManager.Instance.CurrentHealth>0&&dame>0){
             _animator.SetTrigger("TakeDame");
