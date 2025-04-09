@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>
     public float CurrentArmor => GameModel.CurrentArmor;
     public float CurrentStamina => GameModel.CurrentStamina;
     public float CurrentAngryEnergy => GameModel.CurrentAngryEnergy;
+    float countDown = 0;
     void LoadConfigs()
     {
         _gameConfig = GameConfig.Load();
@@ -48,6 +49,14 @@ public class GameManager : Singleton<GameManager>
         if(Input.GetKeyDown(KeyCode.Tab)){
             PopupManager.Instance.GetPopup("PopupExample");
         }
+        countDown+=Time.deltaTime;
+        if(countDown>=1){
+            OnOneSecond();
+            countDown = 0;
+        }
+    }
+    public void OnOneSecond(){
+        GameModel.IncreaseStamina(_gameConfig.ReturnStaminaPerSecond);
     }
     public void SetRotateSpeedBowAttack(bool isStart){
         if(isStart){

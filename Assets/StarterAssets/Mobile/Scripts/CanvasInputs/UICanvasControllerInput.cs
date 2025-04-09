@@ -31,6 +31,7 @@ namespace StarterAssets
         }
         public void VirtualAttackInput(bool virtualAttackState){
             if(virtualAttackState){
+                starterAssetsInputs.ConfirmAttackInput(false);
                 starterAssetsInputs.StartAttackInput(true);
             }else{
                 starterAssetsInputs.ConfirmAttackInput(true);

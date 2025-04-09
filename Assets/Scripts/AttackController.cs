@@ -77,10 +77,10 @@ public class AttackController : MonoBehaviour
         if(countDownBowAttack>0){
             countDownBowAttack-=Time.deltaTime;
         }
-        if(CurrentWeapon==Weapon.SWORD&&countDownNormalAttack>0){
+        if((CurrentWeapon==Weapon.SWORD&&countDownNormalAttack>0)||(CurrentWeapon==Weapon.SWORD&&GameManager.Instance.CurrentStamina<GameConfig.Load().SwordAttackCost)){
             return;
         }
-        if(CurrentWeapon==Weapon.BOW&&countDownBowAttack>0){
+        if((CurrentWeapon==Weapon.BOW&&countDownBowAttack>0)||(CurrentWeapon==Weapon.BOW&&GameManager.Instance.CurrentStamina<GameConfig.Load().BowAttackCost)){
             return;
         }
         if (_input.startAttack == true&&!_isSpinAttackNow)
@@ -89,11 +89,13 @@ public class AttackController : MonoBehaviour
             {
                 if (duationClick < 0.2 && duationClick + Time.deltaTime >= 0.2)
                 {
-                    if(_currentWeapon==Weapon.SWORD){
-                        _isHoldToSpinAttack = true;
-                        _animator.SetTrigger("StartPower");
-                        GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
-                    }
+                    // if(_currentWeapon==Weapon.SWORD){
+                    //     if(GameManager.Instance.CurrentAngryEnergy==GameConfig.Load().MaxAngryEnergy){
+                    //         _isHoldToSpinAttack = true;
+                    //         _animator.SetTrigger("StartPower");
+                    //         GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
+                    //     }
+                    // }
                     if(_currentWeapon == Weapon.BOW){
                         MainHud.Instance.SetActiveCrosshair(true);
                         GameManager.Instance.SetRotateSpeedBowAttack(true);
@@ -103,6 +105,7 @@ public class AttackController : MonoBehaviour
                         // LeftWeaponBow.SetActive(true);
                         RightWeaponArrow.SetActive(true);
                         _animator.SetTrigger("StartAttackBow");
+                        _animator.ResetTrigger("EndAttackBow");
                         BowAim.weight = 1;
                     }
                 }
@@ -120,7 +123,7 @@ public class AttackController : MonoBehaviour
                         _input.confirmAttack = false;
                         duationClick = 0;
                         CheckAttack();
-                        GameManager.Instance.GameModel.DecreaseStamina(5);
+                        GameManager.Instance.GameModel.DecreaseStamina(GameConfig.Load().SwordAttackCost);
                         countDownNormalAttack = GameConfig.Load().countDownNormalAttack;
                     }
                     if (_currentWeapon == Weapon.BOW)
@@ -135,65 +138,85 @@ public class AttackController : MonoBehaviour
                 {
                     Debug.Log("Long hold trigger attack: " + duationClick);
                     if(_currentWeapon==Weapon.SWORD){
-                        SpinAttack((int)(duationClick*1000));
+                        // SpinAttack((int)(duationClick*1000));
+                        // _input.startAttack = false;
+                        // _input.confirmAttack = false;
+                        // duationClick = 0;
+                        // _isHoldToSpinAttack = false;
+                        // GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(false);
                         _input.startAttack = false;
                         _input.confirmAttack = false;
                         duationClick = 0;
-                        _isHoldToSpinAttack = false;
-                        GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(false);
                     }
                     if (_currentWeapon == Weapon.BOW)
                     {
-                        MainHud.Instance.SetActiveCrosshair(false);
-                        GameManager.Instance.SetRotateSpeedBowAttack(false);
-                        _animator.SetTrigger("EndAttackBow");
-                        GameManager.Instance.GameModel.DecreaseStamina(10);
-                        countDownBowAttack = GameConfig.Load().countDownBowAttack;
-                        BowAim.weight = 0;
-                        // LeftWeaponShield.SetActive(true);
-                        // RightWeaponSword.SetActive(true);
-                        // LeftWeaponBow.SetActive(false);
-                        RightWeaponArrow.SetActive(false);
-                        GameObject arrow = Instantiate(ArrowPrefab);
-                        arrow.transform.position = ArrowSpawn.position;
-                        arrow.transform.rotation = ArrowSpawn.rotation;
-                        //Set dame cho mui ten
-                        arrow.GetComponent<ArrowController>()?.SetDameValue(20f);
+                        if(duationClick>1){
+                            MainHud.Instance.SetActiveCrosshair(false);
+                            GameManager.Instance.SetRotateSpeedBowAttack(false);
+                            _animator.SetTrigger("EndAttackBow");
+                            _animator.ResetTrigger("StartAttackBow");
+                            GameManager.Instance.GameModel.DecreaseStamina(10);
+                            countDownBowAttack = GameConfig.Load().countDownBowAttack;
+                            BowAim.weight = 0;
+                            // LeftWeaponShield.SetActive(true);
+                            // RightWeaponSword.SetActive(true);
+                            // LeftWeaponBow.SetActive(false);
+                            RightWeaponArrow.SetActive(false);
+                            GameObject arrow = Instantiate(ArrowPrefab);
+                            arrow.transform.position = ArrowSpawn.position;
+                            arrow.transform.rotation = ArrowSpawn.rotation;
+                            //Set dame cho mui ten
+                            arrow.GetComponent<ArrowController>()?.SetDameValue(20f);
 
-                        RaycastHit hit;
-                        Camera cam = Camera.main;
-                        Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
+                            RaycastHit hit;
+                            Camera cam = Camera.main;
+                            Ray ray = cam.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
 
-                        // Vector3 targetPoint = new Vector3();
-                        bool isHit = false;
-                        if (Physics.Raycast(ray, out hit))
-                        {
-                            Debug.Log("HitPos: " + hit.point);
-                            isHit = true;
-                            Debug.DrawLine(ray.origin, hit.point, Color.green, 100f);
-                        }
-
-                        // Thêm lực đẩy
-                        Rigidbody rb = arrow.GetComponent<Rigidbody>();
-                        if (rb != null)
-                        {
-                            if(isHit){
-                                rb.velocity = (hit.point - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
-                                arrow.transform.forward = (hit.point - cam.gameObject.transform.position).normalized;
-                                Debug.DrawLine(arrow.transform.position, hit.point, Color.red, 100f);
-                            }else{
-                                Vector3 fakeHit = ray.origin+ray.direction.normalized*100;
-                                rb.velocity = (fakeHit - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
-                                arrow.transform.forward = (fakeHit - cam.gameObject.transform.position).normalized;
-                                Debug.DrawLine(arrow.transform.position, fakeHit, Color.red, 100f);
+                            // Vector3 targetPoint = new Vector3();
+                            bool isHit = false;
+                            if (Physics.Raycast(ray, out hit))
+                            {
+                                Debug.Log("HitPos: " + hit.point);
+                                isHit = true;
+                                Debug.DrawLine(ray.origin, hit.point, Color.green, 100f);
                             }
-                            
-                        }
 
-                        _input.startAttack = false;
-                        _input.confirmAttack = false;
-                        duationClick = 0;
-                        aimCam.enabled = false;
+                            // Thêm lực đẩy
+                            Rigidbody rb = arrow.GetComponent<Rigidbody>();
+                            if (rb != null)
+                            {
+                                if (isHit)
+                                {
+                                    rb.velocity = (hit.point - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
+                                    arrow.transform.forward = (hit.point - cam.gameObject.transform.position).normalized;
+                                    Debug.DrawLine(arrow.transform.position, hit.point, Color.red, 100f);
+                                }
+                                else
+                                {
+                                    Vector3 fakeHit = ray.origin + ray.direction.normalized * 100;
+                                    rb.velocity = (fakeHit - arrow.transform.position).normalized * 50f; // Điều chỉnh tốc độ theo ý muốn
+                                    arrow.transform.forward = (fakeHit - cam.gameObject.transform.position).normalized;
+                                    Debug.DrawLine(arrow.transform.position, fakeHit, Color.red, 100f);
+                                }
+
+                            }
+
+                            _input.startAttack = false;
+                            _input.confirmAttack = false;
+                            duationClick = 0;
+                            aimCam.enabled = false;
+                        }else{
+                            _animator.SetTrigger("AimCancel");
+                            MainHud.Instance.SetActiveCrosshair(false);
+                            GameManager.Instance.SetRotateSpeedBowAttack(false);
+                            BowAim.weight = 0;
+                            _input.startAttack = false;
+                            _input.confirmAttack = false;
+                            duationClick = 0;
+                            aimCam.enabled = false;
+                            RightWeaponArrow.SetActive(false);
+                        }
+                        
                     }
                 }
             }
@@ -280,6 +303,7 @@ public class AttackController : MonoBehaviour
         _isSpinAttackNow = true;
         await Task.Delay(time);
         _animator.SetBool("SpinAttack",false);
+        _animator.ResetTrigger("StartPower");
         _isSpinAttackNow = false;
         countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
     }

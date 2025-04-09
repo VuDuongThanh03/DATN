@@ -16,6 +16,9 @@ public class GameConfig : ScriptableObject
     public float HealthDefault = 100;
     public float ArmorDefault = 10;
     public float StatminaDefault = 100;
+    public float ReturnStaminaPerSecond = 2;
+    public float SwordAttackCost = 5;
+    public float BowAttackCost = 10;
     public float AngryEnergyDefault = 0;
     public float MaxAngryEnergy = 100;
     public int ArrowDefault = 0;
