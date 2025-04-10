@@ -14,8 +14,7 @@ public class GameData
     public float Stamina;
     public float AngryEnergy;
     public float PlayedTime;
-    public int CurrentWeapon;
-    
+    public bool IsHaveBow;
     public GameData(){
         UserAlias = "Default";
         GamerAge = 0;
@@ -26,6 +25,6 @@ public class GameData
         Stamina = 0;
         AngryEnergy = 0;
         PlayedTime = 0;
-        CurrentWeapon = 0;
+        IsHaveBow = false;
     }
 }

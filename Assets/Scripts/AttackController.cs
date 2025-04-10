@@ -77,6 +77,9 @@ public class AttackController : MonoBehaviour
         if(countDownBowAttack>0){
             countDownBowAttack-=Time.deltaTime;
         }
+        if(_isHoldToSpinAttack||_isSpinAttackNow){
+            return;
+        }
         if((CurrentWeapon==Weapon.SWORD&&countDownNormalAttack>0)||(CurrentWeapon==Weapon.SWORD&&GameManager.Instance.CurrentStamina<GameConfig.Load().SwordAttackCost)){
             return;
         }
@@ -281,6 +284,9 @@ public class AttackController : MonoBehaviour
         return null;
     }
     public void SwapWeapon(){
+        if(_isSpinAttackNow||_isHoldToSpinAttack){
+            return;
+        }
         if(_currentWeapon==Weapon.SWORD){
             LeftWeaponShield.SetActive(false);
             RightWeaponSword.SetActive(false);
@@ -298,12 +304,29 @@ public class AttackController : MonoBehaviour
 
         }
     }
+    public async void HoldToSpinAttack(int time){
+        _isHoldToSpinAttack = true;
+        _animator.SetTrigger("StartPower");
+        GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
+        await Task.Delay(time);
+        SpinAttack((int)(5 * 1000));
+        _input.startAttack = false;
+        _input.confirmAttack = false;
+        duationClick = 0;
+        _isHoldToSpinAttack = false;
+        GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(false);
+
+    }
     public async void SpinAttack(int time){
         _animator.SetBool("SpinAttack",true);
         _isSpinAttackNow = true;
         await Task.Delay(time);
         _animator.SetBool("SpinAttack",false);
         _animator.ResetTrigger("StartPower");
+        _animator.ResetTrigger("Attack");
+        _animator.ResetTrigger("TakeDame");
+        _input.startAttack = false;
+        _input.confirmAttack = false;
         _isSpinAttackNow = false;
         countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
     }
@@ -322,6 +345,17 @@ public class AttackController : MonoBehaviour
                 countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
             }
         }
+    }
+    public void TryUseSkill(){
+        if (GameManager.Instance.CurrentAngryEnergy == GameConfig.Load().MaxAngryEnergy)
+        {
+            if (CurrentWeapon == Weapon.BOW)
+            {
+                SwapWeapon();
+            }
+            HoldToSpinAttack(2000);
+        }
+
     }
 
 }

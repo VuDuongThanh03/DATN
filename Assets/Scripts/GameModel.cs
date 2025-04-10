@@ -133,6 +133,9 @@ public class GameModel
         if(_gameData.AngryEnergy>GameConfig.Load().MaxAngryEnergy){
             _gameData.AngryEnergy = GameConfig.Load().MaxAngryEnergy;
         }
+        if(_gameData.AngryEnergy==GameConfig.Load().MaxAngryEnergy){
+            MainHud.Instance.SetActiveButtonSkill(true);
+        }
         SaveGame();
         MainHud.Instance.OnAngryEnergyChange();
     }
@@ -140,5 +143,11 @@ public class GameModel
         _gameData.AngryEnergy = value;
         SaveGame();
         MainHud.Instance.OnAngryEnergyChange();
+    }
+    public bool IsHaveBow => _gameData.IsHaveBow;
+    public void UnlockBow(){
+        _gameData.IsHaveBow = true;
+        SaveGame();
+        MainHud.Instance.OnUnlockBow();
     }
 }
