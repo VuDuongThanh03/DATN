@@ -136,6 +136,9 @@ public class EnemyController : MonoBehaviour,IDamageable
     }
     public void TakeDame(float dame)
     {
+        if(_currentState==State.Die){
+            return;
+        }
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);
@@ -148,10 +151,12 @@ public class EnemyController : MonoBehaviour,IDamageable
             LastTriggerAnim = TriggerAnim.TakeDame;
         }
         if(_currentStats.health==0){
+            StopMove();
             Debug.Log("Enemy Die");
             _currentState = State.Die;
             enemyAnimator.SetTrigger("Die");
             _countDownDespawn = 5;
+            GameManager.Instance.GameModel.IncreaseAngryEnergy(20);
             enemyHealthBar.gameObject.SetActive(false);
         }
     }

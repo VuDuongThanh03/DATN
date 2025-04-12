@@ -13,8 +13,11 @@ public class PlayerController : MonoBehaviour,IDamageable
     private Animator _animator;
     public bool PlayerIsDie => _playerIsDie;
     public Action OnPlayerDie;
+    private List<GameObject> interactableObjects;
+    private GameObject lastedObjectTriggerPlayer;
     void Awake()
     {
+        interactableObjects = new List<GameObject>();
     }
     void Start()
     {
@@ -43,6 +46,39 @@ public class PlayerController : MonoBehaviour,IDamageable
             _playerIsDie = true;
             _animator.SetTrigger("Die");
             OnPlayerDie?.Invoke();
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.GetComponent<IInteractable>()!=null){
+            MainHud.Instance.SetActiveInteractButton(true);
+            if(!interactableObjects.Contains(other.gameObject)){
+                interactableObjects.Add(other.gameObject);
+                lastedObjectTriggerPlayer = other.gameObject;
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.GetComponent<IInteractable>()!=null){
+            if(interactableObjects.Contains(other.gameObject)){
+                interactableObjects.Remove(other.gameObject);
+                if(other.gameObject==lastedObjectTriggerPlayer){
+                    lastedObjectTriggerPlayer=null;
+                    if(interactableObjects.Count>0){
+                        lastedObjectTriggerPlayer = interactableObjects[interactableObjects.Count-1];
+                    }
+                }
+            }
+            if(interactableObjects.Count==0){
+                MainHud.Instance.SetActiveInteractButton(false);
+            }
+        }
+    }
+    public void OnClickInteract(){
+        if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<IInteractable>()!=null){
+            IInteractable interactable = lastedObjectTriggerPlayer.GetComponent<IInteractable>();
+            interactable.OnInteract();
         }
     }
 }

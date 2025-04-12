@@ -136,6 +136,7 @@ public class GameModel
         if(_gameData.AngryEnergy==GameConfig.Load().MaxAngryEnergy){
             MainHud.Instance.SetActiveButtonSkill(true);
         }
+        Debug.Log("IncreaseAngryEnergy: value = "+value+" current = "+_gameData.AngryEnergy);
         SaveGame();
         MainHud.Instance.OnAngryEnergyChange();
     }
@@ -150,4 +151,77 @@ public class GameModel
         SaveGame();
         MainHud.Instance.OnUnlockBow();
     }
+    public int CurrentItemHealth => GameData.ItemHealth;
+    public void IncreaseItemHealth(int amount){
+        GameData.ItemHealth+=amount;
+        if(GameData.ItemHealth>GameConfig.Load().MaxCountItemHealth){
+            GameData.ItemHealth = GameConfig.Load().MaxCountItemHealth;
+        }
+        SaveGame();
+    }
+    public bool TryIncreaseItemHealth(int amount){
+        if(GameData.ItemHealth+amount>GameConfig.Load().MaxCountItemHealth){
+            return false;
+        }
+        GameData.ItemHealth+=amount;
+        SaveGame();
+        return true;
+    }
+    public void DecreaseItemHealth(int amount){
+        if(GameData.ItemHealth==0){
+            return;
+        }
+        GameData.ItemHealth-=amount;
+        SaveGame();
+    }
+    public int CurrentItemStamina => GameData.ItemStamina;
+    public bool TryIncreaseItemStamina(int amount){
+        if(GameData.ItemStamina+amount>GameConfig.Load().MaxCountItemStamina){
+            return false;
+        }
+        GameData.ItemStamina+=amount;
+        SaveGame();
+        return true;
+    }
+    public void DecreaseItemStamina(int amount){
+        if(GameData.ItemStamina==0){
+            return;
+        }
+        GameData.ItemStamina-=amount;
+        SaveGame();
+    }
+    public float CurrentCoin => _gameData.Coin;
+    public void IncreaseCoin(int value){
+        _gameData.Coin+=value;
+        SaveGame();
+    }
+    public void DecreaseCoin(int value){
+        _gameData.Coin-=value;
+        if(_gameData.Coin<0){
+            _gameData.Coin = 0;
+        }
+        SaveGame();
+    }
+    public bool TryDecreaseCoin(int value){
+        if(_gameData.Coin<value){
+            return false;
+        }
+        _gameData.Coin-=value;
+        SaveGame();
+        return true;
+    }
+    public float CurrentArrow => _gameData.Arrow;
+    public bool TryIncreaseArrow(int amount){
+        if(GameData.Arrow+amount>GameConfig.Load().MaxArrow){
+            return false;
+        }
+        _gameData.Arrow+=amount;
+        SaveGame();
+        return true;
+    }
+    public void DecreaseArrow(int amount){
+        _gameData.Arrow-=amount;
+        SaveGame();
+    }
+
 }

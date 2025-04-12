@@ -306,6 +306,7 @@ public class AttackController : MonoBehaviour
     }
     public async void HoldToSpinAttack(int time){
         _isHoldToSpinAttack = true;
+        GameManager.Instance.GameModel.SetAngryEnergy(0);
         _animator.SetTrigger("StartPower");
         GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
         await Task.Delay(time);
