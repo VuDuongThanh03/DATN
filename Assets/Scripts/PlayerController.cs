@@ -75,10 +75,32 @@ public class PlayerController : MonoBehaviour,IDamageable
             }
         }
     }
+    void OnRemoveCollectableObject(GameObject objectCollected){
+        if(objectCollected.GetComponent<IInteractable>()!=null){
+            if(interactableObjects.Contains(objectCollected)){
+                interactableObjects.Remove(objectCollected);
+                if(objectCollected==lastedObjectTriggerPlayer){
+                    lastedObjectTriggerPlayer=null;
+                    if(interactableObjects.Count>0){
+                        lastedObjectTriggerPlayer = interactableObjects[interactableObjects.Count-1];
+                    }
+                }
+            }
+            if(interactableObjects.Count==0){
+                MainHud.Instance.SetActiveInteractButton(false);
+            }
+        }
+    }
     public void OnClickInteract(){
         if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<IInteractable>()!=null){
             IInteractable interactable = lastedObjectTriggerPlayer.GetComponent<IInteractable>();
-            interactable.OnInteract();
+            bool interactSuccess = interactable.OnInteract();
+            if(lastedObjectTriggerPlayer.GetComponent<ICollectable>()!=null){
+                if(interactSuccess){
+                    OnRemoveCollectableObject(lastedObjectTriggerPlayer);
+                }
+            }
+            
         }
     }
 }

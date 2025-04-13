@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -83,7 +84,7 @@ public class AttackController : MonoBehaviour
         if((CurrentWeapon==Weapon.SWORD&&countDownNormalAttack>0)||(CurrentWeapon==Weapon.SWORD&&GameManager.Instance.CurrentStamina<GameConfig.Load().SwordAttackCost)){
             return;
         }
-        if((CurrentWeapon==Weapon.BOW&&countDownBowAttack>0)||(CurrentWeapon==Weapon.BOW&&GameManager.Instance.CurrentStamina<GameConfig.Load().BowAttackCost)){
+        if((CurrentWeapon==Weapon.BOW&&countDownBowAttack>0)||(CurrentWeapon==Weapon.BOW&&GameManager.Instance.CurrentStamina<GameConfig.Load().BowAttackCost)||(CurrentWeapon==Weapon.BOW&&GameManager.Instance.GameModel.CurrentArrow==0)){
             return;
         }
         if (_input.startAttack == true&&!_isSpinAttackNow)
@@ -158,6 +159,7 @@ public class AttackController : MonoBehaviour
                             GameManager.Instance.SetRotateSpeedBowAttack(false);
                             _animator.SetTrigger("EndAttackBow");
                             _animator.ResetTrigger("StartAttackBow");
+                            GameManager.Instance.GameModel.DecreaseArrow(1);
                             GameManager.Instance.GameModel.DecreaseStamina(10);
                             countDownBowAttack = GameConfig.Load().countDownBowAttack;
                             BowAim.weight = 0;
@@ -177,7 +179,7 @@ public class AttackController : MonoBehaviour
 
                             // Vector3 targetPoint = new Vector3();
                             bool isHit = false;
-                            if (Physics.Raycast(ray, out hit))
+                            if (Physics.Raycast(ray, out hit,Mathf.Infinity,~0,QueryTriggerInteraction.Ignore))
                             {
                                 Debug.Log("HitPos: " + hit.point);
                                 isHit = true;
@@ -287,6 +289,8 @@ public class AttackController : MonoBehaviour
         if(_isSpinAttackNow||_isHoldToSpinAttack){
             return;
         }
+        _input.startAttack = false;
+        _input.confirmAttack = false;
         if(_currentWeapon==Weapon.SWORD){
             LeftWeaponShield.SetActive(false);
             RightWeaponSword.SetActive(false);

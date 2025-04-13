@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ public class MainHud : Singleton<MainHud>
     [SerializeField] private Sprite iconSword;
     [SerializeField] private Sprite iconBow;
     [SerializeField] private Image imageAngryEnergy;
+    [SerializeField] private GameObject resourceArrow;
+    [SerializeField] private TextMeshProUGUI textCoin, textArrow, textItemHealth, textItemStamina;
 
     void Start()
     {
@@ -41,8 +44,10 @@ public class MainHud : Singleton<MainHud>
         //Button Swap Weapon
         if(GameManager.Instance.GameModel.IsHaveBow){
             swapWeaponBtn.gameObject.SetActive(true);
+            resourceArrow.SetActive(true);
         }else{
             swapWeaponBtn.gameObject.SetActive(false);
+            resourceArrow.SetActive(false);
         }
 
         //Button use Item Health
@@ -58,6 +63,7 @@ public class MainHud : Singleton<MainHud>
         }else{
             useItemStaminaBtn.gameObject.SetActive(false);
         }
+        UpdateResourceDisplay();
     }
 
     // Update is called once per frame
@@ -78,10 +84,12 @@ public class MainHud : Singleton<MainHud>
         GameManager.Instance.PlayerController.OnClickInteract();
     }
     public void OnClickButtonUseItemHealth(){
-        
+        GameManager.Instance.GameModel.DecreaseItemHealth(1);
+        GameManager.Instance.GameModel.IncreaseHealth(GameConfig.Load().ReturnHealthValueUseItem);
     }
     public void OnClickButtonUseItemStamina(){
-        
+        GameManager.Instance.GameModel.DecreaseItemStamina(1);
+        GameManager.Instance.GameModel.IncreaseStamina(GameConfig.Load().ReturnStaminaValueUseItem);
     }
     public void SetActiveButtonSkill(bool active){
         skillBtn.gameObject.SetActive(active);
@@ -112,5 +120,14 @@ public class MainHud : Singleton<MainHud>
     }
     public void SetActiveUseStaminaItemButton(bool active){
         useItemStaminaBtn.gameObject.SetActive(active);
+    }
+    public void UpdateResourceDisplay(){
+        textCoin.text = GameManager.Instance.GameModel.CurrentCoin.ToString();
+        string temp = GameManager.Instance.GameModel.CurrentArrow+"/"+GameConfig.Load().MaxArrow;
+        textArrow.text = temp;
+        temp = GameManager.Instance.GameModel.CurrentItemHealth+"/"+GameConfig.Load().MaxCountItemHealth;
+        textItemHealth.text = temp;
+        temp = GameManager.Instance.GameModel.CurrentItemStamina+"/"+GameConfig.Load().MaxCountItemStamina;
+        textItemStamina.text = temp;
     }
 }

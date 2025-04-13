@@ -14,6 +14,7 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
 {
     [SerializeField] ItemType itemType;
     [SerializeField] int amount;
+    [SerializeField] bool isInteract = false;
 
     void Start()
     {
@@ -25,38 +26,44 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
     {
         
     }
-    public void OnInteract()
+    public bool OnInteract()
     {
-        if(itemType==ItemType.Coin){
+        if(itemType==ItemType.Coin&&isInteract==false){
             GameManager.Instance.GameModel.IncreaseCoin(amount);
+            gameObject.SetActive(false);
+            isInteract=true;
+            return true;
         }
-        if(itemType==ItemType.HealthBottle){
+        if(itemType==ItemType.HealthBottle&&isInteract==false){
             if(GameManager.Instance.GameModel.TryIncreaseItemHealth(amount)){
                 gameObject.SetActive(false);
+                isInteract=true;
+                return true;
             }else{
                 //action notify full inventory
+                return false;
             }
         }
-        if(itemType==ItemType.HealthBottle){
-            if(GameManager.Instance.GameModel.TryIncreaseItemHealth(amount)){
-                gameObject.SetActive(false);
-            }else{
-                //action notify full inventory
-            }
-        }
-        if(itemType==ItemType.StaminaBottle){
+        if(itemType==ItemType.StaminaBottle&&isInteract==false){
             if(GameManager.Instance.GameModel.TryIncreaseItemStamina(amount)){
                 gameObject.SetActive(false);
+                isInteract=true;
+                return true;
             }else{
                 //action notify full inventory
+                return false;
             }
         }
-        if(itemType==ItemType.Arrow){
+        if(itemType==ItemType.Arrow&&isInteract==false){
             if(GameManager.Instance.GameModel.TryIncreaseArrow(amount)){
                 gameObject.SetActive(false);
+                isInteract=true;
+                return true;
             }else{
                 //action notify full inventory
+                return false;
             }
         }
+        return false;
     }
 }

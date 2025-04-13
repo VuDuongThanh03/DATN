@@ -29,7 +29,7 @@ public class ArrowController : MonoBehaviour
         }
         if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward , out RaycastHit hit,1f))
         {
-            if(hit.collider.CompareTag("Player")){
+            if(hit.collider.CompareTag("Player")||hit.collider.CompareTag("CollectableItem")){
                 return;
             }
             arrowRigidbody.velocity = Vector3.zero;

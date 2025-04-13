@@ -15,8 +15,8 @@ public class NPCController : MonoBehaviour,IInteractable
     {
         
     }
-    public void OnInteract()
+    public bool OnInteract()
     {
-        
+        return false;
     }
 }

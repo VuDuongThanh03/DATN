@@ -15,9 +15,17 @@ MonoBehaviour:
   ConfigVersion: 0
   CoinDefault: 0
   HealthDefault: 100
+  MaxCountItemHealth: 5
   ArmorDefault: 10
   StatminaDefault: 100
+  MaxCountItemStamina: 5
+  ReturnStaminaPerSecond: 2
+  SwordAttackCost: 5
+  BowAttackCost: 10
+  AngryEnergyDefault: 0
+  MaxAngryEnergy: 100
   ArrowDefault: 0
+  MaxArrow: 20
   countDownNormalAttack: 0.8
   countDownSpinAttack: 0.2
   countDownBowAttack: 1

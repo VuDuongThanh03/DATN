@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - ButtonAttack
   - Enemy
+  - CollectableItem
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - NavMesh
   - CollectableItem
-  - 
+  - Environment
   - 
   - 
   - 

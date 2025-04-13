@@ -99,10 +99,38 @@ public class GameModel
     }
 
     public float CurrentHealth => _gameData.Health;
+    public void IncreaseHealth(float value){
+        _gameData.Health+=value;
+        if(_gameData.Health>GameConfig.Load().HealthDefault){
+            _gameData.Health = GameConfig.Load().HealthDefault;
+        }
+        SaveGame();
+        PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
+        if(_gameData.Health==GameConfig.Load().HealthDefault||_gameData.ItemHealth==0){
+            MainHud.Instance.SetActiveUseItemHealthButton(false);
+        }
+    }
+    public void DecreaseHealth(float value){
+        _gameData.Health-=value;
+        if(_gameData.Health<0){
+            _gameData.Health = 0;
+        }
+        SaveGame();
+        PlayerHealthBar.Instance.OnHealthChange(_gameData.Stamina);
+        if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
+            MainHud.Instance.SetActiveUseItemHealthButton(true);
+        }
+    }
     public void SetHealth(float value){
         _gameData.Health = value;
         SaveGame();
         PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
+        if(_gameData.Health==GameConfig.Load().HealthDefault||_gameData.ItemHealth==0){
+            MainHud.Instance.SetActiveUseItemHealthButton(false);
+        }
+        if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
+            MainHud.Instance.SetActiveUseItemHealthButton(true);
+        }
     }
     public float CurrentArmor => _gameData.Armor;
     public float CurrentStamina => _gameData.Stamina;
@@ -110,6 +138,12 @@ public class GameModel
         _gameData.Stamina = value;
         SaveGame();
         PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+        if(_gameData.Stamina==GameConfig.Load().StatminaDefault||_gameData.ItemStamina==0){
+            MainHud.Instance.SetActiveUseStaminaItemButton(false);
+        }
+        if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
+            MainHud.Instance.SetActiveUseStaminaItemButton(true);
+        }
     }
     public void IncreaseStamina(float value){
         _gameData.Stamina+=value;
@@ -118,6 +152,9 @@ public class GameModel
         }
         SaveGame();
         PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+        if(_gameData.Stamina==GameConfig.Load().StatminaDefault||_gameData.ItemStamina==0){
+            MainHud.Instance.SetActiveUseStaminaItemButton(false);
+        }
     }
     public void DecreaseStamina(float value){
         _gameData.Stamina-=value;
@@ -126,6 +163,9 @@ public class GameModel
         }
         SaveGame();
         PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+        if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
+            MainHud.Instance.SetActiveUseStaminaItemButton(true);
+        }
     }
     public float CurrentAngryEnergy => _gameData.AngryEnergy;
     public void IncreaseAngryEnergy(float value){
@@ -158,6 +198,10 @@ public class GameModel
             GameData.ItemHealth = GameConfig.Load().MaxCountItemHealth;
         }
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
+        if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
+            MainHud.Instance.SetActiveUseItemHealthButton(true);
+        }
     }
     public bool TryIncreaseItemHealth(int amount){
         if(GameData.ItemHealth+amount>GameConfig.Load().MaxCountItemHealth){
@@ -165,6 +209,10 @@ public class GameModel
         }
         GameData.ItemHealth+=amount;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
+        if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
+            MainHud.Instance.SetActiveUseItemHealthButton(true);
+        }
         return true;
     }
     public void DecreaseItemHealth(int amount){
@@ -173,6 +221,7 @@ public class GameModel
         }
         GameData.ItemHealth-=amount;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
     }
     public int CurrentItemStamina => GameData.ItemStamina;
     public bool TryIncreaseItemStamina(int amount){
@@ -181,6 +230,10 @@ public class GameModel
         }
         GameData.ItemStamina+=amount;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
+        if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
+            MainHud.Instance.SetActiveUseStaminaItemButton(true);
+        }
         return true;
     }
     public void DecreaseItemStamina(int amount){
@@ -189,11 +242,13 @@ public class GameModel
         }
         GameData.ItemStamina-=amount;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
     }
     public float CurrentCoin => _gameData.Coin;
     public void IncreaseCoin(int value){
         _gameData.Coin+=value;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
     }
     public void DecreaseCoin(int value){
         _gameData.Coin-=value;
@@ -201,6 +256,7 @@ public class GameModel
             _gameData.Coin = 0;
         }
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
     }
     public bool TryDecreaseCoin(int value){
         if(_gameData.Coin<value){
@@ -208,6 +264,7 @@ public class GameModel
         }
         _gameData.Coin-=value;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
         return true;
     }
     public float CurrentArrow => _gameData.Arrow;
@@ -217,10 +274,12 @@ public class GameModel
         }
         _gameData.Arrow+=amount;
         SaveGame();
+        MainHud.Instance.UpdateResourceDisplay();
         return true;
     }
     public void DecreaseArrow(int amount){
         _gameData.Arrow-=amount;
+        MainHud.Instance.UpdateResourceDisplay();
         SaveGame();
     }
 
