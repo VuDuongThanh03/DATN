@@ -8584,6 +8584,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[0].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[1].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[2].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[3].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[4].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[5].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[6].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758225853350431564, guid: f0143f61ce0cc7445a88d955f55e93ce, type: 3}
+      propertyPath: outlineTargets.Array.data[7].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12441,6 +12473,10 @@ PrefabInstance:
     - target: {fileID: 6589977333400984960, guid: 463c6fbbf73fca444933f2b9cbde41d5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981733351899994306, guid: 463c6fbbf73fca444933f2b9cbde41d5, type: 3}
+      propertyPath: m_ForceIntoRT
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7153695962202017276, guid: 463c6fbbf73fca444933f2b9cbde41d5, type: 3}
       propertyPath: m_AnchorMax.x
@@ -23096,6 +23132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 154211279121356427, guid: 9ff9e3deedf0bb046a611e6c0df5cc83, type: 3}
+      propertyPath: outlineTargets.Array.data[0].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1597893855196152474, guid: 9ff9e3deedf0bb046a611e6c0df5cc83, type: 3}
       propertyPath: m_Name
       value: ItemHealth
@@ -29696,6 +29736,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 178841345047531787, guid: f34b9caa398e9ee408a04b645ddc69fc, type: 3}
+      propertyPath: outlineTargets.Array.data[0].IsVisible
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6219142272483604790, guid: f34b9caa398e9ee408a04b645ddc69fc, type: 3}
       propertyPath: m_Name
       value: ItemArrow
@@ -40740,6 +40784,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2101219765093081164, guid: 8f9d67b53dfdb3f46aa8fe203f0acb99, type: 3}
+      propertyPath: outlineTargets.Array.data[0].IsVisible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4473232077752234780, guid: 8f9d67b53dfdb3f46aa8fe203f0acb99, type: 3}
       propertyPath: m_Name
       value: ItemStamina
