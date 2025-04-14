@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EPOOutline;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour,IDamageable
@@ -54,7 +55,13 @@ public class PlayerController : MonoBehaviour,IDamageable
             MainHud.Instance.SetActiveInteractButton(true);
             if(!interactableObjects.Contains(other.gameObject)){
                 interactableObjects.Add(other.gameObject);
+                if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<Outlinable>()!=null){
+                    lastedObjectTriggerPlayer.GetComponent<Outlinable>().enabled = false;
+                }
                 lastedObjectTriggerPlayer = other.gameObject;
+                if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<Outlinable>()!=null){
+                    lastedObjectTriggerPlayer.GetComponent<Outlinable>().enabled = true;
+                }
             }
         }
     }
@@ -64,9 +71,15 @@ public class PlayerController : MonoBehaviour,IDamageable
             if(interactableObjects.Contains(other.gameObject)){
                 interactableObjects.Remove(other.gameObject);
                 if(other.gameObject==lastedObjectTriggerPlayer){
+                    if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<Outlinable>()!=null){
+                        lastedObjectTriggerPlayer.GetComponent<Outlinable>().enabled = false;
+                    }
                     lastedObjectTriggerPlayer=null;
                     if(interactableObjects.Count>0){
                         lastedObjectTriggerPlayer = interactableObjects[interactableObjects.Count-1];
+                        if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<Outlinable>()!=null){
+                            lastedObjectTriggerPlayer.GetComponent<Outlinable>().enabled = true;
+                        }
                     }
                 }
             }
@@ -80,9 +93,15 @@ public class PlayerController : MonoBehaviour,IDamageable
             if(interactableObjects.Contains(objectCollected)){
                 interactableObjects.Remove(objectCollected);
                 if(objectCollected==lastedObjectTriggerPlayer){
+                    if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<Outlinable>()!=null){
+                        lastedObjectTriggerPlayer.GetComponent<Outlinable>().enabled = false;
+                    }
                     lastedObjectTriggerPlayer=null;
                     if(interactableObjects.Count>0){
                         lastedObjectTriggerPlayer = interactableObjects[interactableObjects.Count-1];
+                        if(lastedObjectTriggerPlayer!=null&&lastedObjectTriggerPlayer.GetComponent<Outlinable>()!=null){
+                            lastedObjectTriggerPlayer.GetComponent<Outlinable>().enabled = true;
+                        }
                     }
                 }
             }
