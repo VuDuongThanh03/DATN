@@ -17,6 +17,7 @@ public class NPCController : MonoBehaviour,IInteractable
     }
     public bool OnInteract()
     {
+        PopupManager.Instance.GetPopup("PopupShop");
         return false;
     }
 }
