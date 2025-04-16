@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
-  amount: 5
+  amount: 100
   isInteract: 0
 --- !u!114 &3758225853350431564
 MonoBehaviour:

@@ -17,6 +17,7 @@ public class GameData
     public float AngryEnergy;
     public float PlayedTime;
     public bool IsHaveBow;
+    public int EquipLevel;
     public GameData(){
         UserAlias = "Default";
         GamerAge = 0;
@@ -30,5 +31,6 @@ public class GameData
         AngryEnergy = 0;
         PlayedTime = 0;
         IsHaveBow = false;
+        EquipLevel = 0;
     }
 }

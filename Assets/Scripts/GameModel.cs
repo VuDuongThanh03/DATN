@@ -282,5 +282,9 @@ public class GameModel
         MainHud.Instance.UpdateResourceDisplay();
         SaveGame();
     }
-
+    public int CurrentEquipLevel => GameData.EquipLevel;
+    public void SetEquipLevel(int equipLevel){
+        GameData.EquipLevel=equipLevel;
+        SaveGame();
+    }
 }
