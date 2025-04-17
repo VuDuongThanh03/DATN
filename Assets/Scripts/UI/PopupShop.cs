@@ -11,6 +11,7 @@ public class PopupShop : PopupBase
     [SerializeField] Button buyHealthButton;
     [SerializeField] Button buyStaminaButton;
     [SerializeField] Button buyArrowButton;
+    [SerializeField] Button unlockBowButton;
     [SerializeField] Button upgradeLevel1Button;
     [SerializeField] Button upgradeLevel2Button;
     [SerializeField] TextMeshProUGUI textPriceHealth;
@@ -19,11 +20,15 @@ public class PopupShop : PopupBase
     [SerializeField] TextMeshProUGUI textCurrentAmoutItemStamina;
     [SerializeField] TextMeshProUGUI textPriceArrow;
     [SerializeField] TextMeshProUGUI textCurrentAmoutItemArrow;
+    [SerializeField] TextMeshProUGUI textPriceBow;
     [SerializeField] TextMeshProUGUI textPriceUpgradeLevel1;
     [SerializeField] TextMeshProUGUI textPriceUpgradeLevel2;
     [SerializeField] GameObject HandleUpgrade1;
     [SerializeField] GameObject HandleUpgrade2;
     [SerializeField] GameObject HandleUpgrade3;
+    [SerializeField] GameObject HandleItemBow;
+    [SerializeField] GameObject HandleItemArrow;
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -37,9 +42,11 @@ public class PopupShop : PopupBase
         buyHealthButton.onClick.AddListener(OnClickBuyHealth);
         buyStaminaButton.onClick.AddListener(OnClickBuyStamina);
         buyArrowButton.onClick.AddListener(OnClickBuyArrow);
+        unlockBowButton.onClick.AddListener(OnClickUnlockBow);
         upgradeLevel1Button.onClick.AddListener(OnClickUpgradeLevel1);
         upgradeLevel2Button.onClick.AddListener(OnClickUpgradeLevel2);
         InitPrice();
+        CheckItemTradeShow();
         UpdateCurrentItemAmout();
         UpdateCurrentUpgrade();
 #if UNITY_EDITOR
@@ -50,6 +57,7 @@ public class PopupShop : PopupBase
         textPriceHealth.text = TradeConfig.Load().HealthBottlePrice.ToString();
         textPriceStamina.text = TradeConfig.Load().StaminaBottlePrice.ToString();
         textPriceArrow.text = TradeConfig.Load().ArrowPrice.ToString();
+        textPriceBow.text = TradeConfig.Load().BowPrice.ToString();
         textPriceUpgradeLevel1.text = TradeConfig.Load().UpdateLevel1Price.ToString();
         textPriceUpgradeLevel2.text = TradeConfig.Load().UpdateLevel2Price.ToString();
     }
@@ -73,6 +81,15 @@ public class PopupShop : PopupBase
             HandleUpgrade1.SetActive(false);
             HandleUpgrade2.SetActive(false);
             HandleUpgrade3.SetActive(true);
+        }
+    }
+    public void CheckItemTradeShow(){
+        if(GameManager.Instance.GameModel.IsHaveBow){
+            HandleItemBow.SetActive(false);
+            HandleItemArrow.SetActive(true);
+        }else{
+            HandleItemBow.SetActive(true);
+            HandleItemArrow.SetActive(false);
         }
     }
 
@@ -122,6 +139,15 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().UpdateLevel2Price);
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
                 UpdateCurrentUpgrade();
+            }
+        }
+    }
+    public void OnClickUnlockBow(){
+        if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().BowPrice){
+            if(!GameManager.Instance.GameModel.IsHaveBow){
+                GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().BowPrice);
+                GameManager.Instance.GameModel.UnlockBow();
+                CheckItemTradeShow();
             }
         }
     }

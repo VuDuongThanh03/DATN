@@ -108,6 +108,7 @@ public class MainHud : Singleton<MainHud>
     }
     public void OnUnlockBow(){
         swapWeaponBtn.gameObject.SetActive(true);
+        resourceArrow.SetActive(true);
     }
     public void CheatUnlockBow(){
         GameManager.Instance.GameModel.UnlockBow();

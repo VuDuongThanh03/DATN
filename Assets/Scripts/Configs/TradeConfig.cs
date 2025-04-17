@@ -13,6 +13,7 @@ public class TradeConfig : ScriptableObject
     public int HealthBottlePrice = 5;
     public int StaminaBottlePrice = 5;
     public int ArrowPrice = 3;
+    public int BowPrice = 10;
     public int UpdateLevel1Price = 30;
     public int UpdateLevel2Price = 50;
 }
