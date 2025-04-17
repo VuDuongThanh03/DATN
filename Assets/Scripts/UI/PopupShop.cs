@@ -110,6 +110,7 @@ public class PopupShop : PopupBase
     public void OnClickUpgradeLevel1(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().UpdateLevel1Price){
             if(GameManager.Instance.GameModel.CurrentEquipLevel==0){
+                GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().UpdateLevel1Price);
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
                 UpdateCurrentUpgrade();
             }
@@ -118,6 +119,7 @@ public class PopupShop : PopupBase
     public void OnClickUpgradeLevel2(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().UpdateLevel2Price){
             if(GameManager.Instance.GameModel.CurrentEquipLevel==1){
+                GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().UpdateLevel2Price);
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
                 UpdateCurrentUpgrade();
             }

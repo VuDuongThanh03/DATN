@@ -285,6 +285,7 @@ public class GameModel
     public int CurrentEquipLevel => GameData.EquipLevel;
     public void SetEquipLevel(int equipLevel){
         GameData.EquipLevel=equipLevel;
+        GameManager.Instance.PlayerEquipController.OnUpgradeEquip();
         SaveGame();
     }
 }

@@ -8,10 +8,12 @@ public class GameManager : Singleton<GameManager>
 {
     private PlayerController _playerController;
     private AttackController _attackController;
+    private PlayerEquipController _playerEquipController;
     private PlayerMovementController _playerMovementController;
     private float _ratioRotateSpeed = 2f;
     public PlayerController PlayerController => _playerController;
     public AttackController AttackController => _attackController;
+    public PlayerEquipController PlayerEquipController => _playerEquipController;
     public PlayerMovementController PlayerMovementController => _playerMovementController;
     public float RatioRotateSpeed => _ratioRotateSpeed;
     public Camera MainCamera;
@@ -70,6 +72,9 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetAttackControler(AttackController attackController){
         _attackController = attackController;
+    }
+    public void SetPlayerEquipControler(PlayerEquipController playerEquipController){
+        _playerEquipController = playerEquipController;
     }
     public void SetPlayerMovementController(PlayerMovementController playerMovementController){
         _playerMovementController = playerMovementController;

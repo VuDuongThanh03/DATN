@@ -292,20 +292,21 @@ public class AttackController : MonoBehaviour
         _input.startAttack = false;
         _input.confirmAttack = false;
         if(_currentWeapon==Weapon.SWORD){
-            LeftWeaponShield.SetActive(false);
-            RightWeaponSword.SetActive(false);
-            LeftWeaponBow.SetActive(true);
+            // LeftWeaponShield.SetActive(false);
+            // RightWeaponSword.SetActive(false);
+            // LeftWeaponBow.SetActive(true);
+            GameManager.Instance.PlayerEquipController.OnSwapWeapon(Weapon.BOW);
             // RightWeaponArrow.SetActive(true);
             _currentWeapon = Weapon.BOW;
             MainHud.Instance.ChangeAvatarWeapon(Weapon.BOW);
         }else{
-            LeftWeaponShield.SetActive(true);
-            RightWeaponSword.SetActive(true);
-            LeftWeaponBow.SetActive(false);
+            // LeftWeaponShield.SetActive(true);
+            // RightWeaponSword.SetActive(true);
+            // LeftWeaponBow.SetActive(false);
             RightWeaponArrow.SetActive(false);
+            GameManager.Instance.PlayerEquipController.OnSwapWeapon(Weapon.SWORD);
             _currentWeapon = Weapon.SWORD;
             MainHud.Instance.ChangeAvatarWeapon(Weapon.SWORD);
-
         }
     }
     public async void HoldToSpinAttack(int time){
