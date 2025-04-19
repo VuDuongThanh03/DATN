@@ -205,6 +205,7 @@ public class GameModel
     }
     public bool TryIncreaseItemHealth(int amount){
         if(GameData.ItemHealth+amount>GameConfig.Load().MaxCountItemHealth){
+            FeedBackMessageController.Instance.SetMessage("Full item Health slot");
             return false;
         }
         GameData.ItemHealth+=amount;
@@ -226,6 +227,7 @@ public class GameModel
     public int CurrentItemStamina => GameData.ItemStamina;
     public bool TryIncreaseItemStamina(int amount){
         if(GameData.ItemStamina+amount>GameConfig.Load().MaxCountItemStamina){
+            FeedBackMessageController.Instance.SetMessage("Full item Stamina slot");
             return false;
         }
         GameData.ItemStamina+=amount;
@@ -270,6 +272,7 @@ public class GameModel
     public float CurrentArrow => _gameData.Arrow;
     public bool TryIncreaseArrow(int amount){
         if(GameData.Arrow+amount>GameConfig.Load().MaxArrow){
+            FeedBackMessageController.Instance.SetMessage("Full Arrow slot");
             return false;
         }
         _gameData.Arrow+=amount;

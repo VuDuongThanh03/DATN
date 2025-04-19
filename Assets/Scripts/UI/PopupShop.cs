@@ -106,6 +106,8 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().HealthBottlePrice);
                 UpdateCurrentItemAmout();
             }
+        }else{
+            FeedBackMessageController.Instance.SetMessage("Not enough Coin");
         }
     }
     public void OnClickBuyStamina(){
@@ -114,6 +116,8 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().StaminaBottlePrice);
                 UpdateCurrentItemAmout();
             }
+        }else{
+            FeedBackMessageController.Instance.SetMessage("Not enough Coin");
         }
     }
     public void OnClickBuyArrow(){
@@ -122,6 +126,8 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().ArrowPrice);
                 UpdateCurrentItemAmout();
             }
+        }else{
+            FeedBackMessageController.Instance.SetMessage("Not enough Coin");
         }
     }
     public void OnClickUpgradeLevel1(){
@@ -131,6 +137,8 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
                 UpdateCurrentUpgrade();
             }
+        }else{
+            FeedBackMessageController.Instance.SetMessage("Not enough Coin");
         }
     }
     public void OnClickUpgradeLevel2(){
@@ -140,6 +148,8 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
                 UpdateCurrentUpgrade();
             }
+        }else{
+            FeedBackMessageController.Instance.SetMessage("Not enough Coin");
         }
     }
     public void OnClickUnlockBow(){
@@ -149,6 +159,8 @@ public class PopupShop : PopupBase
                 GameManager.Instance.GameModel.UnlockBow();
                 CheckItemTradeShow();
             }
+        }else{
+            FeedBackMessageController.Instance.SetMessage("Not enough Coin");
         }
     }
 }

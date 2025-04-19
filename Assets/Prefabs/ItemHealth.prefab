@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db5e7f1111d4ec48b60455b96efa4b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 1
   amount: 1
   isInteract: 0
 --- !u!114 &154211279121356427
