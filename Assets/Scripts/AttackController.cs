@@ -109,6 +109,7 @@ public class AttackController : MonoBehaviour
                         // LeftWeaponBow.SetActive(true);
                         RightWeaponArrow.SetActive(true);
                         _animator.SetTrigger("StartAttackBow");
+                        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Bow_Loading);
                         _animator.ResetTrigger("EndAttackBow");
                         BowAim.weight = 1;
                     }
@@ -158,6 +159,7 @@ public class AttackController : MonoBehaviour
                             MainHud.Instance.SetActiveCrosshair(false);
                             GameManager.Instance.SetRotateSpeedBowAttack(false);
                             _animator.SetTrigger("EndAttackBow");
+                            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Arrow_Fly);
                             _animator.ResetTrigger("StartAttackBow");
                             GameManager.Instance.GameModel.DecreaseArrow(1);
                             GameManager.Instance.GameModel.DecreaseStamina(10);
@@ -211,6 +213,7 @@ public class AttackController : MonoBehaviour
                             duationClick = 0;
                             aimCam.enabled = false;
                         }else{
+                            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Bow_Fail);
                             _animator.SetTrigger("AimCancel");
                             MainHud.Instance.SetActiveCrosshair(false);
                             GameManager.Instance.SetRotateSpeedBowAttack(false);
