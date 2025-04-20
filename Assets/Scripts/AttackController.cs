@@ -240,11 +240,14 @@ public class AttackController : MonoBehaviour
         // if(temp!=null){
         //     listObjectTakeDame.Add(temp);
         // }
-        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position+gameObject.transform.forward.normalized*0.8f,0.8f);
-        DebugDrawGizmos.SetDrawGizmos(gameObject.transform.position+gameObject.transform.forward.normalized*0.8f,0.8f,Color.red);
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position+gameObject.transform.forward.normalized*0.8f+new Vector3(0f,0.5f,0f),0.8f);
+        DebugDrawGizmos.SetDrawGizmos(gameObject.transform.position+gameObject.transform.forward.normalized*0.8f+new Vector3(0f,0.5f,0f),0.8f,Color.red);
         foreach(var item in hitColliders){
             if(item.tag=="Enemy"){
                 IDamageable damageObject = item.gameObject.GetComponent<IDamageable>();
+                if(damageObject==null){
+                    damageObject = item.gameObject.GetComponentInParent<IDamageable>();
+                }
                 if(damageObject!=null){
                     damageObject.TakeDame(10);
                 }
@@ -340,12 +343,18 @@ public class AttackController : MonoBehaviour
         if(IsSpinAttackNow){
             countDownDameTurnSpine-=Time.deltaTime;
             if(countDownDameTurnSpine<=0){
-                Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position,1);
+                Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position+new Vector3(0f,0.5f,0f),1);
                 DebugDrawGizmos.SetDrawGizmos(gameObject.transform.position,1,Color.red);
                 foreach (var item in hitColliders)
                 {
                     if(item.tag=="Enemy"){
-                        item.gameObject.GetComponent<IDamageable>().TakeDame(2);
+                        IDamageable damageObject = item.gameObject.GetComponent<IDamageable>();
+                        if(damageObject==null){
+                            damageObject = item.gameObject.GetComponentInParent<IDamageable>();
+                        }
+                        if(damageObject!=null){
+                            damageObject.TakeDame(2);
+                        }
                     }
                 }
                 countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;

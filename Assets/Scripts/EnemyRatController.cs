@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.Assertions.Comparers;
 using UnityEngine.UI;
 
-public class EnemyController : MonoBehaviour,IDamageable
+public class EnemyRatController : MonoBehaviour,IDamageable
 {
     enum State{
         IdleState,

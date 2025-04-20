@@ -2450,7 +2450,7 @@ GameObject:
   - component: {fileID: 5571160808130330433}
   - component: {fileID: 8358916631428532088}
   m_Layer: 7
-  m_Name: Enemy
+  m_Name: EnemyRat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

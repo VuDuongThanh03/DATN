@@ -35,9 +35,14 @@ public class ArrowController : MonoBehaviour
             arrowRigidbody.velocity = Vector3.zero;
             arrowRigidbody.isKinematic = true;
             GameObject GameObjecHit = hit.collider.gameObject;
-            if(GameObjecHit!=null&&GameObjecHit.GetComponent<IDamageable>()!=null){
-                GameObjecHit.GetComponent<IDamageable>().TakeDame(dameValue);
-                isDamged = true;
+            if(GameObjecHit!=null&&(GameObjecHit.GetComponent<IDamageable>()!=null||GameObjecHit.GetComponentInParent<IDamageable>()!=null)){
+                if(GameObjecHit.GetComponent<IDamageable>()!=null){
+                    GameObjecHit.GetComponent<IDamageable>().TakeDame(dameValue);
+                    isDamged = true;
+                }else{
+                    GameObjecHit.GetComponentInParent<IDamageable>()?.TakeDame(dameValue);
+                    isDamged = true;
+                }
                 gameObject.SetActive(false);
                 // gameObject.transform.SetParent(GameObjecHit.transform);
             }
