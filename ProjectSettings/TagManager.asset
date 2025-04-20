@@ -8,6 +8,9 @@ TagManager:
   - ButtonAttack
   - Enemy
   - CollectableItem
+  - LightingBaked
+  - LightingRealtime
+  - BossAxe
   layers:
   - Default
   - TransparentFX

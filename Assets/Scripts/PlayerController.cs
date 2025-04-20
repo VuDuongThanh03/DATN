@@ -51,6 +51,9 @@ public class PlayerController : MonoBehaviour,IDamageable
     }
     void OnTriggerEnter(Collider other)
     {
+        if(other.CompareTag("BossAxe")){
+            TakeDame(10);
+        }
         if(other.gameObject.GetComponent<IInteractable>()!=null){
             MainHud.Instance.SetActiveInteractButton(true);
             if(!interactableObjects.Contains(other.gameObject)){
