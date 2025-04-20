@@ -36,6 +36,8 @@ public class EnemyRatController : MonoBehaviour,IDamageable
     TriggerAnim LastTriggerAnim;
     
     [SerializeField]private State _currentState;
+    [SerializeField]private BoxCollider _swordCollider;
+
 
     // Start is called before the first frame update
     void Start()
@@ -111,7 +113,11 @@ public class EnemyRatController : MonoBehaviour,IDamageable
                     if(distance<1.5f){
                         StopMove();
                         if(_attackCountDown<=0){
+                            gameObject.transform.forward = (GameManager.Instance.PlayerController.gameObject.transform.position-gameObject.transform.position).normalized;
+                            _swordCollider.enabled = true;
                             enemyAnimator.SetTrigger("Attack");
+                            enemyAnimator.ResetTrigger("Walk");
+                            enemyAnimator.ResetTrigger("Run");
                             LastTriggerAnim = TriggerAnim.Attack;
                             StartCoroutine(WaitForAnimation(1,0.5f));
                             _attackCountDown = 5;
@@ -178,8 +184,9 @@ public class EnemyRatController : MonoBehaviour,IDamageable
     IEnumerator WaitForAnimation(float dame,float time)
     {
         yield return new WaitForSeconds(time);
-        GameManager.Instance.PlayerController.TakeDame(dame);
+        // GameManager.Instance.PlayerController.TakeDame(dame);
         ContinueToPatrol();
+        _swordCollider.enabled = false;
     }
  
     public void CheckPlayerTaget(){
@@ -191,7 +198,7 @@ public class EnemyRatController : MonoBehaviour,IDamageable
                     GameManager.Instance.PlayerController.OnPlayerDie+=GoToStatePatrol;
                 }
                 _currentState = State.TagetState;
-                _navMeshAgent.speed = 3;
+                _navMeshAgent.speed = 2;
                 enemyAnimator.SetTrigger("Run");
             }
         }

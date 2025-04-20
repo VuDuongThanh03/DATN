@@ -54,6 +54,9 @@ public class PlayerController : MonoBehaviour,IDamageable
         if(other.CompareTag("BossAxe")){
             TakeDame(10);
         }
+        if(other.CompareTag("RatSword")){
+            TakeDame(2);
+        }
         if(other.gameObject.GetComponent<IInteractable>()!=null){
             MainHud.Instance.SetActiveInteractButton(true);
             if(!interactableObjects.Contains(other.gameObject)){
