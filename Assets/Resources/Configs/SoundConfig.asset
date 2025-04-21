@@ -30,4 +30,4 @@ MonoBehaviour:
     IsSequenceSound: 0
   SoundMusicItems:
   - SoundMusicID: 1
-    AudioClip: {fileID: 8300000, guid: e9b4089f04fcfdb498a94a0d1d6e9977, type: 3}
+    AudioClip: {fileID: 8300000, guid: 413aab5b72905cc42b488d5991035197, type: 3}

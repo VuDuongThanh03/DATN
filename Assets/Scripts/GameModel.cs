@@ -105,9 +105,13 @@ public class GameModel
             _gameData.Health = GameConfig.Load().HealthDefault;
         }
         SaveGame();
-        PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
-        if(_gameData.Health==GameConfig.Load().HealthDefault||_gameData.ItemHealth==0){
-            MainHud.Instance.SetActiveUseItemHealthButton(false);
+        if (PlayerHealthBar.Instance != null)
+        {
+            PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
+            if (_gameData.Health == GameConfig.Load().HealthDefault || _gameData.ItemHealth == 0)
+            {
+                MainHud.Instance.SetActiveUseItemHealthButton(false);
+            }
         }
     }
     public void DecreaseHealth(float value){
@@ -116,20 +120,28 @@ public class GameModel
             _gameData.Health = 0;
         }
         SaveGame();
-        PlayerHealthBar.Instance.OnHealthChange(_gameData.Stamina);
-        if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
-            MainHud.Instance.SetActiveUseItemHealthButton(true);
+        if (PlayerHealthBar.Instance != null)
+        {
+            PlayerHealthBar.Instance.OnHealthChange(_gameData.Stamina);
+            if (_gameData.Health < GameConfig.Load().HealthDefault && _gameData.ItemHealth > 0)
+            {
+                MainHud.Instance.SetActiveUseItemHealthButton(true);
+            }
         }
     }
     public void SetHealth(float value){
         _gameData.Health = value;
         SaveGame();
-        PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
-        if(_gameData.Health==GameConfig.Load().HealthDefault||_gameData.ItemHealth==0){
-            MainHud.Instance.SetActiveUseItemHealthButton(false);
+        if(PlayerHealthBar.Instance!=null){
+            PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
         }
-        if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
-            MainHud.Instance.SetActiveUseItemHealthButton(true);
+        if(MainHud.Instance!=null){
+            if(_gameData.Health==GameConfig.Load().HealthDefault||_gameData.ItemHealth==0){
+                MainHud.Instance.SetActiveUseItemHealthButton(false);
+            }
+            if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
+                MainHud.Instance.SetActiveUseItemHealthButton(true);
+            }
         }
     }
     public float CurrentArmor => _gameData.Armor;
@@ -137,12 +149,16 @@ public class GameModel
     public void SetStamina(float value){
         _gameData.Stamina = value;
         SaveGame();
-        PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
-        if(_gameData.Stamina==GameConfig.Load().StatminaDefault||_gameData.ItemStamina==0){
-            MainHud.Instance.SetActiveUseStaminaItemButton(false);
+        if (PlayerStaminaBar.Instance != null){
+            PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
         }
-        if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
-            MainHud.Instance.SetActiveUseStaminaItemButton(true);
+        if(MainHud.Instance!=null){
+            if(_gameData.Stamina==GameConfig.Load().StatminaDefault||_gameData.ItemStamina==0){
+                MainHud.Instance.SetActiveUseStaminaItemButton(false);
+            }
+            if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
+                MainHud.Instance.SetActiveUseStaminaItemButton(true);
+            }
         }
     }
     public void IncreaseStamina(float value){
@@ -151,9 +167,13 @@ public class GameModel
             _gameData.Stamina = GameConfig.Load().StatminaDefault;
         }
         SaveGame();
-        PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
-        if(_gameData.Stamina==GameConfig.Load().StatminaDefault||_gameData.ItemStamina==0){
-            MainHud.Instance.SetActiveUseStaminaItemButton(false);
+        if (PlayerStaminaBar.Instance != null){
+            PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+        }
+        if(MainHud.Instance!=null){
+            if(_gameData.Stamina==GameConfig.Load().StatminaDefault||_gameData.ItemStamina==0){
+                MainHud.Instance.SetActiveUseStaminaItemButton(false);
+            }
         }
     }
     public void DecreaseStamina(float value){
@@ -162,9 +182,13 @@ public class GameModel
             _gameData.Stamina = 0;
         }
         SaveGame();
-        PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
-        if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
-            MainHud.Instance.SetActiveUseStaminaItemButton(true);
+        if (PlayerStaminaBar.Instance != null){
+            PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
+        }
+        if(MainHud.Instance!=null){
+            if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
+                MainHud.Instance.SetActiveUseStaminaItemButton(true);
+            }
         }
     }
     public float CurrentAngryEnergy => _gameData.AngryEnergy;
