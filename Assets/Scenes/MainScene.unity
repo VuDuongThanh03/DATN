@@ -5,8 +5,8 @@ OcclusionCullingSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_OcclusionBakeSettings:
-    smallestOccluder: 5
-    smallestHole: 0.25
+    smallestOccluder: 3
+    smallestHole: 1
     backfaceThreshold: 100
   m_SceneGUID: 00000000000000000000000000000000
   m_OcclusionCullingData: {fileID: 0}
@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: c1b824f0f62c82841bcd7248690fb6b4, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &199756785 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5500225026988430061, guid: f524b357c0d81424ab896013cebe71f3, type: 3}
+  m_PrefabInstance: {fileID: 989374647107188539}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &531618763
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,9 +383,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3322857340153157225, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: evironmentMenu
+      value: 
+      objectReference: {fileID: 199756785}
+    - target: {fileID: 3322857340153157225, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: cameraEnvironmentMenu
+      value: 
+      objectReference: {fileID: 1514138247}
     - target: {fileID: 6647748096727109970, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6647748096727109970, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7888404401759210473, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -562,7 +579,7 @@ Transform:
   m_GameObject: {fileID: 1514138245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: -331.41, z: 45.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -674,11 +691,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2057258650288112978, guid: f524b357c0d81424ab896013cebe71f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 29.41
+      value: -303
       objectReference: {fileID: 0}
     - target: {fileID: 2057258650288112978, guid: f524b357c0d81424ab896013cebe71f3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.8
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 2057258650288112978, guid: f524b357c0d81424ab896013cebe71f3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -711,6 +728,10 @@ PrefabInstance:
     - target: {fileID: 5500225026988430061, guid: f524b357c0d81424ab896013cebe71f3, type: 3}
       propertyPath: m_Name
       value: CharSel_Background
+      objectReference: {fileID: 0}
+    - target: {fileID: 5500225026988430061, guid: f524b357c0d81424ab896013cebe71f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
