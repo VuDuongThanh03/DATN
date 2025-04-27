@@ -131,4 +131,7 @@ public class MainHud : Singleton<MainHud>
         temp = GameManager.Instance.GameModel.CurrentItemStamina+"/"+GameConfig.Load().MaxCountItemStamina;
         textItemStamina.text = temp;
     }
+    public void OnClickSetting(){
+        PopupManager.Instance?.GetPopup("PopupSetting");
+    }
 }

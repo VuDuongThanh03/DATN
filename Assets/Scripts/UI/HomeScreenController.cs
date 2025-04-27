@@ -62,6 +62,7 @@ public class MainMenuController : MonoBehaviour
         handleSelectModeButtonGroup.SetActive(true);
     }
     public void OnClickSettingBtn(){
+        PopupManager.Instance?.GetPopup("PopupSetting");
         
     }
     public void OnClickExitBtn(){

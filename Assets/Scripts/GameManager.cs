@@ -39,12 +39,38 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = 60;
         //turn of v-sync
         QualitySettings.vSyncCount = 0;
+        
+        DontDestroyOnLoad(gameObject);
 
         if (MainCamera == null)
             MainCamera = Camera.main;
 
         LoadConfigs();
         LoadGame();
+    }
+    private void Start()
+    {
+        if(PlayerPrefs.HasKey("RotateSpeed")){
+            float rotateSpeed = PlayerPrefs.GetFloat("RotateSpeed");
+        }
+        if(PlayerPrefs.HasKey("GraphicQuality")){
+            int graphicsQualityIndex = PlayerPrefs.GetInt("GraphicQuality");
+            if(graphicsQualityIndex==0){
+            QualitySettings.SetQualityLevel(0,true);
+            }
+            if(graphicsQualityIndex==1){
+                QualitySettings.SetQualityLevel(2,true);
+            }
+            if(graphicsQualityIndex==2){
+                QualitySettings.SetQualityLevel(4,true);
+            }
+        }
+        if(PlayerPrefs.HasKey("IsSound")){
+            bool isSound = PlayerPrefs.GetInt("IsSound")==1;
+        }
+        if(PlayerPrefs.HasKey("IsMusic")){
+            bool isMusic = PlayerPrefs.GetInt("IsMusic")==1;
+        }
     }
     void Update()
     {

@@ -470,7 +470,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &8726991784399539757
 MonoBehaviour:
@@ -1110,6 +1110,8 @@ MonoBehaviour:
   handleHomeMenu: {fileID: 57893377696913437}
   handleMainMenuButtonGroup: {fileID: 5043458068423549500}
   handleSelectModeButtonGroup: {fileID: 1067301906020812660}
+  evironmentMenu: {fileID: 0}
+  cameraEnvironmentMenu: {fileID: 0}
 --- !u!1 &5043458068423549500
 GameObject:
   m_ObjectHideFlags: 0
