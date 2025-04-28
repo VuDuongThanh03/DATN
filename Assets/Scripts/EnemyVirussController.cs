@@ -99,12 +99,14 @@ public class EnemyVirussController : MonoBehaviour,IDamageable
                 enemyAnimator.SetTrigger("Walk");
                 LastTriggerAnim = TriggerAnim.Walk;
             }
-            if(/*gameObject.transform.position.x==_targetPos.x&&gameObject.transform.position.z==_targetPos.z*/_navMeshAgent.remainingDistance<=0.001){
-                int ranIdleTime = Random.Range(3,10);
-                _idleTime = ranIdleTime;
-                _currentState = State.IdleState;
-                enemyAnimator.SetTrigger("Idle");
-                LastTriggerAnim = TriggerAnim.Idle;
+            if(/*Mathf.Abs(gameObject.transform.position.x-_targetPos.x)<=0.001&&Mathf.Abs(gameObject.transform.position.z-_targetPos.z)<=0.001*/_navMeshAgent.remainingDistance<=0.001){
+                if(_navMeshAgent.pathPending == false){
+                    int ranIdleTime = Random.Range(3,10);
+                    _idleTime = ranIdleTime;
+                    _currentState = State.IdleState;
+                    enemyAnimator.SetTrigger("Idle");
+                    LastTriggerAnim = TriggerAnim.Idle;
+                }
             }
         }
         if(_currentState == State.TagetState){
