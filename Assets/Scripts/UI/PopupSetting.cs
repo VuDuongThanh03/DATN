@@ -16,13 +16,9 @@ public class PopupSetting : PopupBase
     [SerializeField] List<string> options;
 
     float rotateSpeed = 0.5f;
-    int graphicsQualityIndex = 2;
+    int graphicsQualityIndex = 1;
     int isSound = 1;
     int isMusic = 1;
-
-    private const float MIN_ROTATE_SPEED = 3;
-    private const float MAX_ROTATE_SPEED = 15;
-
 
     protected override void OnEnable()
     {
@@ -78,10 +74,30 @@ public class PopupSetting : PopupBase
         }
     }
     private void OnSoundToggleChange(bool value){
-
+        if(soundToggle.isOn){
+            PlayerPrefs.SetInt("IsSound",1);
+            if(SoundManager.Instance!=null){
+                SoundManager.Instance.IsSoundFXEnable = true;
+            }
+        }else{
+            PlayerPrefs.SetInt("IsSound",0);
+            if(SoundManager.Instance!=null){
+                SoundManager.Instance.IsSoundFXEnable = false;
+            }
+        }
     }
     private void OnMusicToggleChange(bool value){
-        
+        if(musicToggle.isOn){
+            PlayerPrefs.SetInt("IsMusic",1);
+            if(SoundManager.Instance!=null){
+                SoundManager.Instance.IsMusicEnable = true;
+            }
+        }else{
+            PlayerPrefs.SetInt("IsMusic",0);
+            if(SoundManager.Instance!=null){
+                SoundManager.Instance.IsMusicEnable = false;
+            }
+        }
     }
 
     public override void OnBackBtnClick()
@@ -89,17 +105,8 @@ public class PopupSetting : PopupBase
         base.OnBackBtnClick();
         PlayerPrefs.SetFloat("RotateSpeed",rotateSpeedSlider.value);
         PlayerPrefs.SetInt("GraphicQuality",graphicsQuality.value);
-        if(soundToggle.isOn){
-            PlayerPrefs.SetInt("IsSound",1);
-        }else{
-            PlayerPrefs.SetInt("IsSound",0);
-        }
-        if(musicToggle.isOn){
-            PlayerPrefs.SetInt("IsMusic",1);
-        }else{
-            PlayerPrefs.SetInt("IsMusic",0);
-        }
         PlayerPrefs.Save();
+        GameManager.Instance.UpdateRotateSpeed();
 #if UNITY_EDITOR
         // Cursor.lockState = CursorLockMode.Locked;
 #endif

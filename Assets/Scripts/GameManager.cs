@@ -24,6 +24,8 @@ public class GameManager : Singleton<GameManager>
     public float CurrentStamina => GameModel.CurrentStamina;
     public float CurrentAngryEnergy => GameModel.CurrentAngryEnergy;
     float countDown = 0;
+    private const float MIN_ROTATE_SPEED = 1;
+    private const float MAX_ROTATE_SPEED = 9;
     void LoadConfigs()
     {
         _gameConfig = GameConfig.Load();
@@ -51,7 +53,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         if(PlayerPrefs.HasKey("RotateSpeed")){
-            float rotateSpeed = PlayerPrefs.GetFloat("RotateSpeed");
+            UpdateRotateSpeed();
         }
         if(PlayerPrefs.HasKey("GraphicQuality")){
             int graphicsQualityIndex = PlayerPrefs.GetInt("GraphicQuality");
@@ -88,9 +90,10 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetRotateSpeedBowAttack(bool isStart){
         if(isStart){
-            _ratioRotateSpeed = 6f;
+            _ratioRotateSpeed *= 3;
+            Debug.Log("Rotate Speed: "+_ratioRotateSpeed);
         }else{
-            _ratioRotateSpeed = 2f;
+            UpdateRotateSpeed();
         }
     }
     public void SetPlayerControler(PlayerController playerController){
@@ -104,5 +107,13 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetPlayerMovementController(PlayerMovementController playerMovementController){
         _playerMovementController = playerMovementController;
+    }
+    public void UpdateRotateSpeed(){
+        float value = 0;
+        if(PlayerPrefs.HasKey("RotateSpeed")){
+            value = PlayerPrefs.GetFloat("RotateSpeed");
+        }
+        _ratioRotateSpeed = (MAX_ROTATE_SPEED-MIN_ROTATE_SPEED)*value + MIN_ROTATE_SPEED;
+        Debug.Log("Rotate Speed: "+_ratioRotateSpeed);
     }
 }

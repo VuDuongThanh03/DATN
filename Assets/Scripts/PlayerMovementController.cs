@@ -329,6 +329,8 @@ namespace DATN
                                 //     Quaternion.Euler(_cinemachineTargetPitch, 0, 0);
                                 aimPos.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
                                 CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+                                targetAimPoint.transform.position = GetSymmetricPoint(cameraAim.transform.position,aimPos.transform.position);
+                                targetAimPoint.transform.position-=new Vector3(0,0.5f,0);
                             }
                         }
 

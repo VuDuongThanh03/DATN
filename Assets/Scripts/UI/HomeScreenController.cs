@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : Singleton<MainMenuController>
 {
     [Header("Main Menu")]
     [SerializeField] private Button continueBtn;
@@ -46,15 +46,7 @@ public class MainMenuController : MonoBehaviour
         
     }
     public void OnClickContinueBtn(){
-        handleMainMenuButtonGroup.SetActive(false);
-        handleSelectModeButtonGroup.SetActive(false);
-        handleHomeMenu.SetActive(false);
-        if(evironmentMenu!=null){
-            evironmentMenu.SetActive(false);
-        }
-        if(evironmentMenu!=null){
-            cameraEnvironmentMenu.enabled = false;
-        }
+        OnGoToGamePlay();
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
     public void OnClickNewGameBtn(){
@@ -73,31 +65,37 @@ public class MainMenuController : MonoBehaviour
 #endif
     }
     public void OnClickNormalBtn(){
-        handleMainMenuButtonGroup.SetActive(false);
-        handleSelectModeButtonGroup.SetActive(false);
-        handleHomeMenu.gameObject.SetActive(false);
-        if(evironmentMenu!=null){
-            evironmentMenu.SetActive(false);
-        }
-        if(evironmentMenu!=null){
-            cameraEnvironmentMenu.enabled = false;
-        }
+        OnGoToGamePlay();
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
     public void OnClickHardcoreBtn(){
-        handleMainMenuButtonGroup.SetActive(false);
-        handleSelectModeButtonGroup.SetActive(false);
-        handleHomeMenu.gameObject.SetActive(false);
-        if(evironmentMenu!=null){
-            evironmentMenu.SetActive(false);
-        }
-        if(evironmentMenu!=null){
-            cameraEnvironmentMenu.enabled = false;
-        }
+        OnGoToGamePlay();
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
     public void OnClickBackBtn(){
         handleMainMenuButtonGroup.SetActive(true);
         handleSelectModeButtonGroup.SetActive(false);
+    }
+    public void OnGoToGamePlay(){
+        handleMainMenuButtonGroup.SetActive(false);
+        handleSelectModeButtonGroup.SetActive(false);
+        handleHomeMenu.gameObject.SetActive(false);
+        if(evironmentMenu!=null){
+            evironmentMenu.SetActive(false);
+        }
+        if(evironmentMenu!=null){
+            cameraEnvironmentMenu.enabled = false;
+        }
+    }
+    public void OnBackToMenu(){
+        handleMainMenuButtonGroup.SetActive(true);
+        handleSelectModeButtonGroup.SetActive(false);
+        handleHomeMenu.gameObject.SetActive(true);
+        if(evironmentMenu!=null){
+            evironmentMenu.SetActive(true);
+        }
+        if(evironmentMenu!=null){
+            cameraEnvironmentMenu.enabled = true;
+        }
     }
 }

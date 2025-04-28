@@ -34,20 +34,20 @@ public class SoundManager : Singleton<SoundManager>
     {
         get
         {
-            if (PlayerPrefs.HasKey("SoundFXEnable"))
+            if (PlayerPrefs.HasKey("IsSound"))
             {
-                return PlayerPrefs.GetInt("SoundFXEnable") == 1;
+                return PlayerPrefs.GetInt("IsSound") == 1;
             }
             else
             {
-                PlayerPrefs.SetInt("SoundFXEnable", 1);
+                PlayerPrefs.SetInt("IsSound", 1);
                 return true;
             }
         }
 
         set
         {
-            PlayerPrefs.SetInt("SoundFXEnable", value ? 1 : 0);
+            PlayerPrefs.SetInt("IsSound", value ? 1 : 0);
         }
     }
 
@@ -55,20 +55,20 @@ public class SoundManager : Singleton<SoundManager>
     {
         get
         {
-            if (PlayerPrefs.HasKey("MusicEnable"))
+            if (PlayerPrefs.HasKey("IsMusic"))
             {
-                return PlayerPrefs.GetInt("MusicEnable") == 1;
+                return PlayerPrefs.GetInt("IsMusic") == 1;
             }
             else
             {
-                PlayerPrefs.SetInt("MusicEnable", 1);
+                PlayerPrefs.SetInt("IsMusic", 1);
                 return true;
             }
         }
 
         set
         {
-            PlayerPrefs.SetInt("MusicEnable", value ? 1 : 0);
+            PlayerPrefs.SetInt("IsMusic", value ? 1 : 0);
 
             if (value == false && MusicFXSource.isPlaying)
             {
@@ -320,112 +320,6 @@ public class SoundManager : Singleton<SoundManager>
     }
 
     #endregion 
-
-    // private void ProcessSoundAction(SoundSignalData data)
-    // {
-    //     if (data.SoundActionType == SoundActionType.PLAY)
-    //     {
-    //         if (data.SoundType == SoundType.SOUND_FX)
-    //         {
-    //             var audioClip = soundResource.GetSoundFXAudioClip(data.SoundFXId);
-
-    //             if (audioClip != null)
-    //             {
-
-    //                 SoundFXSource.PlayOneShot(audioClip, data.Volume);
-    //             }
-    //             else
-    //             {
-    //                 YLogger.Error("SoundFXID: " + data.SoundFXId + " not found in SoundDataScriptableObject");
-    //             }
-    //         }
-    //         else //play music
-    //         {
-    //             var audioClip = soundResource.GetSoundMusicAudioClip(data.SoundMusicID);
-    //             if (audioClip != null)
-    //             {
-    //                 if (FadeInFadeOutBGM)
-    //                 {
-    //                     FadeInPlayMusic(audioClip, FadeOutTime, FadeInTime);
-    //                 }
-    //                 else
-    //                 {
-    //                     MusicFXSource.clip = audioClip;
-    //                     MusicFXSource.Play();
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 YLogger.Error("SoundMusicID: " + data.SoundMusicID + " not found in SoundDataScriptableObject");
-    //             }
-    //         }
-    //     }
-    //     else if (data.SoundActionType == SoundActionType.STOP)
-    //     {
-    //         if (data.SoundType == SoundType.SOUND_FX)
-    //         {
-    //             SoundFXSource.Stop();
-    //         }
-    //         else
-    //         {
-    //             MusicFXSource.Stop();
-    //         }
-    //     }
-    //     else if (data.SoundActionType == SoundActionType.PAUSE)
-    //     {
-    //         if (data.SoundType == SoundType.SOUND_FX)
-    //         {
-    //             SoundFXSource.Pause();
-    //         }
-    //         else
-    //         {
-    //             MusicFXSource.Pause();
-    //         }
-    //     }
-
-    // }
-
-    // #region public Methods
-
-    // public void PlaySoundFX(SoundFXID soundFX)
-    // {
-    //     SoundSignalData data = new SoundSignalData(SoundActionType.PLAY, SoundType.SOUND_FX, soundFX, SoundMusicID.NONE);
-    //     ProcessSoundAction(data);
-    // }
-
-    // public void PlaySoundFX(SoundFXID soundFX, float volume)
-    // {
-    //     SoundSignalData data = new SoundSignalData(SoundActionType.PLAY, SoundType.SOUND_FX, soundFX, SoundMusicID.NONE, volume);
-    //     ProcessSoundAction(data);
-    // }
-
-    // public void PlayBGM(SoundMusicID soundMusic)
-    // {
-    //     SoundSignalData data = new SoundSignalData(SoundActionType.PLAY, SoundType.SOUND_MUSIC, SoundFXID.NONE, soundMusic);
-    //     ProcessSoundAction(data);
-    // }
-
-    // public void PauseBGM()
-    // {
-    //     MusicFXSource.Pause();
-    // }
-
-    // public void ResumeBGM()
-    // {
-    //     fadeInCoroutine = StartCoroutine(Fadein(0.5f, MusicFXSource.clip));
-    // }
-
-    // public void StopBGM()
-    // {
-    //     MusicFXSource.Stop();
-    // }
-
-    // public void ChangeVolumeAudioMixer(float value)
-    // {
-    //     int v = (int)(Mathf.Log10(value) * 20);
-    //     AudioMixer.SetFloat("Volume", v);
-    // }
-    // #endregion
 
     #region Volunme
 
