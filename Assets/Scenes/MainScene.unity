@@ -391,6 +391,22 @@ PrefabInstance:
       propertyPath: cameraEnvironmentMenu
       value: 
       objectReference: {fileID: 1514138247}
+    - target: {fileID: 3436861699105552528, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4799804468957867224, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634931989417506356, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5634931989417506356, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6647748096727109970, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
       propertyPath: m_Name
       value: GameManager

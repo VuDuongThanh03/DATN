@@ -77,6 +77,9 @@ public class MainMenuController : Singleton<MainMenuController>
         handleSelectModeButtonGroup.SetActive(false);
     }
     public void OnGoToGamePlay(){
+        if(QuickLoadingController.Instance!=null){
+            QuickLoadingController.Instance.ShowLoading();
+        }
         handleMainMenuButtonGroup.SetActive(false);
         handleSelectModeButtonGroup.SetActive(false);
         handleHomeMenu.gameObject.SetActive(false);
@@ -88,6 +91,9 @@ public class MainMenuController : Singleton<MainMenuController>
         }
     }
     public void OnBackToMenu(){
+        if(QuickLoadingController.Instance!=null){
+            QuickLoadingController.Instance.ShowLoading();
+        }
         handleMainMenuButtonGroup.SetActive(true);
         handleSelectModeButtonGroup.SetActive(false);
         handleHomeMenu.gameObject.SetActive(true);

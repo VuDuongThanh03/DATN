@@ -18,15 +18,21 @@ public class InitManager : Singleton<InitManager>
     {
         try
         {
-            // UpdateLoadingUI(0.1f, "Initializing...");
+            UpdateLoadingUI(0.1f, "Firebase Init...");
+            await UniTask.Delay(500);
             await InitFirebase();
             await UniTask.WaitUntil(() =>
                 !FirebaseManager.Instance.IsFirebaseRemoteconfigEnable ||
                 FirebaseManager.Instance.IsFetchRemoteConfigFinish);
 
             Debug.Log("Fetch Remote Config Finished");
-            // UpdateLoadingUI(0.2f, "Initializing...");
-            // await UniTask.DelayFrame(1);
+            UpdateLoadingUI(0.4f, "Initializing...");
+            await UniTask.Delay(500);
+            await UniTask.DelayFrame(1);
+
+            UpdateLoadingUI(1f, "Loading Scene...");
+            await UniTask.Delay(500);
+            OnLoadingDone();
 
             // InitIAPManager();
             // await UniTask.WaitUntil(() => IAPManager.Instance != null);
@@ -61,5 +67,15 @@ public class InitManager : Singleton<InitManager>
     }
     private void Log(string value,Color color){
         Debug.Log(value);
+    }
+    private void UpdateLoadingUI(float value, string state){
+        if(LoadingScreenController.Instance!=null){
+            LoadingScreenController.Instance.UpdateLoading(value,state);
+        }
+    }
+    private void OnLoadingDone(){
+        if(LoadingScreenController.Instance!=null){
+            LoadingScreenController.Instance.OnFinishLoading();
+        }
     }
 }

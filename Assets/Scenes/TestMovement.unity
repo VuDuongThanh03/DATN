@@ -29297,13 +29297,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -312.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3436861699105552528, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4673092937381513018, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5634931989417506356, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6647748096727109970, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7122532611924899416, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7667695291195042531, guid: 84d9754dca5d9cb488ebb5efd7d2c9c2, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
