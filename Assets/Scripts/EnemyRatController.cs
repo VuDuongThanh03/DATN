@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions.Comparers;
 using UnityEngine.UI;
 
-public class EnemyRatController : MonoBehaviour,IDamageable
+public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
 {
     enum State{
         IdleState,
@@ -167,6 +169,7 @@ public class EnemyRatController : MonoBehaviour,IDamageable
             _countDownDespawn = 5;
             GameManager.Instance.GameModel.IncreaseAngryEnergy(20);
             enemyHealthBar.gameObject.SetActive(false);
+            Drop();
         }
     }
     public void GoToStatePatrol(){
@@ -203,6 +206,39 @@ public class EnemyRatController : MonoBehaviour,IDamageable
                 _currentState = State.TagetState;
                 _navMeshAgent.speed = 2;
                 enemyAnimator.SetTrigger("Run");
+            }
+        }
+    }
+
+    public void Drop()
+    {
+        int ran = Random.Range(0, 2);
+        if(ran<1){
+            return;
+        }
+        DropItemData dropItemData = new DropItemData();
+        DropItemConfig dropItemConfig = DropItemConfig.Load();
+        int sumWeight = 0;
+        if(dropItemConfig!=null&&dropItemConfig.dropItemDatas!=null&&dropItemConfig.dropItemDatas.Count>0){
+            sumWeight = dropItemConfig.dropItemDatas.Sum(x=>x.weight);
+            int ranNumber = Random.Range(1,sumWeight+1);
+            foreach (var item in dropItemConfig.dropItemDatas)
+            {
+                ranNumber-=item.weight;
+                if(ranNumber<=0){
+                    dropItemData = item;
+                    break;
+                }
+            }
+        }
+        if(dropItemData!=null){
+            GameObject itemDrop = Instantiate(dropItemData.prefabDropItem);
+            itemDrop.transform.position = gameObject.transform.position;
+            int navMeshLayer = LayerMask.GetMask("NavMesh");
+            Ray ray = new Ray(itemDrop.transform.position, Vector3.down);
+            if (Physics.Raycast(ray, out RaycastHit hit, 10f, navMeshLayer))
+            {
+                itemDrop.transform.position = hit.point;
             }
         }
     }
