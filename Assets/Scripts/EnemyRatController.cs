@@ -220,7 +220,14 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
         DropItemConfig dropItemConfig = DropItemConfig.Load();
         int sumWeight = 0;
         if(dropItemConfig!=null&&dropItemConfig.dropItemDatas!=null&&dropItemConfig.dropItemDatas.Count>0){
-            sumWeight = dropItemConfig.dropItemDatas.Sum(x=>x.weight);
+            // sumWeight = dropItemConfig.dropItemDatas.Sum(x=>x.weight);
+            foreach (var item in dropItemConfig.dropItemDatas)
+            {
+                if(item.itemType==ItemType.Arrow&&GameManager.Instance.GameModel.IsHaveBow==false){
+                    continue;
+                }
+                sumWeight+=item.weight;
+            }
             int ranNumber = Random.Range(1,sumWeight+1);
             foreach (var item in dropItemConfig.dropItemDatas)
             {
@@ -233,6 +240,8 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
         }
         if(dropItemData!=null){
             GameObject itemDrop = Instantiate(dropItemData.prefabDropItem);
+            int ranQuantity = Random.Range(dropItemData.minQuantity,dropItemData.maxQuantity);
+            itemDrop.GetComponent<CollectableItem>()?.SetupCollectableItem(ranQuantity);
             itemDrop.transform.position = gameObject.transform.position;
             int navMeshLayer = LayerMask.GetMask("NavMesh");
             Ray ray = new Ray(itemDrop.transform.position, Vector3.down);

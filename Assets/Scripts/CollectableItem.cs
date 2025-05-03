@@ -66,4 +66,7 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
         }
         return false;
     }
+    public void SetupCollectableItem(int amount){
+        this.amount = amount;
+    }
 }

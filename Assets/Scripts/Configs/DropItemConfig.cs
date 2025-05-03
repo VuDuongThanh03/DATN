@@ -16,6 +16,7 @@ public class DropItemConfig : ScriptableObject
 [Serializable]
 public class DropItemData{
     public GameObject prefabDropItem;
+    public ItemType itemType;
     public int minQuantity;
     public int maxQuantity;
     public int weight;

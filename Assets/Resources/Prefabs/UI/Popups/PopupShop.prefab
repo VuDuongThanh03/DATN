@@ -1352,6 +1352,7 @@ GameObject:
   - component: {fileID: 1630062990145810738}
   - component: {fileID: 8339449240271662431}
   - component: {fileID: 4120585590460960087}
+  - component: {fileID: 4487142164376562957}
   m_Layer: 0
   m_Name: PopupShop
   m_TagString: Untagged
@@ -1434,6 +1435,18 @@ MonoBehaviour:
   HandleUpgrade3: {fileID: 4920905488582867072}
   HandleItemBow: {fileID: 3740270167136500494}
   HandleItemArrow: {fileID: 7053880659287983057}
+--- !u!114 &4487142164376562957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2592987568712149014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ef34414d9ca7a4a950895dc4a7701e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2619658056995040853
 GameObject:
   m_ObjectHideFlags: 0
