@@ -48,7 +48,8 @@ public class PopupPause : PopupBase
         }
     }
     private void OnClickBackToMenuButton(){
-        SceneManager.UnloadSceneAsync(1);
+        int currentSceneIndex = LevelManager.Instance.GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel);
+        SceneManager.UnloadSceneAsync(currentSceneIndex);
         if(MainMenuController.Instance!=null){
             MainMenuController.Instance.OnBackToMenu();
             OnBackBtnClick();

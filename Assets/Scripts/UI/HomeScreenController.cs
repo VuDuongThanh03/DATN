@@ -38,6 +38,11 @@ public class MainMenuController : Singleton<MainMenuController>
         normalBtn.onClick.AddListener(OnClickNormalBtn);
         hardcoreBtn.onClick.AddListener(OnClickHardcoreBtn);
         backBtn.onClick.AddListener(OnClickBackBtn);
+        if(GameManager.Instance.GameModel.HaveSave){
+            continueBtn.gameObject.SetActive(true);
+        }else{
+            continueBtn.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -47,7 +52,14 @@ public class MainMenuController : Singleton<MainMenuController>
     }
     public void OnClickContinueBtn(){
         OnGoToGamePlay();
-        SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        if(LevelManager.Instance!=null){
+            int sceneIndex = LevelManager.Instance.GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel);
+            if(sceneIndex>=0){
+            SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
+            }else{
+                Debug.LogError("Not have scene index = "+sceneIndex);
+            }
+        }
     }
     public void OnClickNewGameBtn(){
         handleMainMenuButtonGroup.SetActive(false);
@@ -66,11 +78,21 @@ public class MainMenuController : Singleton<MainMenuController>
     }
     public void OnClickNormalBtn(){
         OnGoToGamePlay();
+        GameManager.Instance.GameModel.ResetCharacterSaveData();
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        GameManager.Instance.GameModel.SetCurrentLevel(1);
+        GameManager.Instance.GameModel.SetCurrentGameMode(0);
+        GameManager.Instance.GameModel.SetSaveState(true);
+        GameManager.Instance.GameModel.SaveData();
     }
     public void OnClickHardcoreBtn(){
         OnGoToGamePlay();
+        GameManager.Instance.GameModel.ResetCharacterSaveData();
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        GameManager.Instance.GameModel.SetCurrentLevel(1);
+        GameManager.Instance.GameModel.SetCurrentGameMode(1);
+        GameManager.Instance.GameModel.SetSaveState(true);
+        GameManager.Instance.GameModel.SaveData();
     }
     public void OnClickBackBtn(){
         handleMainMenuButtonGroup.SetActive(true);
@@ -94,6 +116,8 @@ public class MainMenuController : Singleton<MainMenuController>
         if(QuickLoadingController.Instance!=null){
             QuickLoadingController.Instance.ShowLoading();
         }
+        GameManager.Instance.GameModel.RollBackDataCheckPoint();
+        RefreshMainMenu();
         handleMainMenuButtonGroup.SetActive(true);
         handleSelectModeButtonGroup.SetActive(false);
         handleHomeMenu.gameObject.SetActive(true);
@@ -102,6 +126,13 @@ public class MainMenuController : Singleton<MainMenuController>
         }
         if(evironmentMenu!=null){
             cameraEnvironmentMenu.enabled = true;
+        }
+    }
+    public void RefreshMainMenu(){
+        if(GameManager.Instance.GameModel.HaveSave){
+            continueBtn.gameObject.SetActive(true);
+        }else{
+            continueBtn.gameObject.SetActive(false);
         }
     }
 }

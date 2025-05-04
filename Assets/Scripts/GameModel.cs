@@ -93,6 +93,82 @@ public class GameModel
         SaveGame();
         return _gameData;
     }
+    public GameData TryLoadCheckPoint(){
+        GameData temp = new GameData();
+        try
+        {
+            string gameSavePath = GetGameSavePath();
+
+                if (File.Exists(gameSavePath))
+                {
+#if UNITY_EDITOR
+                    //make a copy of the save file for reproducibility for testing purposes
+                    string copyFile = $"{Application.persistentDataPath}/vuduongthanh-save_copy.json";
+                    File.Copy(gameSavePath, copyFile, true);
+
+#endif
+                    Debug.Log($"Loading game save : {gameSavePath}");
+
+                    var bytes = File.ReadAllBytes(gameSavePath);
+                    string text = System.Text.Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+
+                    try
+                    {
+                        temp = Newtonsoft.Json.JsonConvert.DeserializeObject<GameData>(text);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($">>> Parse GameSave error: {e.Message}");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Game save not found, starting a new game!");
+                }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Failed to load saved game due to: {ex}");
+        }
+        return temp;
+    }
+    public void RollBackDataCheckPoint(){
+        GameData temp = TryLoadCheckPoint();
+        if(temp!=null){
+            _gameData = temp;
+            SaveGame();
+        }
+    }
+    public void ResetCharacterSaveData(bool isSave = true){
+        GameConfig gameConfig = GameConfig.Load();
+        _gameData.Coin = gameConfig.CoinDefault;
+        _gameData.Arrow = gameConfig.ArrowDefault;
+        _gameData.ItemHealth = 0;
+        _gameData.ItemStamina = 0;
+        _gameData.IsHaveBow = false;
+        _gameData.Armor = 0;
+        _gameData.EquipLevel = 0;
+        _gameData.Health = gameConfig.HealthDefault;
+        _gameData.Stamina = gameConfig.HealthDefault;
+        _gameData.AngryEnergy = gameConfig.AngryEnergyDefault;
+        if(!isSave){
+            return;
+        }
+        SaveGame();
+    }
+    public void ClearSaveGame(){
+        ResetCharacterSaveData(false);
+        GameData.HaveSave = false;
+        // GameData.CurrentLevel = 1;
+        GameData.CurrentGameMode = 0;
+        SaveGame();
+    }
+    public void SetDataPlayAgain(){
+        ResetCharacterSaveData(false);
+        GameData.HaveSave = false;
+        // GameData.CurrentLevel = 1;
+        SaveGame();
+    }
     public static string GetGameSavePath()
     {
         return $"{Application.persistentDataPath}{_gameSaveFilename}";
@@ -104,7 +180,7 @@ public class GameModel
         if(_gameData.Health>GameConfig.Load().HealthDefault){
             _gameData.Health = GameConfig.Load().HealthDefault;
         }
-        SaveGame();
+        // SaveGame();
         if (PlayerHealthBar.Instance != null)
         {
             PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
@@ -119,7 +195,7 @@ public class GameModel
         if(_gameData.Health<0){
             _gameData.Health = 0;
         }
-        SaveGame();
+        // SaveGame();
         if (PlayerHealthBar.Instance != null)
         {
             PlayerHealthBar.Instance.OnHealthChange(_gameData.Stamina);
@@ -131,7 +207,7 @@ public class GameModel
     }
     public void SetHealth(float value){
         _gameData.Health = value;
-        SaveGame();
+        // SaveGame();
         if(PlayerHealthBar.Instance!=null){
             PlayerHealthBar.Instance.OnHealthChange(_gameData.Health);
         }
@@ -148,7 +224,7 @@ public class GameModel
     public float CurrentStamina => _gameData.Stamina;
     public void SetStamina(float value){
         _gameData.Stamina = value;
-        SaveGame();
+        // SaveGame();
         if (PlayerStaminaBar.Instance != null){
             PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
         }
@@ -166,7 +242,7 @@ public class GameModel
         if(_gameData.Stamina>GameConfig.Load().StatminaDefault){
             _gameData.Stamina = GameConfig.Load().StatminaDefault;
         }
-        SaveGame();
+        // SaveGame();
         if (PlayerStaminaBar.Instance != null){
             PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
         }
@@ -181,7 +257,7 @@ public class GameModel
         if(_gameData.Stamina<0){
             _gameData.Stamina = 0;
         }
-        SaveGame();
+        // SaveGame();
         if (PlayerStaminaBar.Instance != null){
             PlayerStaminaBar.Instance.OnStaminaChange(_gameData.Stamina);
         }
@@ -201,18 +277,18 @@ public class GameModel
             MainHud.Instance.SetActiveButtonSkill(true);
         }
         Debug.Log("IncreaseAngryEnergy: value = "+value+" current = "+_gameData.AngryEnergy);
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.OnAngryEnergyChange();
     }
     public void SetAngryEnergy(float value){
         _gameData.AngryEnergy = value;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.OnAngryEnergyChange();
     }
     public bool IsHaveBow => _gameData.IsHaveBow;
     public void UnlockBow(){
         _gameData.IsHaveBow = true;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.OnUnlockBow();
     }
     public int CurrentItemHealth => GameData.ItemHealth;
@@ -221,7 +297,7 @@ public class GameModel
         if(GameData.ItemHealth>GameConfig.Load().MaxCountItemHealth){
             GameData.ItemHealth = GameConfig.Load().MaxCountItemHealth;
         }
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
         if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
             MainHud.Instance.SetActiveUseItemHealthButton(true);
@@ -233,7 +309,7 @@ public class GameModel
             return false;
         }
         GameData.ItemHealth+=amount;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
         if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
             MainHud.Instance.SetActiveUseItemHealthButton(true);
@@ -245,7 +321,7 @@ public class GameModel
             return;
         }
         GameData.ItemHealth-=amount;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
     }
     public int CurrentItemStamina => GameData.ItemStamina;
@@ -255,7 +331,7 @@ public class GameModel
             return false;
         }
         GameData.ItemStamina+=amount;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
         if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
             MainHud.Instance.SetActiveUseStaminaItemButton(true);
@@ -267,13 +343,13 @@ public class GameModel
             return;
         }
         GameData.ItemStamina-=amount;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
     }
     public float CurrentCoin => _gameData.Coin;
     public void IncreaseCoin(int value){
         _gameData.Coin+=value;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
     }
     public void DecreaseCoin(int value){
@@ -281,7 +357,7 @@ public class GameModel
         if(_gameData.Coin<0){
             _gameData.Coin = 0;
         }
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
     }
     public bool TryDecreaseCoin(int value){
@@ -289,7 +365,7 @@ public class GameModel
             return false;
         }
         _gameData.Coin-=value;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
         return true;
     }
@@ -300,19 +376,36 @@ public class GameModel
             return false;
         }
         _gameData.Arrow+=amount;
-        SaveGame();
+        // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
         return true;
     }
     public void DecreaseArrow(int amount){
         _gameData.Arrow-=amount;
         MainHud.Instance.UpdateResourceDisplay();
-        SaveGame();
+        // SaveGame();
     }
     public int CurrentEquipLevel => GameData.EquipLevel;
     public void SetEquipLevel(int equipLevel){
         GameData.EquipLevel=equipLevel;
         GameManager.Instance.PlayerEquipController.OnUpgradeEquip();
+        // SaveGame();
+    }
+    public bool HaveSave => GameData.HaveSave;
+    public void SetSaveState(bool haveSave){
+        GameData.HaveSave = haveSave;
+        // SaveGame();
+    }
+    public int CurrentLevel => GameData.CurrentLevel;
+    public void SetCurrentLevel(int currentLevel){
+        GameData.CurrentLevel = currentLevel;
+        // SaveGame();
+    }
+    public int CurrentGameMode => GameData.CurrentGameMode;
+    public void SetCurrentGameMode(int gameMode){
+        GameData.CurrentGameMode = gameMode;
+    }
+    public void SaveData(){
         SaveGame();
     }
 }

@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelController : Singleton<LevelController>
+public class LevelController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private GameObject playerStartSpawnPoint;
-    public GameObject PlayerStartSpawnPoint => playerStartSpawnPoint;
+    [SerializeField] List<GameObject> listEnemyAlive;
+    List<GameObject> listEnemyDied;
+    public bool IsClearEnemy(){
+        if(listEnemyAlive!=null&&listEnemyAlive.Count==0){
+            return true;
+        }
+        return false;
+    }
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -17,7 +21,15 @@ public class LevelController : Singleton<LevelController>
     {
         
     }
-    public void SpawnPlayer(){
-
+    public void OnEnterRunOutTrigger(Collider collider){
+        if(GameManager.Instance!=null&&GameManager.Instance.PlayerController!=null){
+            if(collider.gameObject == GameManager.Instance.PlayerController.gameObject){
+                if(IsClearEnemy()){
+                    if(LevelManager.Instance!=null){
+                        LevelManager.Instance.NextLevel();
+                    }
+                }
+            }
+        }
     }
 }

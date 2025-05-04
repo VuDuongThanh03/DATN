@@ -18,6 +18,9 @@ public class GameData
     public float PlayedTime;
     public bool IsHaveBow;
     public int EquipLevel;
+    public bool HaveSave;
+    public int CurrentLevel;
+    public int CurrentGameMode;
     public GameData(){
         UserAlias = "Default";
         GamerAge = 0;
@@ -32,5 +35,8 @@ public class GameData
         PlayedTime = 0;
         IsHaveBow = false;
         EquipLevel = 0;
+        HaveSave = false;
+        CurrentLevel = 1;
+        CurrentGameMode = 0;
     }
 }

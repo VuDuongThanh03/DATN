@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using EPOOutline;
 using UnityEngine;
 
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour,IDamageable
             _animator.SetTrigger("TakeDame");
         }
         if(GameManager.Instance.CurrentHealth==0){
+            OnCharacterDie();
             Debug.Log("Player Die");
             _playerIsDie = true;
             _animator.SetTrigger("Die");
@@ -55,7 +58,7 @@ public class PlayerController : MonoBehaviour,IDamageable
             TakeDame(10);
         }
         if(other.CompareTag("RatSword")){
-            TakeDame(2);
+            TakeDame(10);
         }
         if(other.gameObject.GetComponent<IInteractable>()!=null){
             MainHud.Instance.SetActiveInteractButton(true);
@@ -126,6 +129,13 @@ public class PlayerController : MonoBehaviour,IDamageable
                 }
             }
             
+        }
+    }
+    public async Task OnCharacterDie(){
+        await UniTask.Delay(2000);
+        PopupManager.Instance.GetPopup("PopupLose");
+        if(GameManager.Instance.GameModel.CurrentGameMode==1){
+            GameManager.Instance.GameModel.SetDataPlayAgain();
         }
     }
 }
