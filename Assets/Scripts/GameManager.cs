@@ -10,11 +10,13 @@ public class GameManager : Singleton<GameManager>
     private AttackController _attackController;
     private PlayerEquipController _playerEquipController;
     private PlayerMovementController _playerMovementController;
+    private LevelController _currentLevelController;
     private float _ratioRotateSpeed = 2f;
     public PlayerController PlayerController => _playerController;
     public AttackController AttackController => _attackController;
     public PlayerEquipController PlayerEquipController => _playerEquipController;
     public PlayerMovementController PlayerMovementController => _playerMovementController;
+    public LevelController CurrentLevelController => _currentLevelController;
     public float RatioRotateSpeed => _ratioRotateSpeed;
     public Camera MainCamera;
     public GameConfig _gameConfig;
@@ -107,6 +109,9 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetPlayerMovementController(PlayerMovementController playerMovementController){
         _playerMovementController = playerMovementController;
+    }
+    public void SetCurrentLevelController(LevelController levelController){
+        _currentLevelController = levelController;
     }
     public void UpdateRotateSpeed(){
         float value = 0;

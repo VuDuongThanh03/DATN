@@ -14,6 +14,10 @@ public class LevelController : MonoBehaviour
     }
     void Start()
     {
+        if(GameManager.Instance!=null){
+            GameManager.Instance.SetCurrentLevelController(this);
+        }
+        listEnemyDied = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -28,8 +32,16 @@ public class LevelController : MonoBehaviour
                     if(LevelManager.Instance!=null){
                         LevelManager.Instance.NextLevel();
                     }
+                }else{
+                    FeedBackMessageController.Instance.SetMessage("You need destroy all enemy");
                 }
             }
+        }
+    }
+    public void OnEnemyDie(GameObject enemy){
+        if(listEnemyAlive.Contains(enemy)){
+            listEnemyDied.Add(enemy);
+            listEnemyAlive.Remove(enemy);
         }
     }
 }

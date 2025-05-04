@@ -155,6 +155,9 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
             LastTriggerAnim = TriggerAnim.TakeDame;
         }
         if(_currentStats.health==0){
+            if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
+                GameManager.Instance.CurrentLevelController.OnEnemyDie(gameObject);
+            }
             StopMove();
             Debug.Log("Enemy Die");
             _currentState = State.Die;

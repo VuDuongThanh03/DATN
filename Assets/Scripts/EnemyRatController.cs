@@ -162,6 +162,9 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
             LastTriggerAnim = TriggerAnim.TakeDame;
         }
         if(_currentStats.health==0){
+            if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
+                GameManager.Instance.CurrentLevelController.OnEnemyDie(gameObject);
+            }
             StopMove();
             Debug.Log("Enemy Die");
             _currentState = State.Die;
@@ -173,8 +176,8 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
         }
     }
     public void GoToStatePatrol(){
-        int x = Random.Range(-10, 10);
-        int z = Random.Range(-10, 10);
+        int x = Random.Range(-8, 8);
+        int z = Random.Range(-8, 8);
         _targetPos = _posSpawn + new Vector3(x, 0, z);
         _navMeshAgent.SetDestination(_targetPos);
         _currentState = State.PatrolState;
