@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.Assertions.Comparers;
 using UnityEngine.UI;
 
-public class EnemyVirussController : MonoBehaviour,IDamageable
+public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
 {
     enum State{
         IdleState,
@@ -164,11 +164,12 @@ public class EnemyVirussController : MonoBehaviour,IDamageable
             _countDownDespawn = 5;
             GameManager.Instance.GameModel.IncreaseAngryEnergy(20);
             enemyHealthBar.gameObject.SetActive(false);
+            Drop();
         }
     }
     public void GoToStatePatrol(){
-        int x = Random.Range(-10, 10);
-        int z = Random.Range(-10, 10);
+        int x = Random.Range(-5, 5);
+        int z = Random.Range(-5, 5);
         _targetPos = _posSpawn + new Vector3(x, 0, z);
         _navMeshAgent.SetDestination(_targetPos);
         _currentState = State.PatrolState;
@@ -209,6 +210,48 @@ public class EnemyVirussController : MonoBehaviour,IDamageable
                 gameObject.transform.forward = (GameManager.Instance.PlayerController.gameObject.transform.position-gameObject.transform.position).normalized;
                 // _navMeshAgent.speed = 3;
                 // enemyAnimator.SetTrigger("Run");
+            }
+        }
+    }
+
+    public void Drop()
+    {
+        int ran = Random.Range(0, 2);
+        if(ran<1){
+            return;
+        }
+        DropItemData dropItemData = new DropItemData();
+        DropItemConfig dropItemConfig = DropItemConfig.Load();
+        int sumWeight = 0;
+        if(dropItemConfig!=null&&dropItemConfig.dropItemDatas!=null&&dropItemConfig.dropItemDatas.Count>0){
+            // sumWeight = dropItemConfig.dropItemDatas.Sum(x=>x.weight);
+            foreach (var item in dropItemConfig.dropItemDatas)
+            {
+                if(item.itemType==ItemType.Arrow&&GameManager.Instance.GameModel.IsHaveBow==false){
+                    continue;
+                }
+                sumWeight+=item.weight;
+            }
+            int ranNumber = Random.Range(1,sumWeight+1);
+            foreach (var item in dropItemConfig.dropItemDatas)
+            {
+                ranNumber-=item.weight;
+                if(ranNumber<=0){
+                    dropItemData = item;
+                    break;
+                }
+            }
+        }
+        if(dropItemData!=null){
+            GameObject itemDrop = Instantiate(dropItemData.prefabDropItem);
+            int ranQuantity = Random.Range(dropItemData.minQuantity,dropItemData.maxQuantity);
+            itemDrop.GetComponent<CollectableItem>()?.SetupCollectableItem(ranQuantity);
+            itemDrop.transform.position = gameObject.transform.position;
+            int navMeshLayer = LayerMask.GetMask("NavMesh");
+            Ray ray = new Ray(itemDrop.transform.position, Vector3.down);
+            if (Physics.Raycast(ray, out RaycastHit hit, 10f, navMeshLayer))
+            {
+                itemDrop.transform.position = hit.point;
             }
         }
     }
