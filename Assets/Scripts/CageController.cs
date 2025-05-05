@@ -12,6 +12,7 @@ public class CageController : MonoBehaviour,IDamageable
     public Slider enemyHealthBar;
     public float CageHealthDefault = 200;
     public float CageArmor = 0;
+    public GameObject fx;
     float CurrentCageHealth;
 
 
@@ -44,6 +45,7 @@ public class CageController : MonoBehaviour,IDamageable
                 //Ready for interact and end game
                 GameManager.Instance.CurrentLevelController.SetReadyForEnd();
             }
+            fx.SetActive(true);
             gameObject.SetActive(false);
         }
     }
