@@ -122,7 +122,7 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
                             enemyAnimator.SetTrigger("Attack");
                             LastTriggerAnim = TriggerAnim.Attack;
                             StartCoroutine(WaitForAnimation(1,0.5f));
-                            _attackCountDown = 5;
+                            _attackCountDown = 3;
                             ContinueToPatrol();
                             enemyAnimator.SetTrigger("Idle");
                             LastTriggerAnim = TriggerAnim.Idle;

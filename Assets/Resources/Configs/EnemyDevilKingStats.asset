@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EnemyDevilKingStats
   m_EditorClassIdentifier: 
   EnemyStats:
-    health: 100
+    health: 300
     armor: 0
