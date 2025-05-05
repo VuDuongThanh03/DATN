@@ -13,8 +13,8 @@ public class FowardPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance!=null&&GameManager.Instance.PlayerController!=null){
-            Vector3 direction = GameManager.Instance.PlayerController.gameObject.transform.position-gameObject.transform.position;
+        if(GameManager.Instance!=null&&Camera.main!=null){
+            Vector3 direction = Camera.main.gameObject.transform.position-gameObject.transform.position;
             gameObject.transform.forward = new Vector3(direction.x,0,direction.z).normalized;
         }
     }

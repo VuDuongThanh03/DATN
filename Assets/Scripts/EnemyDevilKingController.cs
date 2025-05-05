@@ -41,6 +41,7 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        _posSpawn = gameObject.transform.position;
         _currentState = State.IdleState;
         _currentStats = new EnemyStats();
         _currentStats.health = _baseStats.EnemyStats.health;

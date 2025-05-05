@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
+    public Action OnReadyForEnd;
     [SerializeField] List<GameObject> listEnemyAlive;
     List<GameObject> listEnemyDied;
+    bool isReadyForEnd = false;
+    public bool IsReadyForEnd => isReadyForEnd;
     public bool IsClearEnemy(){
         if(listEnemyAlive!=null&&listEnemyAlive.Count==0){
             return true;
@@ -43,5 +47,9 @@ public class LevelController : MonoBehaviour
             listEnemyDied.Add(enemy);
             listEnemyAlive.Remove(enemy);
         }
+    }
+    public void SetReadyForEnd(){
+        isReadyForEnd = true;
+        OnReadyForEnd?.Invoke();
     }
 }
