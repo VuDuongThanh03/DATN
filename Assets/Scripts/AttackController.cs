@@ -36,12 +36,14 @@ public class AttackController : MonoBehaviour
     private float countDownDameTurnSpine = 0;
     private float countDownNormalAttack = 0;
     private float countDownBowAttack = 0;
+    EquipmentStatsConfig equipmentStatsConfig;
     // Start is called before the first frame update
     void Awake()
     {
     }
     void Start()
     {
+        equipmentStatsConfig = EquipmentStatsConfig.Load();
         GameManager.Instance.SetAttackControler(this);
         playerController = gameObject.GetComponent<PlayerController>();
         _input = gameObject.GetComponent<MyControllInputs>();
@@ -173,7 +175,8 @@ public class AttackController : MonoBehaviour
                             arrow.transform.position = ArrowSpawn.position;
                             arrow.transform.rotation = ArrowSpawn.rotation;
                             //Set dame cho mui ten
-                            arrow.GetComponent<ArrowController>()?.SetDameValue(20f);
+                            float bowDamage = equipmentStatsConfig.GetEquipmentStat(GameManager.Instance.GameModel.CurrentEquipLevel).bowDamage;
+                            arrow.GetComponent<ArrowController>()?.SetDameValue(bowDamage);
 
                             RaycastHit hit;
                             Camera cam = Camera.main;
@@ -231,6 +234,7 @@ public class AttackController : MonoBehaviour
         }
     }
     public void CheckAttack(){
+        float swordDamage = equipmentStatsConfig.GetEquipmentStat(GameManager.Instance.GameModel.CurrentEquipLevel).swordDamage;
         // List<GameObject> listObjectTakeDame = new List<GameObject>();
         
         // Vector3 forward = gameObject.transform.forward;
@@ -252,7 +256,7 @@ public class AttackController : MonoBehaviour
                     damageObject = item.gameObject.GetComponentInParent<IDamageable>();
                 }
                 if(damageObject!=null){
-                    damageObject.TakeDame(10);
+                    damageObject.TakeDame(swordDamage);
                 }
             }
         }
@@ -343,6 +347,7 @@ public class AttackController : MonoBehaviour
         countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
     }
     public void CheckSpinAttack(){
+        float swordDamage = equipmentStatsConfig.GetEquipmentStat(GameManager.Instance.GameModel.CurrentEquipLevel).swordDamage;
         if(IsSpinAttackNow){
             countDownDameTurnSpine-=Time.deltaTime;
             if(countDownDameTurnSpine<=0){
@@ -356,7 +361,7 @@ public class AttackController : MonoBehaviour
                             damageObject = item.gameObject.GetComponentInParent<IDamageable>();
                         }
                         if(damageObject!=null){
-                            damageObject.TakeDame(2);
+                            damageObject.TakeDame(swordDamage/5);
                         }
                     }
                 }

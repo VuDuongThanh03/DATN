@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour,IDamageable
     public Action OnPlayerDie;
     private List<GameObject> interactableObjects;
     private GameObject lastedObjectTriggerPlayer;
+    EquipmentStatsConfig equipmentStatsConfig;
     void Awake()
     {
         interactableObjects = new List<GameObject>();
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour,IDamageable
     void Start()
     {
         _gameConfig = GameConfig.Load();
+        equipmentStatsConfig = EquipmentStatsConfig.Load();
         GameManager.Instance.SetPlayerControler(this);
         _animator = gameObject.GetComponent<Animator>();
         PlayerHealthBar.Instance.SetupHealthBar(GameManager.Instance.CurrentHealth,_gameConfig.HealthDefault);
@@ -38,7 +40,8 @@ public class PlayerController : MonoBehaviour,IDamageable
         
     }
     public void TakeDame(float dame){
-        GameManager.Instance.GameModel.SetHealth(Mathf.Clamp(GameManager.Instance.CurrentHealth-(dame-(dame*(GameManager.Instance.CurrentArmor/100))),0f,_gameConfig.HealthDefault));
+        float armor = equipmentStatsConfig.GetEquipmentStat(GameManager.Instance.GameModel.CurrentEquipLevel).armor;
+        GameManager.Instance.GameModel.SetHealth(Mathf.Clamp(GameManager.Instance.CurrentHealth-(dame-(dame*(armor/100))),0f,_gameConfig.HealthDefault));
         GameManager.Instance.GameModel.IncreaseAngryEnergy(dame*2);
         Debug.Log("Player take dame: "+ dame+" Current Health: "+GameManager.Instance.CurrentHealth);
         if(GameManager.Instance.CurrentHealth>0&&dame>0){
