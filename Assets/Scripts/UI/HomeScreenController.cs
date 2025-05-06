@@ -73,7 +73,7 @@ public class MainMenuController : Singleton<MainMenuController>
         handleSelectModeButtonGroup.SetActive(true);
     }
     public void OnClickEventBtn(){
-        
+        PopupManager.Instance?.GetPopup("PopupEvent");
     }
     public void OnClickSettingBtn(){
         PopupManager.Instance?.GetPopup("PopupSetting");

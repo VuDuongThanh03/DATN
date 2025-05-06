@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DATN;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -56,6 +57,11 @@ public class GameManager : Singleton<GameManager>
     }
     private async void Start()
     {
+        //chờ fetch remote config
+        await UniTask.WaitUntil(() =>
+                !FirebaseManager.Instance.IsFirebaseRemoteconfigEnable ||
+                FirebaseManager.Instance.IsFetchRemoteConfigFinish);
+
         if(PlayerPrefs.HasKey("RotateSpeed")){
             UpdateRotateSpeed();
         }
