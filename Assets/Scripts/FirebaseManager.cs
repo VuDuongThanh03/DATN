@@ -10,6 +10,7 @@ using Firebase;
 using Firebase.Analytics;
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
+using Firebase.Crashlytics;
 using UnityEngine;
 
 public class FirebaseManager : MonoBehaviour
@@ -17,8 +18,6 @@ public class FirebaseManager : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] bool isDebug;
     [SerializeField] private bool FirebaseRemoteconfig;
-    [SerializeField] private bool FirebaseFirestore;
-    [SerializeField] private bool FirebaseMessage;
     bool _isInitInProcess = true;
     public bool IsInitProcessFinished => !_isInitInProcess;
     public bool IsFirebaseRemoteconfigEnable => FirebaseRemoteconfig;
@@ -264,8 +263,8 @@ public class FirebaseManager : MonoBehaviour
     }
     private void SetUserIdCrashlytic(String id)
     {
-        // Debug.Log($"Crashlytics | Setting Crashlytics user identifier: {id}");
-        // Crashlytics.SetUserId(id);
+        Debug.Log($"Crashlytics | Setting Crashlytics user identifier: {id}");
+        Crashlytics.SetUserId(id);
     }
 
     #endregion
