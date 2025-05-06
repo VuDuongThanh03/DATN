@@ -26,6 +26,8 @@ public class GameManager : Singleton<GameManager>
     public float CurrentStamina => GameModel.CurrentStamina;
     public float CurrentAngryEnergy => GameModel.CurrentAngryEnergy;
     float countDown = 0;
+    bool isShowHiddenButton;
+    public bool IsShowHiddenButton => isShowHiddenButton;
     private const float MIN_ROTATE_SPEED = 1;
     private const float MAX_ROTATE_SPEED = 9;
     void LoadConfigs()
@@ -52,7 +54,7 @@ public class GameManager : Singleton<GameManager>
         LoadConfigs();
         LoadGame();
     }
-    private void Start()
+    private async void Start()
     {
         if(PlayerPrefs.HasKey("RotateSpeed")){
             UpdateRotateSpeed();
@@ -74,6 +76,13 @@ public class GameManager : Singleton<GameManager>
         }
         if(PlayerPrefs.HasKey("IsMusic")){
             bool isMusic = PlayerPrefs.GetInt("IsMusic")==1;
+        }
+        if (FirebaseManager.Instance != null)
+        {
+            if (FirebaseManager.Instance.GetRemoteConfigValue("Hidden_Feature").BooleanValue==true)
+            {
+                isShowHiddenButton = FirebaseManager.Instance.GetRemoteConfigValue("Hidden_Feature").BooleanValue;
+            }
         }
     }
     void Update()

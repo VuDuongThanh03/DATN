@@ -10,6 +10,7 @@ public class MainMenuController : Singleton<MainMenuController>
     [Header("Main Menu")]
     [SerializeField] private Button continueBtn;
     [SerializeField] private Button newGameBtn;
+    [SerializeField] private Button eventBtn;
     [SerializeField] private Button settingBtn;
     [SerializeField] private Button exitBtn;
 
@@ -33,6 +34,7 @@ public class MainMenuController : Singleton<MainMenuController>
     {
         continueBtn.onClick.AddListener(OnClickContinueBtn);
         newGameBtn.onClick.AddListener(OnClickNewGameBtn);
+        eventBtn.onClick.AddListener(OnClickEventBtn);
         settingBtn.onClick.AddListener(OnClickSettingBtn);
         exitBtn.onClick.AddListener(OnClickExitBtn);
         normalBtn.onClick.AddListener(OnClickNormalBtn);
@@ -42,6 +44,11 @@ public class MainMenuController : Singleton<MainMenuController>
             continueBtn.gameObject.SetActive(true);
         }else{
             continueBtn.gameObject.SetActive(false);
+        }
+        if(GameManager.Instance.IsShowHiddenButton){
+            eventBtn.gameObject.SetActive(true);
+        }else{
+            eventBtn.gameObject.SetActive(false);
         }
     }
 
@@ -64,6 +71,9 @@ public class MainMenuController : Singleton<MainMenuController>
     public void OnClickNewGameBtn(){
         handleMainMenuButtonGroup.SetActive(false);
         handleSelectModeButtonGroup.SetActive(true);
+    }
+    public void OnClickEventBtn(){
+        
     }
     public void OnClickSettingBtn(){
         PopupManager.Instance?.GetPopup("PopupSetting");

@@ -9,6 +9,7 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
 {
     [SerializeField] TMP_Text stateLoadingText;
     [SerializeField] Slider loadingSlider;
+    [SerializeField] GameObject handleMainMenu;
     void Start()
     {
         
@@ -23,6 +24,7 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
         stateLoadingText.text = state;
     }
     public void OnFinishLoading(){
+        handleMainMenu.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 }

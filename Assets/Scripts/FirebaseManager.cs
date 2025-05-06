@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Firebase;
@@ -82,6 +85,24 @@ public class FirebaseManager : MonoBehaviour
                 }
             });
         }
+    }
+    RemoteConfigValue _getValueTemp = new RemoteConfigValue();
+    public RemoteConfigValue GetRemoteConfigValue(string key)
+    {
+        RemoteConfigValue.Clone(_getValueTemp, FirebaseRemoteConfig.DefaultInstance.GetValue(key));
+
+        // check if string value is null or not a number
+        if (string.IsNullOrEmpty(_getValueTemp.StringValue))
+        {
+            _getValueTemp.StringValue = "";
+        }
+        // // check if number is null
+        // else if (Double.IsNaN(_getValueTemp.DoubleValue))
+        // {
+        //     _getValueTemp.SetNumber(0);
+        // }
+
+        return _getValueTemp;
     }
     async void InitServices(Action onComplete)
     {
@@ -215,3 +236,124 @@ public class FirebaseManager : MonoBehaviour
     }
     #endregion
 }
+public class RemoteConfigValue
+    {
+        internal static Regex booleanTruePattern = new Regex("^(1|true|t|yes|y|on)$", RegexOptions.IgnoreCase);
+        internal static Regex booleanFalsePattern = new Regex("^(0|false|f|no|n|off|)$", RegexOptions.IgnoreCase);
+
+        public bool BooleanValue
+        {
+            get
+            {
+                string stringValue = StringValue;
+                if (booleanTruePattern.IsMatch(stringValue))
+                {
+                    return true;
+                }
+                if (booleanFalsePattern.IsMatch(stringValue))
+                {
+                    return false;
+                }
+                throw new FormatException($"ConfigValue '{stringValue}' is not a boolean value");
+            }
+        }
+
+        public IEnumerable<byte> ByteArrayValue => Data;
+
+        public double DoubleValue
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToDouble(StringValue, CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public long LongValue
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt64(StringValue, CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+        // public long LongValue => Convert.ToInt64(StringValue, CultureInfo.InvariantCulture);
+
+        public float FloatValue
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToSingle(StringValue, CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+        // public float FloatValue => Convert.ToSingle(StringValue, CultureInfo.InvariantCulture);
+
+        public int IntegerValue
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(StringValue, CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+        // public int IntegerValue => Convert.ToInt32(StringValue, CultureInfo.InvariantCulture);
+
+        public string StringValue
+        {
+            get
+            {
+                return Encoding.UTF8.GetString(Data);
+            }
+            set
+            {
+                Data = Encoding.UTF8.GetBytes(value);
+            }
+        }
+
+        internal byte[] Data { get; set; }
+
+        public ValueSource Source { get; internal set; }
+
+        public bool isNAN()
+        {
+            if (Double.IsNaN(DoubleValue))
+                return true;
+
+            return false;
+        }
+
+        public void SetNumber(int number)
+        {
+            Data = BitConverter.GetBytes(number);
+        }
+
+        public static void Clone(RemoteConfigValue value, ConfigValue firebaseValue)
+        {
+            value.Data = Encoding.UTF8.GetBytes(firebaseValue.StringValue);
+        }
+    }
