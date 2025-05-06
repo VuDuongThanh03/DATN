@@ -156,6 +156,9 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
         if(_currentStats.health==0){
             if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
                 GameManager.Instance.CurrentLevelController.OnEnemyDie(gameObject);
+                if(FirebaseManager.Instance!=null){
+                    FirebaseManager.EventEnemyDie("Virus",GameManager.Instance.GameModel.CurrentLevel,GameManager.Instance.CurrentLevelController.GetAmountCurrentEnemy());
+                }
             }
             StopMove();
             Debug.Log("Enemy Die");

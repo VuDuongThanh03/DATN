@@ -102,7 +102,7 @@ public class PopupShop : PopupBase
     }
     public void OnClickBuyHealth(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().HealthBottlePrice){
-            if(GameManager.Instance.GameModel.TryIncreaseItemHealth(1)){
+            if(GameManager.Instance.GameModel.TryIncreaseItemHealth(1,"Buy")){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().HealthBottlePrice);
                 UpdateCurrentItemAmout();
             }
@@ -112,7 +112,7 @@ public class PopupShop : PopupBase
     }
     public void OnClickBuyStamina(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().StaminaBottlePrice){
-            if(GameManager.Instance.GameModel.TryIncreaseItemStamina(1)){
+            if(GameManager.Instance.GameModel.TryIncreaseItemStamina(1,"Buy")){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().StaminaBottlePrice);
                 UpdateCurrentItemAmout();
             }
@@ -122,7 +122,7 @@ public class PopupShop : PopupBase
     }
     public void OnClickBuyArrow(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().ArrowPrice){
-            if(GameManager.Instance.GameModel.TryIncreaseArrow(1)){
+            if(GameManager.Instance.GameModel.TryIncreaseArrow(1,"Buy")){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().ArrowPrice);
                 UpdateCurrentItemAmout();
             }

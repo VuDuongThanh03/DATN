@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -8,8 +9,10 @@ public class LevelController : MonoBehaviour
     public Action OnReadyForEnd;
     [SerializeField] List<GameObject> listEnemyAlive;
     List<GameObject> listEnemyDied;
+    float playTime = 0;
     bool isReadyForEnd = false;
     public bool IsReadyForEnd => isReadyForEnd;
+    public float PlayTime => playTime;
     public bool IsClearEnemy(){
         if(listEnemyAlive!=null&&listEnemyAlive.Count==0){
             return true;
@@ -27,7 +30,7 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        playTime+=Time.deltaTime;
     }
     public void OnEnterRunOutTrigger(Collider collider){
         if(GameManager.Instance!=null&&GameManager.Instance.PlayerController!=null){
@@ -51,5 +54,11 @@ public class LevelController : MonoBehaviour
     public void SetReadyForEnd(){
         isReadyForEnd = true;
         OnReadyForEnd?.Invoke();
+    }
+    public int GetAmountCurrentEnemy(){
+        if(listEnemyAlive!=null){
+            return listEnemyAlive.Count;
+        }
+        return 0;
     }
 }

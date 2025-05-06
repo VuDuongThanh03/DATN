@@ -136,6 +136,10 @@ public class PlayerController : MonoBehaviour,IDamageable
     }
     public async Task OnCharacterDie(){
         await UniTask.Delay(2000);
+        if (FirebaseManager.Instance != null)
+        {
+            FirebaseManager.EventPlayerDie(GameManager.Instance.GameModel.CurrentLevel, GameManager.Instance.CurrentLevelController.PlayTime,GameManager.Instance.CurrentLevelController.GetAmountCurrentEnemy());
+        }
         PopupManager.Instance.GetPopup("PopupLose");
         if(GameManager.Instance.GameModel.CurrentGameMode==1){
             GameManager.Instance.GameModel.SetDataPlayAgain();

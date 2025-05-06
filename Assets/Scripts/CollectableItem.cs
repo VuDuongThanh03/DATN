@@ -35,7 +35,7 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
             return true;
         }
         if(itemType==ItemType.HealthBottle&&isInteract==false){
-            if(GameManager.Instance.GameModel.TryIncreaseItemHealth(amount)){
+            if(GameManager.Instance.GameModel.TryIncreaseItemHealth(amount,"Collect")){
                 gameObject.SetActive(false);
                 isInteract=true;
                 return true;
@@ -45,7 +45,7 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
             }
         }
         if(itemType==ItemType.StaminaBottle&&isInteract==false){
-            if(GameManager.Instance.GameModel.TryIncreaseItemStamina(amount)){
+            if(GameManager.Instance.GameModel.TryIncreaseItemStamina(amount,"Collect")){
                 gameObject.SetActive(false);
                 isInteract=true;
                 return true;
@@ -55,7 +55,7 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
             }
         }
         if(itemType==ItemType.Arrow&&isInteract==false){
-            if(GameManager.Instance.GameModel.TryIncreaseArrow(amount)){
+            if(GameManager.Instance.GameModel.TryIncreaseArrow(amount,"Collect")){
                 gameObject.SetActive(false);
                 isInteract=true;
                 return true;

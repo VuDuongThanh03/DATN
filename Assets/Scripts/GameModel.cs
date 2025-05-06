@@ -303,13 +303,16 @@ public class GameModel
             MainHud.Instance.SetActiveUseItemHealthButton(true);
         }
     }
-    public bool TryIncreaseItemHealth(int amount){
+    public bool TryIncreaseItemHealth(int amount,string source=""){
         if(GameData.ItemHealth+amount>GameConfig.Load().MaxCountItemHealth){
             FeedBackMessageController.Instance.SetMessage("Full item Health slot");
             return false;
         }
         GameData.ItemHealth+=amount;
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventAddResource("ItemHealth",source,GameData.ItemHealth);
+        }
         MainHud.Instance.UpdateResourceDisplay();
         if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
             MainHud.Instance.SetActiveUseItemHealthButton(true);
@@ -322,15 +325,21 @@ public class GameModel
         }
         GameData.ItemHealth-=amount;
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventUseResource("ItemHealth",GameData.ItemHealth);
+        }
         MainHud.Instance.UpdateResourceDisplay();
     }
     public int CurrentItemStamina => GameData.ItemStamina;
-    public bool TryIncreaseItemStamina(int amount){
+    public bool TryIncreaseItemStamina(int amount,string source=""){
         if(GameData.ItemStamina+amount>GameConfig.Load().MaxCountItemStamina){
             FeedBackMessageController.Instance.SetMessage("Full item Stamina slot");
             return false;
         }
         GameData.ItemStamina+=amount;
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventAddResource("ItemStamina",source,GameData.ItemStamina);
+        }
         // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
         if(_gameData.Stamina<GameConfig.Load().StatminaDefault&&_gameData.ItemStamina>0){
@@ -344,12 +353,18 @@ public class GameModel
         }
         GameData.ItemStamina-=amount;
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventUseResource("ItemStamina",GameData.ItemStamina);
+        }
         MainHud.Instance.UpdateResourceDisplay();
     }
     public float CurrentCoin => _gameData.Coin;
     public void IncreaseCoin(int value){
         _gameData.Coin+=value;
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventAddResource("Coin","Enemy",GameData.Coin);
+        }
         MainHud.Instance.UpdateResourceDisplay();
     }
     public void DecreaseCoin(int value){
@@ -358,6 +373,9 @@ public class GameModel
             _gameData.Coin = 0;
         }
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventUseResource("Coin",GameData.Coin);
+        }
         MainHud.Instance.UpdateResourceDisplay();
     }
     public bool TryDecreaseCoin(int value){
@@ -370,13 +388,16 @@ public class GameModel
         return true;
     }
     public float CurrentArrow => _gameData.Arrow;
-    public bool TryIncreaseArrow(int amount){
+    public bool TryIncreaseArrow(int amount,string source=""){
         if(GameData.Arrow+amount>GameConfig.Load().MaxArrow){
             FeedBackMessageController.Instance.SetMessage("Full Arrow slot");
             return false;
         }
         _gameData.Arrow+=amount;
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventAddResource("Arrow",source,GameData.Arrow);
+        }
         MainHud.Instance.UpdateResourceDisplay();
         return true;
     }
@@ -384,6 +405,9 @@ public class GameModel
         _gameData.Arrow-=amount;
         MainHud.Instance.UpdateResourceDisplay();
         // SaveGame();
+        if(FirebaseManager.Instance!=null){
+            FirebaseManager.EventUseResource("Arrow",GameData.Arrow);
+        }
     }
     public int CurrentEquipLevel => GameData.EquipLevel;
     public void SetEquipLevel(int equipLevel){

@@ -21,7 +21,11 @@ public class LevelManager : Singleton<LevelManager>
     public void NextLevel(){
         int currentSceneIndex = GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel);
         int nextSceneIndex = GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel+1);
-        if(nextSceneIndex>=0){
+        if (FirebaseManager.Instance != null)
+        {
+            FirebaseManager.EventFinishLevel(GameManager.Instance.GameModel.CurrentLevel, GameManager.Instance.CurrentLevelController.PlayTime);
+        }
+        if (nextSceneIndex>=0){
             if(QuickLoadingController.Instance!=null){
                 QuickLoadingController.Instance.ShowLoading();
             }
@@ -32,6 +36,10 @@ public class LevelManager : Singleton<LevelManager>
         }else{
             PopupManager.Instance.GetPopup("PopupVictory");
             GameManager.Instance.GameModel.ClearSaveGame();
+            if (FirebaseManager.Instance != null)
+            {
+                FirebaseManager.EventVictory();
+            }
         }
     }
     public void PlayAgain(Action callBack = null){
