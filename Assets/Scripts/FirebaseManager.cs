@@ -112,20 +112,6 @@ public class FirebaseManager : MonoBehaviour
         //FirebaseAnalytics.SetMinimumSessionDuration(new TimeSpan(0, 0, 10));
         FirebaseAnalytics.SetSessionTimeoutDuration(new TimeSpan(0, 30, 0));
     }
-    #endregion
-
-    #region Crashlytics
-    protected void InitCrashytics()
-    {
-        Debug.Log("Crashlytics | Init");
-        FirebaseApp.LogLevel = LogLevel.Error;
-        SetUserIdCrashlytic(SystemInfo.deviceUniqueIdentifier);
-    }
-    private void SetUserIdCrashlytic(String id)
-    {
-        // Debug.Log($"Crashlytics | Setting Crashlytics user identifier: {id}");
-        // Crashlytics.SetUserId(id);
-    }
     public void LogEvent(string name)
         {
             if (IsFirebaseActive)
@@ -176,13 +162,14 @@ public class FirebaseManager : MonoBehaviour
                 Debug.LogError("enemy_die");
             }
         }
-        public static void EventAddResource(string resourceType, string source, int amountCurrent)
+        public static void EventAddResource(string resourceType, string source,int amount, int amountCurrent)
         {
             try
             {
                 Firebase.Analytics.Parameter[] parameters = {
                 new Firebase.Analytics.Parameter("resource_type", resourceType),
                 new Firebase.Analytics.Parameter("source", source),
+                new Firebase.Analytics.Parameter("amount", amount),
                 new Firebase.Analytics.Parameter("amount_current", amountCurrent)
                 };
 
@@ -196,12 +183,13 @@ public class FirebaseManager : MonoBehaviour
                 Debug.LogError("add_resource");
             }
         }
-        public static void EventUseResource(string resourceType, int amountCurrent)
+        public static void EventUseResource(string resourceType,int amount, int amountCurrent)
         {
             try
             {
                 Firebase.Analytics.Parameter[] parameters = {
                 new Firebase.Analytics.Parameter("resource_type", resourceType),
+                new Firebase.Analytics.Parameter("amount", amount),
                 new Firebase.Analytics.Parameter("amount_current", amountCurrent)
                 };
 
@@ -265,6 +253,20 @@ public class FirebaseManager : MonoBehaviour
                 Debug.LogError("victory");
             }
         }
+    #endregion
+
+    #region Crashlytics
+    protected void InitCrashytics()
+    {
+        Debug.Log("Crashlytics | Init");
+        FirebaseApp.LogLevel = LogLevel.Error;
+        SetUserIdCrashlytic(SystemInfo.deviceUniqueIdentifier);
+    }
+    private void SetUserIdCrashlytic(String id)
+    {
+        // Debug.Log($"Crashlytics | Setting Crashlytics user identifier: {id}");
+        // Crashlytics.SetUserId(id);
+    }
 
     #endregion
 

@@ -311,7 +311,7 @@ public class GameModel
         GameData.ItemHealth+=amount;
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventAddResource("ItemHealth",source,GameData.ItemHealth);
+            FirebaseManager.EventAddResource("ItemHealth",source,amount,GameData.ItemHealth);
         }
         MainHud.Instance.UpdateResourceDisplay();
         if(_gameData.Health<GameConfig.Load().HealthDefault&&_gameData.ItemHealth>0){
@@ -326,7 +326,7 @@ public class GameModel
         GameData.ItemHealth-=amount;
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventUseResource("ItemHealth",GameData.ItemHealth);
+            FirebaseManager.EventUseResource("ItemHealth",amount,GameData.ItemHealth);
         }
         MainHud.Instance.UpdateResourceDisplay();
     }
@@ -338,7 +338,7 @@ public class GameModel
         }
         GameData.ItemStamina+=amount;
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventAddResource("ItemStamina",source,GameData.ItemStamina);
+            FirebaseManager.EventAddResource("ItemStamina",source,amount,GameData.ItemStamina);
         }
         // SaveGame();
         MainHud.Instance.UpdateResourceDisplay();
@@ -354,7 +354,7 @@ public class GameModel
         GameData.ItemStamina-=amount;
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventUseResource("ItemStamina",GameData.ItemStamina);
+            FirebaseManager.EventUseResource("ItemStamina",amount,GameData.ItemStamina);
         }
         MainHud.Instance.UpdateResourceDisplay();
     }
@@ -363,7 +363,7 @@ public class GameModel
         _gameData.Coin+=value;
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventAddResource("Coin","Enemy",GameData.Coin);
+            FirebaseManager.EventAddResource("Coin","Collect",value,GameData.Coin);
         }
         MainHud.Instance.UpdateResourceDisplay();
     }
@@ -374,7 +374,7 @@ public class GameModel
         }
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventUseResource("Coin",GameData.Coin);
+            FirebaseManager.EventUseResource("Coin",value,GameData.Coin);
         }
         MainHud.Instance.UpdateResourceDisplay();
     }
@@ -396,7 +396,7 @@ public class GameModel
         _gameData.Arrow+=amount;
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventAddResource("Arrow",source,GameData.Arrow);
+            FirebaseManager.EventAddResource("Arrow",source,amount,GameData.Arrow);
         }
         MainHud.Instance.UpdateResourceDisplay();
         return true;
@@ -406,7 +406,7 @@ public class GameModel
         MainHud.Instance.UpdateResourceDisplay();
         // SaveGame();
         if(FirebaseManager.Instance!=null){
-            FirebaseManager.EventUseResource("Arrow",GameData.Arrow);
+            FirebaseManager.EventUseResource("Arrow",amount,GameData.Arrow);
         }
     }
     public int CurrentEquipLevel => GameData.EquipLevel;
