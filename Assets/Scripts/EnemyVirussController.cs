@@ -188,11 +188,21 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
     IEnumerator WaitForAnimation(float dame,float time)
     {
         yield return new WaitForSeconds(time);
-        GameObject bullet = Instantiate(_bulletPrefab);
+        //not pool
+        // GameObject bullet = Instantiate(_bulletPrefab);
+        // Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        // bullet.transform.position = gameObject.transform.GetChild(0).position;
+        // bullet.transform.forward = (GameManager.Instance.PlayerController.gameObject.transform.position+new Vector3(0f,0.5f,0f)-bullet.transform.position).normalized;
+        // bullet.GetComponent<EnemyBulletController>()?.SetDameValue(20f);
+        //not pool
+        //use pool
+        var bullet = EnemyBulletPool.Instance.GetBullet();
+        bullet.ResetBullet();
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         bullet.transform.position = gameObject.transform.GetChild(0).position;
         bullet.transform.forward = (GameManager.Instance.PlayerController.gameObject.transform.position+new Vector3(0f,0.5f,0f)-bullet.transform.position).normalized;
         bullet.GetComponent<EnemyBulletController>()?.SetDameValue(20f);
+        //use pool
         if(rb!=null){
             rb.velocity = (GameManager.Instance.PlayerController.gameObject.transform.position+new Vector3(0f,0.5f,0f)-bullet.transform.position).normalized * 15f;
         }

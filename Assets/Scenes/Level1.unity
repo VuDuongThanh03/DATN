@@ -55636,6 +55636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1092765921}
   - component: {fileID: 1092765922}
+  - component: {fileID: 1092765923}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -55685,6 +55686,20 @@ MonoBehaviour:
   - {fileID: 2120346937}
   - {fileID: 197083465}
   - {fileID: 1303058735}
+--- !u!114 &1092765923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092765920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770d9e07fc9a6d146a5b1ce6b7fff1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 6094982702090090134, guid: 4c30a9bf8663a8b45aac5c7905d01208, type: 3}
+  defaultCapacity: 10
 --- !u!1 &1106967123
 GameObject:
   m_ObjectHideFlags: 0
