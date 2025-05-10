@@ -48,7 +48,9 @@ public class PlayerController : MonoBehaviour,IDamageable
             _animator.SetTrigger("TakeDame");
         }
         if(GameManager.Instance.CurrentHealth==0){
-            OnCharacterDie();
+            if(!_playerIsDie){
+                OnCharacterDie();
+            }
             Debug.Log("Player Die");
             _playerIsDie = true;
             _animator.SetTrigger("Die");
