@@ -137,6 +137,7 @@ public class MainMenuController : Singleton<MainMenuController>
         if(evironmentMenu!=null){
             cameraEnvironmentMenu.enabled = true;
         }
+        SoundManager.Instance.PlayMusic(SoundMusicID.BGM_Main);
     }
     public void RefreshMainMenu(){
         if(GameManager.Instance.GameModel.HaveSave){

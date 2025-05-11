@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void TakeDame(float dame);
+    public void TakeDame(float dame,Weapon weapon = Weapon.SWORD);
+
 }

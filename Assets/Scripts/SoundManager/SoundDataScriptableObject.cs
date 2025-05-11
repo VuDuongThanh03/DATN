@@ -22,13 +22,35 @@ public enum SoundFXID
     NONE = 0,
     SOUNDFX_Arrow_Fly,
     SOUNDFX_Bow_Loading,
-    SOUNDFX_Bow_Fail
+    SOUNDFX_Bow_Fail,
+    SOUNDFX_Boss_Die,
+    SOUNDFX_Boss_Hurt,
+    SOUNDFX_Button_Click,
+    SOUNDFX_Buy_Item,
+    SOUNDFX_CoinPickup,
+    SOUNDFX_Fail,
+    SOUNDFX_Foot_Step,
+    SOUNDFX_Foot_Step_Shoe,
+    SOUNDFX_Jump,
+    SOUNDFX_Pickup_Normal,
+    SOUNDFX_Player_Hurt,
+    SOUNDFX_Enemy_Hurt,
+    SOUNDFX_Sword_Attack,
+    SOUNDFX_Sword_Metal_Hit,
+    SOUNDFX_Sword_Wood_Hit,
+    SOUNDFX_Lose,
+    SOUNDFX_Viruss_Shot,
+    SOUNDFX_Attack_Cage,
+    SOUNDFX_Cage_Broken,
 }
 
 public enum SoundMusicID
 {
     NONE = 0,
     BGM_Main,
+    SOUND_BATTLE_MUSIC,
+    SOUND_VICTORY_MUSIC,
+    SOUND_LOSE_MUSIC
 }
 
 [CreateAssetMenu(menuName = "config/SoundConfig")]

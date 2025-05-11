@@ -29,6 +29,7 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
     public bool OnInteract()
     {
         if(itemType==ItemType.Coin&&isInteract==false){
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_CoinPickup);
             GameManager.Instance.GameModel.IncreaseCoin(amount);
             gameObject.SetActive(false);
             isInteract=true;
@@ -36,31 +37,40 @@ public class CollectableItem : MonoBehaviour,ICollectable,IInteractable
         }
         if(itemType==ItemType.HealthBottle&&isInteract==false){
             if(GameManager.Instance.GameModel.TryIncreaseItemHealth(amount,"Collect")){
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Pickup_Normal);
                 gameObject.SetActive(false);
                 isInteract=true;
                 return true;
             }else{
                 //action notify full inventory
+                FeedBackMessageController.Instance.SetMessage("Full Item Health Slot");
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
                 return false;
             }
         }
         if(itemType==ItemType.StaminaBottle&&isInteract==false){
             if(GameManager.Instance.GameModel.TryIncreaseItemStamina(amount,"Collect")){
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Pickup_Normal);
                 gameObject.SetActive(false);
                 isInteract=true;
                 return true;
             }else{
                 //action notify full inventory
+                FeedBackMessageController.Instance.SetMessage("Full Item Stamina Slot");
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
                 return false;
             }
         }
         if(itemType==ItemType.Arrow&&isInteract==false){
             if(GameManager.Instance.GameModel.TryIncreaseArrow(amount,"Collect")){
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Pickup_Normal);
                 gameObject.SetActive(false);
                 isInteract=true;
                 return true;
             }else{
                 //action notify full inventory
+                FeedBackMessageController.Instance.SetMessage("Full Arrow Slot");
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
                 return false;
             }
         }

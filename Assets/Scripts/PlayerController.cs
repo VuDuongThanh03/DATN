@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using DATN;
 using EPOOutline;
 using UnityEngine;
 
@@ -39,12 +40,13 @@ public class PlayerController : MonoBehaviour,IDamageable
     {
         
     }
-    public void TakeDame(float dame){
+    public void TakeDame(float dame,Weapon weapon = Weapon.SWORD){
         float armor = equipmentStatsConfig.GetEquipmentStat(GameManager.Instance.GameModel.CurrentEquipLevel).armor;
         GameManager.Instance.GameModel.SetHealth(Mathf.Clamp(GameManager.Instance.CurrentHealth-(dame-(dame*(armor/100))),0f,_gameConfig.HealthDefault));
         GameManager.Instance.GameModel.IncreaseAngryEnergy(dame*2);
         Debug.Log("Player take dame: "+ dame+" Current Health: "+GameManager.Instance.CurrentHealth);
         if(GameManager.Instance.CurrentHealth>0&&dame>0){
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Player_Hurt);
             _animator.SetTrigger("TakeDame");
         }
         if(GameManager.Instance.CurrentHealth==0){
@@ -137,6 +139,11 @@ public class PlayerController : MonoBehaviour,IDamageable
         }
     }
     public async Task OnCharacterDie(){
+        SoundManager.Instance.StopMusic();
+        if(GameManager.Instance.PlayerMovementController!=null){
+            GameManager.Instance.PlayerMovementController.ResetLoopFootStep();
+        }
+        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Lose);
         await UniTask.Delay(2000);
         if (FirebaseManager.Instance != null)
         {

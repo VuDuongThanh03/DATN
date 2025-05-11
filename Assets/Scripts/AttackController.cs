@@ -125,6 +125,7 @@ public class AttackController : MonoBehaviour
                     Debug.Log("Short click attack");
                     if (_currentWeapon == Weapon.SWORD)
                     {
+                        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Attack);
                         _animator.SetTrigger("Attack");
                         _input.startAttack = false;
                         _input.confirmAttack = false;
@@ -256,7 +257,7 @@ public class AttackController : MonoBehaviour
                     damageObject = item.gameObject.GetComponentInParent<IDamageable>();
                 }
                 if(damageObject!=null){
-                    damageObject.TakeDame(swordDamage);
+                    damageObject.TakeDame(swordDamage,Weapon.SWORD);
                 }
             }
         }

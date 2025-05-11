@@ -25,6 +25,9 @@ public class LevelManager : Singleton<LevelManager>
         {
             FirebaseManager.EventFinishLevel(GameManager.Instance.GameModel.CurrentLevel, GameManager.Instance.CurrentLevelController.PlayTime);
         }
+        if(GameManager.Instance.PlayerMovementController!=null){
+            GameManager.Instance.PlayerMovementController.ResetLoopFootStep();
+        }
         if (nextSceneIndex>=0){
             if(QuickLoadingController.Instance!=null){
                 QuickLoadingController.Instance.ShowLoading();
@@ -35,6 +38,7 @@ public class LevelManager : Singleton<LevelManager>
             GameManager.Instance.GameModel.SaveData();
         }else{
             PopupManager.Instance.GetPopup("PopupVictory");
+            SoundManager.Instance.PlayMusic(SoundMusicID.SOUND_VICTORY_MUSIC);
             GameManager.Instance.GameModel.ClearSaveGame();
             if (FirebaseManager.Instance != null)
             {

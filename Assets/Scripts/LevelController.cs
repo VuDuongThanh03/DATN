@@ -25,6 +25,7 @@ public class LevelController : MonoBehaviour
             GameManager.Instance.SetCurrentLevelController(this);
         }
         listEnemyDied = new List<GameObject>();
+        SoundManager.Instance.PlayMusic(SoundMusicID.SOUND_BATTLE_MUSIC);
     }
 
     // Update is called once per frame

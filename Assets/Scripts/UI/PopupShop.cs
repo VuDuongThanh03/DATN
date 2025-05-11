@@ -104,30 +104,36 @@ public class PopupShop : PopupBase
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().HealthBottlePrice){
             if(GameManager.Instance.GameModel.TryIncreaseItemHealth(1,"Buy")){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().HealthBottlePrice);
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Buy_Item);
                 UpdateCurrentItemAmout();
             }
         }else{
             FeedBackMessageController.Instance.SetMessage("Not enough Coin");
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
         }
     }
     public void OnClickBuyStamina(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().StaminaBottlePrice){
             if(GameManager.Instance.GameModel.TryIncreaseItemStamina(1,"Buy")){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().StaminaBottlePrice);
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Buy_Item);
                 UpdateCurrentItemAmout();
             }
         }else{
             FeedBackMessageController.Instance.SetMessage("Not enough Coin");
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
         }
     }
     public void OnClickBuyArrow(){
         if(GameManager.Instance.GameModel.CurrentCoin>=TradeConfig.Load().ArrowPrice){
             if(GameManager.Instance.GameModel.TryIncreaseArrow(1,"Buy")){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().ArrowPrice);
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Buy_Item);
                 UpdateCurrentItemAmout();
             }
         }else{
             FeedBackMessageController.Instance.SetMessage("Not enough Coin");
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
         }
     }
     public void OnClickUpgradeLevel1(){
@@ -135,10 +141,12 @@ public class PopupShop : PopupBase
             if(GameManager.Instance.GameModel.CurrentEquipLevel==0){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().UpdateLevel1Price);
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Buy_Item);
                 UpdateCurrentUpgrade();
             }
         }else{
             FeedBackMessageController.Instance.SetMessage("Not enough Coin");
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
         }
     }
     public void OnClickUpgradeLevel2(){
@@ -146,10 +154,12 @@ public class PopupShop : PopupBase
             if(GameManager.Instance.GameModel.CurrentEquipLevel==1){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().UpdateLevel2Price);
                 GameManager.Instance.GameModel.SetEquipLevel(GameManager.Instance.GameModel.CurrentEquipLevel+1);
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Buy_Item);
                 UpdateCurrentUpgrade();
             }
         }else{
             FeedBackMessageController.Instance.SetMessage("Not enough Coin");
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
         }
     }
     public void OnClickUnlockBow(){
@@ -157,10 +167,12 @@ public class PopupShop : PopupBase
             if(!GameManager.Instance.GameModel.IsHaveBow){
                 GameManager.Instance.GameModel.DecreaseCoin(TradeConfig.Load().BowPrice);
                 GameManager.Instance.GameModel.UnlockBow();
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Buy_Item);
                 CheckItemTradeShow();
             }
         }else{
             FeedBackMessageController.Instance.SetMessage("Not enough Coin");
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Fail);
         }
     }
 }

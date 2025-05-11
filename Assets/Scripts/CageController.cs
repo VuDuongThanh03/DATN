@@ -29,7 +29,7 @@ public class CageController : MonoBehaviour,IDamageable
     {
         
     }
-    public void TakeDame(float dame)
+    public void TakeDame(float dame,Weapon weapon = Weapon.SWORD)
     {
         if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
             if(GameManager.Instance.CurrentLevelController.IsClearEnemy()==false){
@@ -40,7 +40,9 @@ public class CageController : MonoBehaviour,IDamageable
         CurrentCageHealth = Mathf.Clamp(CurrentCageHealth-(dame-(dame*(CageArmor/100))),0f,CageHealthDefault);
         enemyHealthBar.value = CurrentCageHealth;
         Debug.Log("Take dame: "+ dame+" Current Cage Health: " + CurrentCageHealth);
+        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Attack_Cage);
         if(CurrentCageHealth==0){
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Cage_Broken);
             if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
                 //Ready for interact and end game
                 GameManager.Instance.CurrentLevelController.SetReadyForEnd();

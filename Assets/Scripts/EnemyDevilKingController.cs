@@ -139,15 +139,23 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
             }
         }
     }
-    public void TakeDame(float dame)
+    public void TakeDame(float dame,Weapon weapon = Weapon.SWORD)
     {
         if(_currentState==State.Die){
             return;
+        }
+        if(weapon==Weapon.SWORD){
+            if(GameManager.Instance.GameModel.CurrentEquipLevel==0){
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Wood_Hit);
+        }else{
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Metal_Hit);
+            }
         }
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);
         if(_currentStats.health>0&&dame>0){
+            SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Boss_Hurt,300);
             StopMove();
             _countDownTakeTime = 1f;
             enemyAnimator.ResetTrigger("Run");
@@ -156,6 +164,7 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
             LastTriggerAnim = TriggerAnim.TakeDame;
         }
         if(_currentStats.health==0){
+            SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Boss_Die,300);
             if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
                 GameManager.Instance.CurrentLevelController.OnEnemyDie(gameObject);
                 if(FirebaseManager.Instance!=null){

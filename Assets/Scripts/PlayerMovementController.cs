@@ -397,14 +397,24 @@ namespace DATN
         }
 
         #endregion
-
+        AudioSource loopFootStep;
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
             // if there is no input, set the target speed to 0
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+            if (_input.move == Vector2.zero){
+                targetSpeed = 0.0f;
+                if(loopFootStep!=null){
+                    SoundManager.Instance.StopSoundFXLoop(loopFootStep);
+                    loopFootStep=null;
+                }
+            }else{
+                if(loopFootStep==null){
+                    loopFootStep = SoundManager.Instance.PlaySoundFXLoop(SoundFXID.SOUNDFX_Foot_Step,0.2f);
+                }
+            }
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -469,6 +479,7 @@ namespace DATN
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
+                    SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Jump);
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
@@ -580,6 +591,12 @@ namespace DATN
         }
         public void SetIsHoldToSpinAttack(bool isHoldToSpinAttack){
             _isHoldToSpinAttack = isHoldToSpinAttack;
+        }
+        public void ResetLoopFootStep(){
+            if(loopFootStep!=null){
+                SoundManager.Instance.StopSoundFXLoop(loopFootStep);
+                loopFootStep=null;
+            }
         }
     }
     [SerializeField]

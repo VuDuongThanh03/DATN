@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -125,6 +127,26 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySoundFX(SoundFXID soundFX)
     {
+        if (IsSoundFXEnable == false)
+        {
+            return;
+        }
+
+        var audioClip = soundResource.GetSoundFXAudioClip(soundFX);
+        if (audioClip != null)
+        {
+            AudioSource audioSource = GetSoundFXAudioSource();
+            audioSource.volume = soundVolume;
+            audioSource.PlayOneShot(audioClip);
+        }
+        else
+        {
+            Debug.LogError("SoundFXID: " + soundFX + " not found in SoundDataScriptableObject");
+        }
+    }
+    public async Task PlaySoundFXDelay(SoundFXID soundFX, int delay)
+    {
+        await UniTask.Delay(delay);
         if (IsSoundFXEnable == false)
         {
             return;

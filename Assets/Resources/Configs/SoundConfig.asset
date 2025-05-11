@@ -28,6 +28,105 @@ MonoBehaviour:
     AudioClip: {fileID: 8300000, guid: 7e7a2f41198be2c4a8501b7f9081b109, type: 3}
     AudioClips: []
     IsSequenceSound: 0
+  - SoundFXID: 4
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: f4486d6fb531bbf459b3c0e2f94c3379, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 5
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: d6d07f5c746ac944d9ccb958fffca656, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 6
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 9d2fb167d0c96884e92c56c0f4707c03, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 7
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: ef6044d5de3b2474f948521f8c7b7955, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 8
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: d596fead76947b84bb46cff640e8266d, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 9
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 3486a55f66d8ce342822737c549b18cb, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 10
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: c38ce23aa1a0ea04080e6a2410cd81c0, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 11
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: bd366590fef1d284bab278b4c6d528a4, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 12
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: ab5c4ce214ea813489c66387a0d55856, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 13
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: c805d5f8f1ba891429b423df43655706, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 14
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 02cea73693f8ff644888680211013ea3, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 15
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: dd433e5dbfff8f9458615791fa0bc5cb, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 16
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: c380dd0881aef8542a6f2da77d8f5980, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 17
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 57d07ec5bd878834dbba71de1077b8c5, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 19
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 56d252cdd9712ef418e2d95db9eeb60b, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 18
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: a5648822613aa3b4baff4b8feff0246b, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 20
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: ba23d53cf6824e0499dc3fecab61da8c, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 21
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 61eb0cc50267afb45a82130fa8298491, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 22
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: a13f0246863233f479870f97af054807, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
   SoundMusicItems:
   - SoundMusicID: 1
     AudioClip: {fileID: 8300000, guid: 413aab5b72905cc42b488d5991035197, type: 3}
+  - SoundMusicID: 2
+    AudioClip: {fileID: 8300000, guid: f770930a596a5a145a53f25b2ef34131, type: 3}
+  - SoundMusicID: 3
+    AudioClip: {fileID: 8300000, guid: 197a19cfbce09394d9afa55cc2c5ca22, type: 3}
