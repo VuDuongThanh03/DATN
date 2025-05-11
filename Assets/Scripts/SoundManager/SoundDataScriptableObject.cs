@@ -45,6 +45,8 @@ public enum SoundFXID
     SOUNDFX_Rat_Hurt,
     SOUNDFX_Virus_Hurt,
     SOUNDFX_Power,
+    SOUNDFX_Help,
+
 }
 
 public enum SoundMusicID

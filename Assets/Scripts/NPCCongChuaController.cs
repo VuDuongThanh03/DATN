@@ -32,6 +32,7 @@ public class NPCCongChuaController : MonoBehaviour,IInteractable
                     return;
                 }
             }
+            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Help);
             messageHandle.SetActive(true);
             AutoOffMessage();
             currentCountDown = countDownMessage;

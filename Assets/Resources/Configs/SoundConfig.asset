@@ -138,6 +138,11 @@ MonoBehaviour:
     AudioClip: {fileID: 8300000, guid: ee8655ce96d656243ab5378a7b87596f, type: 3}
     AudioClips: []
     IsSequenceSound: 0
+  - SoundFXID: 26
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: 81c72a800c7a4a24884b3448b44f409d, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
   SoundMusicItems:
   - SoundMusicID: 1
     AudioClip: {fileID: 8300000, guid: 413aab5b72905cc42b488d5991035197, type: 3}
