@@ -123,6 +123,21 @@ MonoBehaviour:
     AudioClip: {fileID: 8300000, guid: a13f0246863233f479870f97af054807, type: 3}
     AudioClips: []
     IsSequenceSound: 0
+  - SoundFXID: 23
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: dd433e5dbfff8f9458615791fa0bc5cb, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 24
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: f3c7d8a2cd924094088877f509d36f5f, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
+  - SoundFXID: 25
+    IsMultipleSound: 0
+    AudioClip: {fileID: 8300000, guid: ee8655ce96d656243ab5378a7b87596f, type: 3}
+    AudioClips: []
+    IsSequenceSound: 0
   SoundMusicItems:
   - SoundMusicID: 1
     AudioClip: {fileID: 8300000, guid: 413aab5b72905cc42b488d5991035197, type: 3}

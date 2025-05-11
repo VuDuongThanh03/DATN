@@ -28,6 +28,9 @@ public class LevelManager : Singleton<LevelManager>
         if(GameManager.Instance.PlayerMovementController!=null){
             GameManager.Instance.PlayerMovementController.ResetLoopFootStep();
         }
+        if(GameManager.Instance.AttackController!=null){
+            GameManager.Instance.AttackController.ResetLoopSpinAttack();
+        }
         if (nextSceneIndex>=0){
             if(QuickLoadingController.Instance!=null){
                 QuickLoadingController.Instance.ShowLoading();

@@ -323,6 +323,7 @@ public class AttackController : MonoBehaviour
     public async void HoldToSpinAttack(int time){
         _isHoldToSpinAttack = true;
         GameManager.Instance.GameModel.SetAngryEnergy(0);
+        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Power);
         _animator.SetTrigger("StartPower");
         GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
         await Task.Delay(time);
@@ -334,10 +335,15 @@ public class AttackController : MonoBehaviour
         GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(false);
 
     }
+    AudioSource loopSpinAttack;
     public async void SpinAttack(int time){
+        if(loopSpinAttack==null){
+            loopSpinAttack = SoundManager.Instance.PlaySoundFXLoop(SoundFXID.SOUNDFX_Sword_Attack);
+        }
         _animator.SetBool("SpinAttack",true);
         _isSpinAttackNow = true;
         await Task.Delay(time);
+        ResetLoopSpinAttack();
         _animator.SetBool("SpinAttack",false);
         _animator.ResetTrigger("StartPower");
         _animator.ResetTrigger("Attack");
@@ -346,6 +352,12 @@ public class AttackController : MonoBehaviour
         _input.confirmAttack = false;
         _isSpinAttackNow = false;
         countDownDameTurnSpine = GameConfig.Load().countDownSpinAttack;
+    }
+    public void ResetLoopSpinAttack(){
+        if(loopSpinAttack!=null){
+            SoundManager.Instance.StopSoundFXLoop(loopSpinAttack);
+            loopSpinAttack = null;
+        }
     }
     public void CheckSpinAttack(){
         float swordDamage = equipmentStatsConfig.GetEquipmentStat(GameManager.Instance.GameModel.CurrentEquipLevel).swordDamage;
@@ -362,7 +374,7 @@ public class AttackController : MonoBehaviour
                             damageObject = item.gameObject.GetComponentInParent<IDamageable>();
                         }
                         if(damageObject!=null){
-                            damageObject.TakeDame(swordDamage/5);
+                            damageObject.TakeDame(swordDamage/5,Weapon.SWORD);
                         }
                     }
                 }

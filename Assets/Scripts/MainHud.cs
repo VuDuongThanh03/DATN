@@ -105,6 +105,11 @@ public class MainHud : Singleton<MainHud>
     }
     public void OnAngryEnergyChange(){
         imageAngryEnergy.fillAmount = GameManager.Instance.CurrentAngryEnergy/GameConfig.Load().MaxAngryEnergy;
+        if(GameManager.Instance.CurrentAngryEnergy==GameConfig.Load().MaxAngryEnergy){
+            skillBtn.gameObject.SetActive(true);
+        }else{
+            skillBtn.gameObject.SetActive(false);
+        }
     }
     public void OnUnlockBow(){
         swapWeaponBtn.gameObject.SetActive(true);

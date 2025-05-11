@@ -149,7 +149,7 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
                 SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Metal_Hit);
             }
         }
-        // SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Enemy_Hurt,300);
+        SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Virus_Hurt,300);
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);

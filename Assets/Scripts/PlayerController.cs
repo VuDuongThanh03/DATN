@@ -143,6 +143,9 @@ public class PlayerController : MonoBehaviour,IDamageable
         if(GameManager.Instance.PlayerMovementController!=null){
             GameManager.Instance.PlayerMovementController.ResetLoopFootStep();
         }
+        if(GameManager.Instance.AttackController!=null){
+            GameManager.Instance.AttackController.ResetLoopSpinAttack();
+        }
         SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Lose);
         await UniTask.Delay(2000);
         if (FirebaseManager.Instance != null)

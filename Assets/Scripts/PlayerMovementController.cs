@@ -186,6 +186,7 @@ namespace DATN
             GroundedCheck();
             // Attack();
             if(_isHoldToSpinAttack){
+                ResetLoopFootStep();
                 return;
             }
             Move();
@@ -406,12 +407,12 @@ namespace DATN
             // if there is no input, set the target speed to 0
             if (_input.move == Vector2.zero){
                 targetSpeed = 0.0f;
-                if(loopFootStep!=null){
+                if(loopFootStep!=null||GameManager.Instance.AttackController.IsSpinAttackNow==true){
                     SoundManager.Instance.StopSoundFXLoop(loopFootStep);
                     loopFootStep=null;
                 }
             }else{
-                if(loopFootStep==null){
+                if(loopFootStep==null&&GameManager.Instance.AttackController.IsSpinAttackNow==false){
                     loopFootStep = SoundManager.Instance.PlaySoundFXLoop(SoundFXID.SOUNDFX_Foot_Step,0.2f);
                 }
             }
