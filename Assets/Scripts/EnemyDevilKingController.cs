@@ -121,7 +121,7 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
                             enemyAnimator.ResetTrigger("Walk");
                             LastTriggerAnim = TriggerAnim.Attack;
                             StartCoroutine(WaitForAnimation(10,2f));
-                            _attackCountDown = 3;
+                            _attackCountDown = 2;
                             ContinueToPatrol();
                             // _navMeshAgent.SetDestination(new Vector3(GameManager.Instance.PlayerController.gameObject.transform.position.x,0,GameManager.Instance.PlayerController.gameObject.transform.position.z));
                         }else{
