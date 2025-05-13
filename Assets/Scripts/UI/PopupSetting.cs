@@ -72,6 +72,13 @@ public class PopupSetting : PopupBase
         if(value==2){
             QualitySettings.SetQualityLevel(4,true);
         }
+         // Force re-render UI
+        Canvas.ForceUpdateCanvases();
+
+        // Optional: reset URP if needed
+        #if UNITY_URP
+        UnityEngine.Rendering.RenderPipelineManager.CleanupRenderPipeline();
+        #endif
     }
     private void OnSoundToggleChange(bool value){
         if(soundToggle.isOn){
