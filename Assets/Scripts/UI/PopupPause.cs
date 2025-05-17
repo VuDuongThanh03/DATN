@@ -17,6 +17,7 @@ public class PopupPause : PopupBase
     protected override void OnEnable()
     {
         base.OnEnable();
+        Time.timeScale = 0;
         Init();
     }
 
@@ -38,6 +39,7 @@ public class PopupPause : PopupBase
     public override void OnBackBtnClick()
     {
         base.OnBackBtnClick();
+        Time.timeScale = 1;
 #if UNITY_EDITOR
         // Cursor.lockState = CursorLockMode.Locked;
 #endif
