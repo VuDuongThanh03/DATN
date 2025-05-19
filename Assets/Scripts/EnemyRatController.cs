@@ -35,6 +35,8 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
     float _attackCountDown = 0;
     float _countDownTakeTime = 0;
     float _countDownDespawn = 0;
+    float _countDownTakeDame = 0.3f;
+    float _countDownSound = 0.8f;
     TriggerAnim LastTriggerAnim;
     
     [SerializeField]private State _currentState;
@@ -67,16 +69,29 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
         // }else{
         //     return;
         // }
-        if(_currentState==State.Die){
-            _countDownDespawn-=Time.deltaTime;
-            if(_countDownDespawn<=0){
+        if (_currentState == State.Die)
+        {
+            StopMove();
+            _countDownDespawn -= Time.deltaTime;
+            if (_countDownDespawn <= 0)
+            {
                 gameObject.SetActive(false);
             }
             return;
         }
-        if(LastTriggerAnim==TriggerAnim.TakeDame){
-            _countDownTakeTime-=Time.deltaTime;
-            if(_countDownTakeTime>0){
+        if (_countDownSound > 0)
+        {
+            _countDownSound -= Time.deltaTime;
+        }
+        if (_countDownTakeDame > 0)
+        {
+            _countDownTakeDame -= Time.deltaTime;
+        }
+        if (LastTriggerAnim == TriggerAnim.TakeDame)
+        {
+            _countDownTakeTime -= Time.deltaTime;
+            if (_countDownTakeTime > 0)
+            {
                 return;
             }
             ContinueToPatrol();
@@ -150,14 +165,30 @@ public class EnemyRatController : MonoBehaviour,IDamageable,IDropable
         if(_currentState==State.Die){
             return;
         }
-        if(weapon==Weapon.SWORD){
-            if(GameManager.Instance.GameModel.CurrentEquipLevel==0){
-            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Wood_Hit);
-            }else{
+        if (_countDownTakeDame > 0)
+        {
+            return;
+        }
+        else
+        {
+            _countDownTakeDame = 0.3f;
+        }
+        if (weapon == Weapon.SWORD)
+        {
+            if (GameManager.Instance.GameModel.CurrentEquipLevel == 0)
+            {
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Wood_Hit);
+            }
+            else
+            {
                 SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Metal_Hit);
             }
         }
-        SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Rat_Hurt,300);
+        if (_countDownSound <= 0)
+        {
+            SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Rat_Hurt, 300, 0.5f);
+            _countDownSound = 0.8f;
+        }
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);

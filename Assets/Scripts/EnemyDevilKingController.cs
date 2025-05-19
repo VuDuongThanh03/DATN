@@ -33,6 +33,8 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
     float _attackCountDown = 0;
     float _countDownTakeTime = 0;
     float _countDownDespawn = 0;
+    float _countDownSound = 0.8f;
+    float _countDownTakeDame = 0.3f;
     TriggerAnim LastTriggerAnim;
     
     [SerializeField]private State _currentState;
@@ -65,15 +67,26 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
         //     return;
         // }
         if(_currentState==State.Die){
-            _countDownDespawn-=Time.deltaTime;
+            StopMove();
+            _countDownDespawn -=Time.deltaTime;
             if(_countDownDespawn<=0){
                 gameObject.SetActive(false);
             }
             return;
         }
-        if(LastTriggerAnim==TriggerAnim.TakeDame){
-            _countDownTakeTime-=Time.deltaTime;
-            if(_countDownTakeTime>0){
+        if (_countDownSound > 0)
+        {
+            _countDownSound -= Time.deltaTime;
+        }
+        if (_countDownTakeDame > 0)
+        {
+            _countDownTakeDame -= Time.deltaTime;
+        }
+        if (LastTriggerAnim == TriggerAnim.TakeDame)
+        {
+            _countDownTakeTime -= Time.deltaTime;
+            if (_countDownTakeTime > 0)
+            {
                 return;
             }
             ContinueToPatrol();
@@ -106,7 +119,7 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
             }
         }
         if(_currentState == State.TagetState){
-            _attackCountDown-=Time.deltaTime;
+            _attackCountDown -=Time.deltaTime;
             if(GameManager.Instance.PlayerController!=null){
                 float distance = Vector2.Distance(new Vector2(gameObject.transform.position.x,gameObject.transform.position.z),new Vector2(GameManager.Instance.PlayerController.gameObject.transform.position.x,GameManager.Instance.PlayerController.gameObject.transform.position.z));
                 if(distance>15){
@@ -120,7 +133,7 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
                             enemyAnimator.SetTrigger("Attack");
                             enemyAnimator.ResetTrigger("Walk");
                             LastTriggerAnim = TriggerAnim.Attack;
-                            StartCoroutine(WaitForAnimation(10,2f));
+                            StartCoroutine(WaitForAnimation(10,1.5f));
                             _attackCountDown = 2;
                             ContinueToPatrol();
                             // _navMeshAgent.SetDestination(new Vector3(GameManager.Instance.PlayerController.gameObject.transform.position.x,0,GameManager.Instance.PlayerController.gameObject.transform.position.z));
@@ -144,24 +157,51 @@ public class EnemyDevilKingController : MonoBehaviour,IDamageable
         if(_currentState==State.Die){
             return;
         }
-        if(weapon==Weapon.SWORD){
-            if(GameManager.Instance.GameModel.CurrentEquipLevel==0){
-            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Wood_Hit);
-        }else{
-            SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Metal_Hit);
+        if (_countDownTakeDame > 0)
+        {
+            return;
+        }
+        else
+        {
+            _countDownTakeDame = 0.3f;
+        }
+        if (weapon == Weapon.SWORD)
+        {
+            if (GameManager.Instance.GameModel.CurrentEquipLevel == 0)
+            {
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Wood_Hit);
+            }
+            else
+            {
+                SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Metal_Hit);
             }
         }
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);
         if(_currentStats.health>0&&dame>0){
-            SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Boss_Hurt,300);
+            if (_countDownSound <= 0)
+            {
+                SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Boss_Hurt, 300, 1f);
+                _countDownSound = 0.8f;
+            }
             StopMove();
             _countDownTakeTime = 1f;
-            // enemyAnimator.ResetTrigger("Run");
-            // enemyAnimator.ResetTrigger("Idle");
-            // enemyAnimator.SetTrigger("TakeDame");
-            // LastTriggerAnim = TriggerAnim.TakeDame;
+            if (LastTriggerAnim == TriggerAnim.Attack)
+            {
+                Debug.Log("Take dame on Attack");
+                enemyAnimator.ResetTrigger("Run");
+                enemyAnimator.ResetTrigger("Idle");
+                LastTriggerAnim = TriggerAnim.TakeDame;
+            }
+            else
+            {
+                Debug.Log("Take dame other state :"+LastTriggerAnim.ToString());
+                enemyAnimator.ResetTrigger("Run");
+                enemyAnimator.ResetTrigger("Idle");
+                enemyAnimator.SetTrigger("TakeDame");
+                LastTriggerAnim = TriggerAnim.TakeDame;
+            }
         }
         if(_currentStats.health==0){
             SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Boss_Die,300);

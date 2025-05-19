@@ -144,7 +144,7 @@ public class SoundManager : Singleton<SoundManager>
             Debug.LogError("SoundFXID: " + soundFX + " not found in SoundDataScriptableObject");
         }
     }
-    public async Task PlaySoundFXDelay(SoundFXID soundFX, int delay)
+    public async Task PlaySoundFXDelay(SoundFXID soundFX, int delay, float volume = 1f)
     {
         await UniTask.Delay(delay);
         if (IsSoundFXEnable == false)
@@ -157,6 +157,7 @@ public class SoundManager : Singleton<SoundManager>
         {
             AudioSource audioSource = GetSoundFXAudioSource();
             audioSource.volume = soundVolume;
+            audioSource.volume = volume;
             audioSource.PlayOneShot(audioClip);
         }
         else

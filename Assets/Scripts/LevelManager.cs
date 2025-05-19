@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
 {
+    bool isCallNextLevel = false;
+    public bool IsCallNextLevel => isCallNextLevel;
     [SerializeField] LevelConfig levelConfig;
     public int GetSceneIndex(int levelIndex){
         foreach (var item in levelConfig.levelDatas)
@@ -18,28 +20,40 @@ public class LevelManager : Singleton<LevelManager>
         }
         return -1;
     }
-    public void NextLevel(){
+    public void ResetCallNextLevel()
+    {
+        isCallNextLevel = false;
+    }
+    public void NextLevel()
+    {
         int currentSceneIndex = GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel);
-        int nextSceneIndex = GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel+1);
+        int nextSceneIndex = GetSceneIndex(GameManager.Instance.GameModel.CurrentLevel + 1);
         if (FirebaseManager.Instance != null)
         {
             FirebaseManager.EventFinishLevel(GameManager.Instance.GameModel.CurrentLevel, GameManager.Instance.CurrentLevelController.PlayTime);
         }
-        if(GameManager.Instance.PlayerMovementController!=null){
+        isCallNextLevel = true;
+        if (GameManager.Instance.PlayerMovementController != null)
+        {
             GameManager.Instance.PlayerMovementController.ResetLoopFootStep();
         }
-        if(GameManager.Instance.AttackController!=null){
+        if (GameManager.Instance.AttackController != null)
+        {
             GameManager.Instance.AttackController.ResetLoopSpinAttack();
         }
-        if (nextSceneIndex>=0){
-            if(QuickLoadingController.Instance!=null){
+        if (nextSceneIndex >= 0)
+        {
+            if (QuickLoadingController.Instance != null)
+            {
                 QuickLoadingController.Instance.ShowLoading();
             }
             SceneManager.UnloadSceneAsync(currentSceneIndex);
             SceneManager.LoadScene(nextSceneIndex, LoadSceneMode.Additive);
-            GameManager.Instance.GameModel.SetCurrentLevel(GameManager.Instance.GameModel.CurrentLevel+1);
+            GameManager.Instance.GameModel.SetCurrentLevel(GameManager.Instance.GameModel.CurrentLevel + 1);
             GameManager.Instance.GameModel.SaveData();
-        }else{
+        }
+        else
+        {
             PopupManager.Instance.GetPopup("PopupVictory");
             SoundManager.Instance.PlayMusic(SoundMusicID.SOUND_VICTORY_MUSIC);
             GameManager.Instance.GameModel.ClearSaveGame();

@@ -323,7 +323,7 @@ public class AttackController : MonoBehaviour
     public async void HoldToSpinAttack(int time){
         _isHoldToSpinAttack = true;
         GameManager.Instance.GameModel.SetAngryEnergy(0);
-        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Power);
+        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Power,0.8f);
         _animator.SetTrigger("StartPower");
         GameManager.Instance.PlayerMovementController.SetIsHoldToSpinAttack(true);
         await Task.Delay(time);
@@ -337,7 +337,7 @@ public class AttackController : MonoBehaviour
     }
     AudioSource loopSpinAttack;
     public async void SpinAttack(int time){
-        if(loopSpinAttack==null){
+        if(loopSpinAttack==null&&playerController.PlayerIsDie==false){
             loopSpinAttack = SoundManager.Instance.PlaySoundFXLoop(SoundFXID.SOUNDFX_Sword_Attack);
         }
         _animator.SetBool("SpinAttack",true);

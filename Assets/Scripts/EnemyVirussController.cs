@@ -33,6 +33,7 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
     float _attackCountDown = 0;
     float _countDownTakeTime = 0;
     float _countDownDespawn = 0;
+    float _countDownSound = 0.8f;
     TriggerAnim LastTriggerAnim;
     
     [SerializeField]private State _currentState;
@@ -66,15 +67,22 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
         //     return;
         // }
         if(_currentState==State.Die){
-            _countDownDespawn-=Time.deltaTime;
+            StopMove();
+            _countDownDespawn -=Time.deltaTime;
             if(_countDownDespawn<=0){
                 gameObject.SetActive(false);
             }
             return;
         }
-        if(LastTriggerAnim==TriggerAnim.TakeDame){
-            _countDownTakeTime-=Time.deltaTime;
-            if(_countDownTakeTime>0){
+        if (_countDownSound > 0)
+        {
+            _countDownSound -= Time.deltaTime;
+        }
+        if (LastTriggerAnim == TriggerAnim.TakeDame)
+        {
+            _countDownTakeTime -= Time.deltaTime;
+            if (_countDownTakeTime > 0)
+            {
                 return;
             }
             ContinueToPatrol();
@@ -149,7 +157,11 @@ public class EnemyVirussController : MonoBehaviour,IDamageable,IDropable
                 SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Sword_Metal_Hit);
             }
         }
-        SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Virus_Hurt,300);
+        if (_countDownSound <= 0)
+        {
+            SoundManager.Instance.PlaySoundFXDelay(SoundFXID.SOUNDFX_Virus_Hurt, 300, 0.5f);
+            _countDownSound = 0.8f;
+        }
         _currentStats.health=Mathf.Clamp(_currentStats.health-(dame-(dame*(_currentStats.armor/100))),0f,_baseStats.EnemyStats.health);
         enemyHealthBar.value = _currentStats.health;
         Debug.Log("Take dame: "+ dame+" Current Health: "+_currentStats.health);

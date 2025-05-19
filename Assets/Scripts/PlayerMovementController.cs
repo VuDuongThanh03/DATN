@@ -158,7 +158,7 @@ namespace DATN
             GameManager.Instance.SetPlayerMovementController(this);
             playerController = gameObject.GetComponent<PlayerController>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<MyControllInputs>();
@@ -173,6 +173,10 @@ namespace DATN
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.ResetCallNextLevel();
+            }
         }
 
         private void Update()
@@ -218,7 +222,10 @@ namespace DATN
                 transform.position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
-
+            if (Grounded == false)
+            {
+                isJumpSound = false;
+            }
             // update animator if using character
             if (_hasAnimator)
             {
@@ -411,9 +418,20 @@ namespace DATN
                     SoundManager.Instance.StopSoundFXLoop(loopFootStep);
                     loopFootStep=null;
                 }
-            }else{
-                if(loopFootStep==null&&GameManager.Instance.AttackController.IsSpinAttackNow==false){
-                    loopFootStep = SoundManager.Instance.PlaySoundFXLoop(SoundFXID.SOUNDFX_Foot_Step,0.2f);
+            }
+            else
+            {
+                if (Grounded==false)
+                {
+                    if (loopFootStep != null)
+                    {
+                        SoundManager.Instance.StopSoundFXLoop(loopFootStep);
+                        loopFootStep = null;
+                    }
+                }
+                if (loopFootStep == null && GameManager.Instance.AttackController.IsSpinAttackNow == false && Grounded&&LevelManager.Instance.IsCallNextLevel==false)
+                {
+                    loopFootStep = SoundManager.Instance.PlaySoundFXLoop(SoundFXID.SOUNDFX_Foot_Step, 0.1f);
                 }
             }
 
@@ -456,7 +474,7 @@ namespace DATN
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
         }
-
+        bool isJumpSound = false;
         private void JumpAndGravity()
         {
             if (Grounded)
@@ -480,7 +498,12 @@ namespace DATN
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
-                    SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Jump);
+                    if (isJumpSound == false)
+                    {
+                        SoundManager.Instance.PlaySoundFX(SoundFXID.SOUNDFX_Jump,0.35f);
+                        Debug.Log("SOUNDFX_Jump");
+                        isJumpSound = true;
+                    }
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
