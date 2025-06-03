@@ -118,7 +118,23 @@ public class MainHud : Singleton<MainHud>
     public void CheatUnlockBow(){
         GameManager.Instance.GameModel.UnlockBow();
     }
-    public void SetActiveInteractButton(bool active){
+    public void CheatAddCoin(){
+        GameManager.Instance.GameModel.IncreaseCoin(50);
+    }
+    public void CheatKillAll()
+    {
+        GameManager.Instance.CurrentLevelController.KillAllEnemy();
+    }
+    public void CheatNextLevel()
+    {
+        LevelManager.Instance.NextLevel();
+    }
+    public void CheatFullAngry()
+    {
+        GameManager.Instance.GameModel.IncreaseAngryEnergy(100);
+    }
+    public void SetActiveInteractButton(bool active)
+    {
         interactBtn.gameObject.SetActive(active);
     }
     public void SetActiveUseItemHealthButton(bool active){

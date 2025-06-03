@@ -56,6 +56,15 @@ public class LevelController : MonoBehaviour
         isReadyForEnd = true;
         OnReadyForEnd?.Invoke();
     }
+    public void KillAllEnemy()
+    {
+        foreach (var item in listEnemyAlive)
+        {
+            item.gameObject.SetActive(false);
+        }
+        listEnemyAlive.Clear();
+    }
+
     public int GetAmountCurrentEnemy(){
         if(listEnemyAlive!=null){
             return listEnemyAlive.Count;
