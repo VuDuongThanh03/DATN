@@ -62,10 +62,10 @@ public class PlayerController : MonoBehaviour,IDamageable
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("BossAxe")){
-            TakeDame(10);
+            TakeDame(50);
         }
         if(other.CompareTag("RatSword")){
-            TakeDame(10);
+            TakeDame(15);
         }
         if(other.gameObject.GetComponent<IInteractable>()!=null){
             MainHud.Instance.SetActiveInteractButton(true);
