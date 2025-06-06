@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class LevelController : MonoBehaviour
     public Action OnReadyForEnd;
     [SerializeField] List<GameObject> listEnemyAlive;
     List<GameObject> listEnemyDied;
+    public int levelIndex;
     float playTime = 0;
     bool isReadyForEnd = false;
     public bool IsReadyForEnd => isReadyForEnd;
@@ -26,6 +28,7 @@ public class LevelController : MonoBehaviour
         }
         listEnemyDied = new List<GameObject>();
         SoundManager.Instance.PlayMusic(SoundMusicID.SOUND_BATTLE_MUSIC);
+        CheckAndShowPopupTut();
     }
 
     // Update is called once per frame
@@ -70,5 +73,17 @@ public class LevelController : MonoBehaviour
             return listEnemyAlive.Count;
         }
         return 0;
+    }
+    public async Task CheckAndShowPopupTut(){
+        await UniTask.Delay(2000);
+        if(levelIndex==1){
+            PopupManager.Instance.GetPopup("PopupTutorialLv1");
+        }
+        if(levelIndex==2){
+            PopupManager.Instance.GetPopup("PopupTutorialLv2");
+        }
+        if(levelIndex==3){
+            PopupManager.Instance.GetPopup("PopupTutorialLv3");
+        }
     }
 }
