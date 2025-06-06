@@ -12,6 +12,7 @@ public class NPCCongChuaController : MonoBehaviour,IInteractable
     [SerializeField] int countDownMessage = 8;
     [SerializeField] TMP_Text messageText;
     float currentCountDown = 0;
+    bool isHelped = false;
     void Start()
     {
         if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
@@ -41,8 +42,12 @@ public class NPCCongChuaController : MonoBehaviour,IInteractable
     }
     public bool OnInteract()
     {
+        if(isHelped==true){
+            return false;
+        }
         if(GameManager.Instance!=null&&GameManager.Instance.CurrentLevelController!=null){
             if(GameManager.Instance.CurrentLevelController.IsReadyForEnd){
+                isHelped = true;
                 ShowMessageAndFinish();
             }
         }
